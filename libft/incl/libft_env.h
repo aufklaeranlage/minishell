@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 12:51:07 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 14:41:22 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:59:34 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 
 char		**ft_splitpaths(const char *paths);
 
-char		*ft_getenv(const char *name);
+char		*ft_getenv(const char *name, char **env);
 
 #endif

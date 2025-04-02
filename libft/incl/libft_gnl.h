@@ -6,12 +6,12 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:47:04 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:21:22 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:18:56 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GNL_H
-# define GNL_H
+#ifndef LIBFT_GNL_H
+# define LIBFT_GNL_H
 
 # include <stddef.h>
 # include <stdlib.h>

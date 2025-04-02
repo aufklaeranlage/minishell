@@ -6,14 +6,14 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 12:34:35 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:46:19 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:18:28 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_MEM_H
 # define LIBFT_MEM_H
 
-#include "libft_ctype.h"
+# include "libft_ctype.h"
 
 # include <stdlib.h>
 # include <stdint.h>

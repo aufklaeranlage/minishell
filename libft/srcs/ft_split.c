@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:43:29 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:27:04 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:50:57 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,29 @@ void	ft_freesplit(char **split)
 	while (split[i])
 		free(split[i++]);
 	free(split);
+}
+
+char	**ft_splitlcpy(char **splits, size_t	len)
+{
+	char	**ret;
+	size_t	i;
+
+	ret = malloc((len + 1) * sizeof(*ret));
+	if (!ret || !splits)
+		return (NULL);
+	ret[len] = NULL;
+	i = 0;
+	while (i < len)
+	{
+		if (!splits[i])
+		{
+			ret[i] = NULL;
+			return (ft_freesplit(ret), NULL);
+		}
+		ret[i] = ft_strdup(splits[i]);
+		if (!ret[i])
+			return (ft_freesplit(ret), NULL);
+		++i;
+	}
+	return (ret);
 }

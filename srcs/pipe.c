@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:39:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 14:59:37 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 16:16:31 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,18 @@ static void	pipe_plumber(int i, int chainlinks, int p_fd[2], int tp_fd[2])
  *	will not dup their usnet read end.
 */
 
-void	pipe_connector(int pipefd[2], int pipeid, int max_pipeid)
+void	pipe_connector(int p_fd[2], int pipeid, int max_pipeid)
 {
-	if (pipeid > 1 && pipeid <= max)
-		dup2(pipefd[1], STDOUT_FILENO);
-	if (pipeid && pipeid < max)
-		dup2(pipefd[0], STDIN_FILENO);
+	if (pipeid > 1 && pipeid <= max_pipeid)
+		dup2(p_fd[1], STDOUT_FILENO);
+	if (pipeid && pipeid < max_pipeid)
+		dup2(p_fd[0], STDIN_FILENO);
+}
+
+void	pipe_closer(int p_fd[2], int pipeid, int max_pipeid)
+{
+	if (pipeid > 1 && pipeid <= max_pipeid)
+		close(p_fd[1]);
+	if (pipeid && pipeid < max_pipeid)
+		close(p_fd[0]);
 }

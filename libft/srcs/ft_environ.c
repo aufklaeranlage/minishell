@@ -6,13 +6,13 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 09:30:20 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 14:44:27 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 15:59:45 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_env.h"
 
-char	*ft_getenv(const char *name, const char **env)
+char	*ft_getenv(const char *name, char **env)
 {
 	char	*tmp;
 	size_t	len;
