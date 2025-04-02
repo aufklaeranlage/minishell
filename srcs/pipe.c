@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:39:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 14:53:11 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 14:59:37 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,17 @@ static void	pipe_plumber(int i, int chainlinks, int p_fd[2], int tp_fd[2])
 	}
 }
 
+/*	pipe_connector connects the write and read ends of the children in a pipe
+ *	chain by duping the write end with STDOUT and their read end with STDIN.
+ *	The first child in the chain only has an open read end and will not dup the
+ *	unset write and, the last child in the chain only has an open write end and
+ *	will not dup their usnet read end.
+*/
+
 void	pipe_connector(int pipefd[2], int pipeid, int max_pipeid)
 {
 	if (pipeid > 1 && pipeid <= max)
-		dup2(pipefd[1], STDIN_FILENO);
+		dup2(pipefd[1], STDOUT_FILENO);
 	if (pipeid && pipeid < max)
-		dup2(pipefd[0], STDOUT_FILENO);
+		dup2(pipefd[0], STDIN_FILENO);
 }
