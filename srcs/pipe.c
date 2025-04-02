@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:39:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 14:32:08 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 14:53:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,12 @@ static void	pipe_plumber(int i, int chainlinks, int p_fd[2], int tp_fd[2])
 		pipe(tp_fd);
 		p_fd[1] = tp_fd[1];
 	}
+}
+
+void	pipe_connector(int pipefd[2], int pipeid, int max_pipeid)
+{
+	if (pipeid > 1 && pipeid <= max)
+		dup2(pipefd[1], STDIN_FILENO);
+	if (pipeid && pipeid < max)
+		dup2(pipefd[0], STDOUT_FILENO);
 }

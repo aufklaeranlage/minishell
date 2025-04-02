@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 12:51:07 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:51:53 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 14:41:22 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define LIBFT_ENV_H
 
 # include "libft_str.h"
-
-extern char	**environ;
 
 //	ENVIRON
 
