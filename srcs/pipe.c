@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:39:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 15:05:51 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:03:42 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	pipe_chain(int chainlinks, int p_fd[2], pid_t **pids)
 			(*pids)[i] = pid;
 		++i;
 	}
-	if ((!pid && i + 1 < chainlinks) || pid)
+	if (i + 1 < chainlinks || i == chainlinks)
 		close(tp_fd[0]);
 	return (i);
 }
@@ -103,11 +103,11 @@ static void	pipe_plumber(int i, int chainlinks, int p_fd[2], int tp_fd[2])
  *	will not dup their usnet read end.
 */
 
-void	pipe_connector(int p_fd[2], int pipeid, int max_pipeid)
+void	pipe_connector(int p_fd[2], int pipeid, int max_pipeid, int red_flag)
 {
-	if (pipeid < max_pipeid)
+	if (!(red_flag & RED_OUT) && pipeid < max_pipeid)
 		dup2(p_fd[1], STDOUT_FILENO);
-	if (pipeid && pipeid <= max_pipeid)
+	if (!(red_flag & RED_IN) && pipeid && pipeid <= max_pipeid)
 		dup2(p_fd[0], STDIN_FILENO);
 }
 

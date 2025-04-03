@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 14:39:44 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 15:37:12 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:46:36 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@ int	main(int ac, char **av, char **env)
 	p_utils.cmd_count = pipe_countcmds(ac - 1, av + 1);
 	p_utils.cmdargs = pipe_setcmdargs(ac - 1, av + 1, p_utils.cmd_count);
 	p_utils.red_fd = -1;
+	p_utils.red_type = 0;
 	pipeid = pipe_chain(p_utils.cmd_count, p_utils.p_fd, &p_utils.pids);
 	if (pipeid >= 0 && (size_t)pipeid < p_utils.cmd_count)
 		children(&p_utils, pipeid);
-	free_cmdargs(p_utils.cmdargs);
-	ft_freesplit(p_utils.paths);
-	free(p_utils.pids);
+	pipe_cleanup(pipeid, &p_utils);
 }
 
 static void	children(t_pipeutils *p_utils, int pipeid)
 {
-	pipe_connector(p_utils->p_fd, pipeid, p_utils->cmd_count - 1);
 	pipe_red_check(pipeid, p_utils);
-	pipe_closer(p_utils->p_fd, pipeid, p_utils->cmd_count);
+	pipe_connector(p_utils->p_fd, pipeid, p_utils->cmd_count - 1,
+		p_utils->red_type);
+	pipe_closer(p_utils->p_fd, pipeid, p_utils->cmd_count - 1);
 }

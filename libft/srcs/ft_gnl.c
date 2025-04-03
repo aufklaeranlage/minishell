@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:42:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:50:45 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/03 18:50:44 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ static char	*read_to_out(t_wrap *wrap, int fd, size_t tsize)
 	if (!buf)
 		return (NULL);
 	size = read(fd, buf, BUFFER_SIZE);
-	if (!size)
+	if (size <= 0)
 		return (free(buf), init_out(size, tsize));
 	buf[size] = '\0';
 	tmp = ft_strchr(buf, '\n');
-	if (tmp)
+	if (tmp || size == 1)
 	{
 		store_remainder(wrap, tmp + 1, size - (tmp - buf) - 1);
 		size = tmp - buf + 1;

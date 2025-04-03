@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 14:18:36 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 15:25:51 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:32:05 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ void	pipe_errormsg(char *errorstr, char *filename, int w_pid)
 	if (!filename || !errorstr)
 		return ;
 	waitpid(w_pid, NULL, 0);
-	write(2, SHELL_NAME, SHELL_NAME_LEN);
+	ft_putstr_fd(SHELL_NAME, 2);
 	if (errorstr)
 	{
-		write(2, ": ", 2);
-		write(2, errorstr, ft_strlen(errorstr));
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(errorstr, 2);
 	}
 	if (filename)
 	{
-		write(2, ": ", 2);
-		write(2, filename, ft_strlen(filename));
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(filename, 2);
 	}
-	write(2, "\n", 1);
+	ft_putchar_fd('\n', 2);
 }
 
 void	pipe_cleanup(int pipeid, t_pipeutils *p_utils)

@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:23:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 15:26:01 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/03 16:51:53 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@
 # define STDERR_FILENO 2
 
 # define SHELL_NAME "shelltered"
-# define SHELL_NAME_LEN 10
+# define HERE_DOC_MSG "here_doc > "
+
+# define RED_IN 0b10
+# define RED_OUT 0b100
 
 //	TYPEDEFS
 
@@ -41,13 +44,14 @@ typedef struct s_pipeutils
 	int			p_fd[2];
 	int			*pids;
 	int			red_fd;
+	short		red_type;
 }	t_pipeutils;
 
 //	PIPE
 
 int		pipe_chain(int chainlinks, int p_fd[2], pid_t **pids);
 
-void	pipe_connector(int pipefd[2], int pipeid, int max_pipeid);
+void	pipe_connector(int p_fd[2], int pipeid, int max_pipeid, int red_flag);
 
 void	pipe_closer(int p_fd[2], int pipeid, int max_pipeid);
 
@@ -61,7 +65,7 @@ void	free_cmdargs(char ***cmdargs);
 
 //	PIPE REDIRECTIONS
 
-void	pipe_red_check(int pipeid, t_pipeutils *eutils);
+int		pipe_red_check(int pipeid, t_pipeutils *eutils);
 
 //	PIPE REDIRECTIONS UTILS
 
