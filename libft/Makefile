@@ -6,7 +6,7 @@
 #    By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/06 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/04/02 12:49:05 by abronner         ###   ########.fr        #
+#    Updated: 2025/04/03 14:48:58 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,8 @@ CTY_SRCS	:=	ft_ctype_0.c ft_ctype_1.c ft_ctype_2.c ft_charchange.c
 
 MEM_SRCS	:=	ft_memsearch.c ft_memchange.c ft_memcreat.c
 
-STR_SRCS	:=	ft_strsearch.c ft_strmove.c ft_strcreat.c ft_split.c \
-				ft_striter.c
+STR_SRCS	:=	ft_strsearch.c ft_strmove.c ft_strcreat.c ft_striter.c \
+				ft_split.c ft_split_creat.c
 
 PUT_SRCS	:=	ft_put.c
 

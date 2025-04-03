@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 12:08:22 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 15:51:07 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/03 14:32:05 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,14 @@ void		ft_striteri(char *s, void (*f)(unsigned int, char*));
 
 char		**ft_split(const char *s, char delimiter);
 
+size_t		ft_splitcount(const char **split);
+
 void		ft_freesplit(char **split);
 
-char		**ft_splitlcpy(char **splits, size_t	len);
+//	SPLIT CREAT
+
+char		**ft_splitlcpy(char **split, size_t len);
+
+char		**ft_cutsplit(const char **split, size_t offset, size_t cut_len);
 
 #endif

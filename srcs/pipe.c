@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:39:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 16:16:31 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/03 15:05:51 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	pipe_chain(int chainlinks, int p_fd[2], pid_t **pids)
 	}
 	if ((!pid && i + 1 < chainlinks) || pid)
 		close(tp_fd[0]);
-	return (chainlinks - i);
+	return (i);
 }
 
 /*	Checks for proper chainlink length and if pids needs to be malloced.
@@ -105,16 +105,16 @@ static void	pipe_plumber(int i, int chainlinks, int p_fd[2], int tp_fd[2])
 
 void	pipe_connector(int p_fd[2], int pipeid, int max_pipeid)
 {
-	if (pipeid > 1 && pipeid <= max_pipeid)
+	if (pipeid < max_pipeid)
 		dup2(p_fd[1], STDOUT_FILENO);
-	if (pipeid && pipeid < max_pipeid)
+	if (pipeid && pipeid <= max_pipeid)
 		dup2(p_fd[0], STDIN_FILENO);
 }
 
 void	pipe_closer(int p_fd[2], int pipeid, int max_pipeid)
 {
-	if (pipeid > 1 && pipeid <= max_pipeid)
+	if (pipeid < max_pipeid)
 		close(p_fd[1]);
-	if (pipeid && pipeid < max_pipeid)
+	if (pipeid && pipeid <= max_pipeid)
 		close(p_fd[0]);
 }

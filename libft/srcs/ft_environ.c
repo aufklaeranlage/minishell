@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 09:30:20 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 15:59:45 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/02 14:45:35 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_getenv(const char *name, char **env)
 	size_t	len;
 	size_t	i;
 
-	if (!env || !name)
+	if (!name || !env)
 		return (NULL);
 	len = ft_strlen(name);
 	i = 0;

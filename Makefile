@@ -6,7 +6,7 @@
 #    By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/04/02 15:55:14 by abronner         ###   ########.fr        #
+#    Updated: 2025/04/03 14:33:01 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ INC_DIR		:=	incl/
 
 # **************************************************************************** #
 
-SRCS		:=	pipe_exec.c pipe.c
+SRCS		:=	pipe_exec.c pipe.c pipe_cmdargs.c pipe_error.c \
+				pipe_red.c pipe_red_utils.c
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 
