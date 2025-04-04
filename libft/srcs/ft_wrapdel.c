@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:45:36 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:29:12 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/03 21:58:49 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	ft_wrapdelfirst(t_wrap *wrap, void (*del)(void *))
 void	ft_wrapclear(t_wrap *wrap, void (*del)(void *))
 {
 	ft_lstclear(&(wrap->head), del);
+	wrap->head = NULL;
 	wrap->tail = NULL;
 	wrap->size = 0;
 }

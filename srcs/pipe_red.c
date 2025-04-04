@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 14:15:08 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 18:47:57 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/03 23:37:58 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ int	pipe_red_check(int pipeid, t_pipeutils *p_utils)
 	while (!ret)
 	{
 		i = 0;
-		while (i + 1 < len && !(!ft_strncmp("<", p_utils->cmdargs[pipeid][i], 1) ||
-			!ft_strncmp(">", p_utils->cmdargs[pipeid][i], 1)))
+		while (i < len && !(!ft_strncmp("<", p_utils->cmdargs[pipeid][i], 1)
+			|| !ft_strncmp(">", p_utils->cmdargs[pipeid][i], 1)))
 			++i;
-		if (i + 1 == len)
+		if (i == len)
 			break ;
 		if (!ft_strncmp("<<", p_utils->cmdargs[pipeid][i], 2))
 			ret = pipe_red_heredoc(pipeid, p_utils, i);
@@ -46,6 +46,7 @@ int	pipe_red_check(int pipeid, t_pipeutils *p_utils)
 			ret = pipe_red_append(pipeid, p_utils, i);
 		else if (!ft_strncmp(">", p_utils->cmdargs[pipeid][i], 1))
 			ret = pipe_red_trunc(pipeid, p_utils, i);
+		len = ft_splitcount((const char **)p_utils->cmdargs[pipeid]);
 	}
 	return (ret);
 }
@@ -144,6 +145,8 @@ static int	pipe_red_heredoc(int pipeid, t_pipeutils *p_utils, size_t argindex)
 	int		p_fd[2];
 	int		pid;
 
+	if (pipeid)
+		waitpid(p_utils->pids[pipeid - 1], NULL, 0);
 	len = ft_strlen(p_utils->cmdargs[pipeid][argindex]);
 	if (len == 2)
 		delim = p_utils->cmdargs[pipeid][argindex + 1];
@@ -153,25 +156,25 @@ static int	pipe_red_heredoc(int pipeid, t_pipeutils *p_utils, size_t argindex)
 	pid = fork();
 	if (pid)
 	{
+		dup2(p_fd[0], STDIN_FILENO);
+		close(p_fd[1]);
+		if (pipeid)
+			close(p_utils->p_fd[0]);
+		waitpid(pid, NULL, 0);
+	}
+	else
+	{
 		close(p_fd[0]);
 		if (pipeid)
 			close(p_utils->p_fd[0]);
 		close(p_utils->p_fd[1]);
 		pipe_red_heredoc_loop(delim, p_fd[1]);
 		pipe_cleanup(pipeid, p_utils);
-		waitpid(pid, NULL, 0);
 		exit(1);
-	}
-	else
-	{
-		dup2(p_fd[0], STDIN_FILENO);
-		close(p_fd[1]);
-		if (pipeid)
-			close(p_utils->p_fd[0]);
 	}
 	if (pipe_red_cutcmd(p_utils->cmdargs + pipeid, argindex, 1 + len > 2))
 		return (1);
-	p_utils->red_type = RED_OUT;
+	p_utils->red_type = RED_IN;
 	return (0);
 }
 
@@ -186,12 +189,13 @@ static void	pipe_red_heredoc_loop(char *delim, int write_fd)
 		line = get_next_line(STDIN_FILENO);
 		if (line)
 			line_len = ft_strlen(line);
-		if (!line || (delim && !ft_strncmp(line, delim, line_len - 1)))
+		if (!line || (line_len > 1 && delim && !ft_strncmp(line, delim, line_len - 1)))
 			break ;
 		ft_putstr_fd(line, write_fd);
 		free(line);
 	}
 	free(line);
 	close(write_fd);
-	line = get_next_line(write_fd);
+	close(STDIN_FILENO);
+	line = get_next_line(STDIN_FILENO);
 }
