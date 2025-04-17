@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 14:15:08 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 23:37:58 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:48:47 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ static int	pipe_red_infile(int pipeid, t_pipeutils *p_utils, size_t argindex)
 		filename = p_utils->cmdargs[pipeid][argindex + 1];
 	else
 		filename = p_utils->cmdargs[pipeid][argindex] + 1;
-	if (p_utils->red_fd != -1)
-		close(p_utils->red_fd);
-	p_utils->red_fd = open(filename, O_RDONLY);
-	if (p_utils->red_fd == -1)
+	if (p_utils->red_fd[0] != -1)
+		close(p_utils->red_fd[0]);
+	p_utils->red_fd[0] = open(filename, O_RDONLY);
+	if (p_utils->red_fd[0] == -1)
 	{
 		if (pipeid)
 			pipe_errormsg(strerror(errno), filename, p_utils->pids[pipeid - 1]);
@@ -73,10 +73,9 @@ static int	pipe_red_infile(int pipeid, t_pipeutils *p_utils, size_t argindex)
 		pipe_cleanup(pipeid, p_utils);
 		exit(1);
 	}
-	dup2(p_utils->red_fd, STDIN_FILENO);
-	if (pipe_red_cutcmd(p_utils->cmdargs + pipeid, argindex, 1 + len > 1))
+	if (pipe_red_cutcmd(p_utils->cmdargs + pipeid, argindex, 2 - (len > 1)))
 		return (1);
-	p_utils->red_type = RED_IN;
+	p_utils->red_type |= RED_IN;
 	return (0);
 }
 
@@ -90,10 +89,10 @@ static int	pipe_red_append(int pipeid, t_pipeutils *p_utils, size_t argindex)
 		filename = p_utils->cmdargs[pipeid][argindex + 1];
 	else
 		filename = p_utils->cmdargs[pipeid][argindex] + 1;
-	if (p_utils->red_fd != -1)
-		close(p_utils->red_fd);
-	p_utils->red_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
-	if (p_utils->red_fd == -1)
+	if (p_utils->red_fd[1] != -1)
+		close(p_utils->red_fd[1]);
+	p_utils->red_fd[1] = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	if (p_utils->red_fd[1] == -1)
 	{
 		if (pipeid)
 			pipe_errormsg(strerror(errno), filename, p_utils->pids[pipeid - 1]);
@@ -102,10 +101,9 @@ static int	pipe_red_append(int pipeid, t_pipeutils *p_utils, size_t argindex)
 		pipe_cleanup(pipeid, p_utils);
 		exit(1);
 	}
-	dup2(p_utils->red_fd, STDOUT_FILENO);
-	if (pipe_red_cutcmd(p_utils->cmdargs + pipeid, argindex, 1 + len > 2))
+	if (pipe_red_cutcmd(p_utils->cmdargs + pipeid, argindex, 2 - (len > 2)))
 		return (1);
-	p_utils->red_type = RED_OUT;
+	p_utils->red_type |= RED_OUT;
 	return (0);
 }
 
@@ -119,10 +117,10 @@ static int	pipe_red_trunc(int pipeid, t_pipeutils *p_utils, size_t argindex)
 		filename = p_utils->cmdargs[pipeid][argindex + 1];
 	else
 		filename = p_utils->cmdargs[pipeid][argindex] + 1;
-	if (p_utils->red_fd != -1)
-		close(p_utils->red_fd);
-	p_utils->red_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	if (p_utils->red_fd == -1)
+	if (p_utils->red_fd[1] != -1)
+		close(p_utils->red_fd[1]);
+	p_utils->red_fd[1] = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	if (p_utils->red_fd[1] == -1)
 	{
 		if (pipeid)
 			pipe_errormsg(strerror(errno), filename, p_utils->pids[pipeid - 1]);
@@ -131,10 +129,9 @@ static int	pipe_red_trunc(int pipeid, t_pipeutils *p_utils, size_t argindex)
 		pipe_cleanup(pipeid, p_utils);
 		exit(1);
 	}
-	dup2(p_utils->red_fd, STDOUT_FILENO);
-	if (pipe_red_cutcmd(p_utils->cmdargs + pipeid, argindex, 1 + len > 1))
+	if (pipe_red_cutcmd(p_utils->cmdargs + pipeid, argindex, 2 - (len > 1)))
 		return (1);
-	p_utils->red_type = RED_OUT;
+	p_utils->red_type |= RED_OUT;
 	return (0);
 }
 
@@ -145,36 +142,37 @@ static int	pipe_red_heredoc(int pipeid, t_pipeutils *p_utils, size_t argindex)
 	int		p_fd[2];
 	int		pid;
 
-	if (pipeid)
-		waitpid(p_utils->pids[pipeid - 1], NULL, 0);
 	len = ft_strlen(p_utils->cmdargs[pipeid][argindex]);
 	if (len == 2)
 		delim = p_utils->cmdargs[pipeid][argindex + 1];
 	else
 		delim = p_utils->cmdargs[pipeid][argindex] + 2;
+	if (p_utils->red_fd[0] != -1)
+		close(p_utils->red_fd[0]);
+	if (pipeid)
+	{
+		close(p_utils->p_fd[0]);
+		waitpid(p_utils->pids[pipeid - 1], NULL, 0);
+	}
 	pipe(p_fd);
 	pid = fork();
 	if (pid)
 	{
-		dup2(p_fd[0], STDIN_FILENO);
 		close(p_fd[1]);
-		if (pipeid)
-			close(p_utils->p_fd[0]);
 		waitpid(pid, NULL, 0);
 	}
 	else
 	{
 		close(p_fd[0]);
-		if (pipeid)
-			close(p_utils->p_fd[0]);
 		close(p_utils->p_fd[1]);
 		pipe_red_heredoc_loop(delim, p_fd[1]);
 		pipe_cleanup(pipeid, p_utils);
 		exit(1);
 	}
-	if (pipe_red_cutcmd(p_utils->cmdargs + pipeid, argindex, 1 + len > 2))
+	if (pipe_red_cutcmd(p_utils->cmdargs + pipeid, argindex, 2 - (len > 2)))
 		return (1);
-	p_utils->red_type = RED_IN;
+	p_utils->red_fd[0] = p_fd[0];
+	p_utils->red_type |= RED_IN;
 	return (0);
 }
 
@@ -185,6 +183,8 @@ static void	pipe_red_heredoc_loop(char *delim, int write_fd)
 
 	while (1)
 	{
+		ft_putstr_fd(delim, STDOUT_FILENO);
+		ft_putstr_fd(" : ", STDOUT_FILENO);
 		ft_putstr_fd(HERE_DOC_MSG, STDOUT_FILENO);
 		line = get_next_line(STDIN_FILENO);
 		if (line)
@@ -196,6 +196,4 @@ static void	pipe_red_heredoc_loop(char *delim, int write_fd)
 	}
 	free(line);
 	close(write_fd);
-	close(STDIN_FILENO);
-	line = get_next_line(STDIN_FILENO);
 }

@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:23:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 16:51:53 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:48:23 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_pipeutils
 	size_t		cmd_count;
 	int			p_fd[2];
 	int			*pids;
-	int			red_fd;
+	int			red_fd[2];
 	short		red_type;
 }	t_pipeutils;
 
@@ -51,7 +51,7 @@ typedef struct s_pipeutils
 
 int		pipe_chain(int chainlinks, int p_fd[2], pid_t **pids);
 
-void	pipe_connector(int p_fd[2], int pipeid, int max_pipeid, int red_flag);
+void	pipe_connector(int p_fd[2], int pipeid, int max_pipeid, t_pipeutils *p_utils);
 
 void	pipe_closer(int p_fd[2], int pipeid, int max_pipeid);
 

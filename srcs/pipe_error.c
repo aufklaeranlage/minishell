@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 14:18:36 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 16:32:05 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/14 09:54:30 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	pipe_cleanup(int pipeid, t_pipeutils *p_utils)
 	if ((size_t)pipeid < p_utils->cmd_count)
 		close(p_utils->p_fd[1]);
 	free(p_utils->pids);
-	if (p_utils->red_fd != -1)
-		close(p_utils->red_fd);
+	if (p_utils->red_fd[0] != -1)
+		close(p_utils->red_fd[0]);
+	if (p_utils->red_fd[1] != -1)
+		close(p_utils->red_fd[1]);
 }

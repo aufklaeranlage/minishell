@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 13:39:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 18:03:42 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/14 09:54:01 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,22 @@ static void	pipe_plumber(int i, int chainlinks, int p_fd[2], int tp_fd[2])
  *	will not dup their usnet read end.
 */
 
-void	pipe_connector(int p_fd[2], int pipeid, int max_pipeid, int red_flag)
+void	pipe_connector(int p_fd[2], int pipeid, int max_pipeid, t_pipeutils *p_utils)
 {
-	if (!(red_flag & RED_OUT) && pipeid < max_pipeid)
-		dup2(p_fd[1], STDOUT_FILENO);
-	if (!(red_flag & RED_IN) && pipeid && pipeid <= max_pipeid)
-		dup2(p_fd[0], STDIN_FILENO);
+	if (pipeid < max_pipeid)
+	{
+		if (!(p_utils->red_type & RED_OUT))
+			dup2(p_fd[1], STDOUT_FILENO);
+		else
+			dup2(p_utils->red_fd[1], STDOUT_FILENO);
+	}
+	if (pipeid && pipeid <= max_pipeid)
+	{
+		if (!(p_utils->red_type & RED_IN))
+			dup2(p_fd[0], STDIN_FILENO);
+		else
+			dup2(p_utils->red_fd[0], STDIN_FILENO);
+	}
 }
 
 void	pipe_closer(int p_fd[2], int pipeid, int max_pipeid)
