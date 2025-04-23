@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/01 16:23:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/17 17:48:23 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:59:25 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_pipeutils
 	size_t		cmd_count;
 	int			p_fd[2];
 	int			*pids;
-	int			red_fd[2];
+	int			red_fd[3];
 	short		red_type;
 }	t_pipeutils;
 
