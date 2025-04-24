@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:17:27 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/23 17:39:02 by abronner         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:34:18 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,33 +19,29 @@
 # define RL_PROMPT "minichill $>"
 #endif
 
-typedef struct s_rl
-{
-	int	dq;
-	int	sq;
-}	t_rl;
+char	**split_line_to_tokens(char *str);
 
 static char		*rl_getline(char *prompt);
 
-static int	check_qoutes(char *line, t_rl *qoutes);
+static char		*rl_multline(char *prompt);
 
-static char	*ft_strjoin(const char *s1, const char *s2);
+static int		rl_check_qoutes(char *line, int *sq, int *dq);
+
+static char		*ft_strjoin(const char *s1, const char *s2);
 
 int	main(void)
 {
 	char	*buf;
-	char	*parsed;
 
 	while (1)
 	{
 		buf = rl_getline(RL_PROMPT);
 		add_history(buf);
-		parsed = parser(buf);
 		if (!strncmp(buf, "clear", 4))
 			rl_clear_history();
 		else if (!strncmp(buf, "display", 7))
 			rl_redisplay();
-		else if (!strncmp(buf, "eit", 4))
+		else if (!strncmp(buf, "exit", 4))
 			break ;
 		free(buf);
 	}
@@ -56,22 +52,35 @@ int	main(void)
 
 static char	*rl_getline(char *prompt)
 {
-	t_rl	qoute;
+	char	*ret;
+	char	**out;
+
+	ret = rl_multline(prompt);
+	if (!ret)
+		return (NULL);
+	out = split_line_to_tokens(ret);
+	return (ret);
+}
+
+static char	*rl_multline(char *prompt)
+{
 	char	*ret;
 	char	*tmp;
 	char	*buf;
+	int		sq;
+	int		dq;
 
 	buf = readline(prompt);
 	ret = strdup(buf);
-	qoute.dq = 0;
-	qoute.sq = 0;
-	while (check_qoutes(buf, &qoute))
+	dq = 0;
+	sq = 0;
+	while (rl_check_qoutes(buf, &sq, &dq))
 	{
 		tmp = ft_strjoin(ret, "\n");
 		free(buf);
 		if (!tmp)
 			return (free(ret), NULL);
-		buf = rl_getline(">");
+		buf = readline(">");
 		if (!buf)
 			return (free(tmp), free(ret), NULL);
 		ret = ft_strjoin(tmp, buf);
@@ -81,34 +90,53 @@ static char	*rl_getline(char *prompt)
 	return (ret);
 }
 
-static int	check_qoutes(char *line, t_rl *qoutes)
+//	Basic syntax check that is run after reading any line.
+//	Syntax errors:
+//		Redirections:
+//			Redirections followed by redirections or pipes.
+//		Pipes:
+//			Pipe symbols without non rediretion or pipe symbols.
+/*
+static int	rl_check_syntax(char *line)
+{
+	
+}
+*/
+static int	rl_check_qoutes(char *line, int *sq, int *dq)
 {
 	size_t	i;
 
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\"')
+		if (line[i] == '\"' && !*sq)
 		{
-			if (qoutes->dq)
-				qoutes->dq = 0;
+			if (*dq)
+				*dq = 0;
 			else
-				qoutes->dq = 1;
+				*dq = 1;
 		}
-		else if (line[i] == '\'')
+		else if (line[i] == '\'' && !*dq)
 		{
-			if (qoutes->sq)
-				qoutes->sq = 0;
+			if (sq)
+				*sq = 0;
 			else
-				qoutes->sq = 1;
+				*sq = 1;
 		}
 		++i;
 	}
-	if (qoutes->dq || qoutes->sq)
+	if (*dq || *sq)
 		return (1);
 	return (0);
 }
+/*
+static char	*rl_heredoc(char *line)
+{
 
+}
+
+static char	*rl_checkheredoc(char *line)
+*/
 static char	*ft_strjoin(const char *s1, const char *s2)
 {
 	char	*out;
@@ -133,4 +161,37 @@ static char	*ft_strjoin(const char *s1, const char *s2)
 	}
 	out[len] = '\0';
 	return (out);
+}
+
+char **split_line_to_tokens(char *str)
+{
+    size_t i = 0;
+	size_t j = 0;
+    char **out;
+    char *tmp = malloc(strlen(str) * 3 + 1);
+    if (!tmp)
+        return (NULL);
+    while (str[i])
+    {
+        char curr = str[i];
+        char next = str[i + 1];
+        if (next && (curr == '|' || curr == '&' || curr == '>' || curr == '<'))
+        {
+            tmp[j++] = ' ';
+            tmp[j++] = curr;
+            if (next == curr)
+            {
+                tmp[j++] = curr;
+                i++;
+            }
+            tmp[j++] = ' ';
+        }
+        else
+            tmp[j++] = curr;
+        i++;
+    }
+    tmp[j] = '\0';
+    out = NULL;
+    free(tmp);
+    return (out);
 }

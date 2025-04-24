@@ -1,0 +1,145 @@
+[TESTING FOR SYNTAX]
+
+abronner@c3a7c1:~/projects/minishell/tests$ <
+    bash: syntax error near unexpected token 'newline'
+abronner@c3a7c1:~/projects/minishell/tests$ < <<
+    bash: syntax error near unexpected token '<<'
+abronner@c3a7c1:~/projects/minishell/tests$ << <
+    bash: syntax error near unexpected token '<'
+abronner@c3a7c1:~/projects/minishell/tests$ << |
+    bash: syntax error near unexpected token '|'
+abronner@c3a7c1:~/projects/minishell/tests$ < a |
+> hello
+    bash: a: No such file or directory
+    Command 'hello' not found, but can be installed with:
+    snap install hello              # version 2.10, or
+    apt  install hello              # version 2.10-2ubuntu4
+    apt  install hello-traditional  # version 2.10-5
+    See 'snap info hello' for additional versions.
+
+Bash is referencing tokens even during single line inputs.
+Apparently splits the current line into tokens before getting a full line, and
+before checking for redirections and so on.
+
+->  Tokenizer runs on each line. If syntax error is found during tokenization
+    return an error. 
+
+->  We return the Tokens and also store the whoel string in history.
+
+abronner@c3a7c1:~/projects/minishell/tests$ << a<
+    > a
+    bash: syntax error near unexpected token 'newline'
+abronner@c3a7c1:~/projects/minishell/tests$ << a| <
+    > a
+    bash: syntax error near unexpected token 'newline'
+abronner@c3a7c1:~/projects/minishell/tests$ << a>
+    > a
+    bash: syntax error near unexpected token 'newline'
+abronner@c3a7c1:~/projects/minishell/tests$ << a>>
+    > a
+    bash: syntax error near unexpected token 'newline'
+abronner@c3a7c1:~/projects/minishell/tests$ << a <<b
+    > a
+    > b
+
+checks for << redirection and gets input before <, >, >> redirections
+
+[TOKENS]
+
+Tokens hold the split string and the type of the string.
+
+Tokens need to be split by 'space', 'newline', '|', '' '<', '<<', '>', '>>'.
+Tokens need to be split by qoutes. Every other potential split character needs
+to be ignored while in qoutes.
+
+abronner@c3a7c1:~$ <<<< EOF
+    bash: syntax error near unexpected token `<'
+abronner@c3a7c1:~$ <<<<< EOF
+    bash: syntax error near unexpected token `<<'
+abronner@c3a7c1:~$ <<<<<< EOF
+    bash: syntax error near unexpected token `<<<'
+
+As soon as bash reaches the maximum length of a non string token it stores it
+without checking the next characters.
+
+	For examples check the example_tokens.c file.
+
+Examples of how string need to be split:
+
+abronner@c3a7c1:~/projects/minishell/tests$ cat<<a<Makefile -e|cat -e>out
+    > Hello
+    > a
+abronner@c3a7c1:~/projects/minishell/tests$
+
+line:   >   "cat<<a<Makefile -e|cat -e>out"
+        >   "Hello World"
+        >   "a"
+
+    line gets split into multiple strings.
+
+str:    "cat" "<<" "a" "<" "Makefile" "-e" "|" "cat" "-e" ">" "out" "\n" "Hello World" "\n" "NULL"
+
+type:   
+
+line:   >   "cat<<a<Makefile -e|(grep "fclean"&&cat -e>out1||cat >out2 -e)"
+        >   "Hello World"
+        >   "a"
+
+str:    "cat" "<<" "a" "<" "Makefile" "-e" "|" "(" "grep" "fclean" "&&" "cat" "-e" ">" "out1" "||" "cat" ">" "out2" "-e" ")" "\n" "Hello World" "\n" "NULL"
+
+type:   
+
+Example for a potential token struct:
+
+typedef struct s_tokens
+{
+    char    *str;
+    char    **split;
+    int     *type;
+}   t_tokens;
+
+[TYPES OF TOKENS]
+
+[TYPE]      [DESC]
+
+string      any string of non syntax related characters or characters enclosed by quotes
+
+pipe        pipe symbol '|'
+
+and         control operator and "&&"
+
+or          control operator or "||"
+
+open        control operator open "("
+
+close       control operator close ")"
+
+<           redirection in
+
+<<          redirection here document
+
+Can be stored in a list and later on be transformed into a split.
+
+Readline will read a line. Token and syntax check the single line.
+During contruction do syntax check on each token (check if the just created
+token is a valid follow for the previous one (?)).
+    If a invalid token is created print error and delete tokens, but return
+    string to be put into history.
+If an unfinished token exists we need to read further (qoutes).
+
+[EXPORT && ECHO]
+
+variables in a heredoc don't get expanded, they just get deleted.
+
+abronner@c3a7c1:~/projects/minishell/tests$ export HELLO=WORLD
+abronner@c3a7c1:~/projects/minishell/tests$ echo $HELLO
+    WORLD
+abronner@c3a7c1:~/projects/minishell/tests$ echo << EOF
+    > $HELLO
+    > EOF
+
+abronner@c3a7c1:~/projects/minishell/tests$
+
+[CONTROL OPERATORS]
+
+'(' 
