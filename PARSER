@@ -1,0 +1,39 @@
+[PARSER]
+
+The parser consists of a tokenizer that converts the original string to tokens
+and an expander that expands environmental veriables.
+
+[TOKENIZER]
+
+
+
+[EXPANDER]
+
+The expander takes a string and replaces all veriables in it with their values
+found in a given environment.
+
+The expander should run on the already finished tokens.
+
+Certain tokens can't be expanded: f.e. here document doesn't expand '$'.
+
+Since double qoutes can be expanded we need to look out for delimiters that set
+the end of a variable:
+
+	[VARIABLE DELIMITERS]
+
+		' '		(space)
+		'<'		(redirection in)
+		'>'		(redirection out)
+		'|'		(pipe)
+		'$'		(dollar)
+		'='		(equal)
+		'+'		(plus)
+		'-'		(minus)
+		'&'		(ampersand)
+		'''		(qoute)
+		'\n'	(newline)
+
+Recursive approach: Encounter '$' -> call func to determine full length of the
+variable. Look up the value for the variable in env and return a pointer to the
+it's value from env (Skip the pre that set's the variable f.e. "PATH=").
+Call the expander recursive with the position in the string after the 

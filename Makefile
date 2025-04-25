@@ -6,7 +6,7 @@
 #    By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/04/17 17:40:54 by abronner         ###   ########.fr        #
+#    Updated: 2025/04/25 14:59:58 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		:=	minishell
 
 # **************************************************************************** #
 
-SRC_DIR		:=	srcs/
+SRC_DIR		:=	srcs/ srcs/readline/ srcs/expander/
 
 OBJ_DIR		:=	objs/
 
@@ -22,8 +22,8 @@ INC_DIR		:=	incl/
 
 # **************************************************************************** #
 
-SRCS		:=	pipe_exec.c pipe.c pipe_cmdargs.c pipe_error.c \
-				pipe_red.c pipe_red_utils.c
+SRCS		:=	readline.c \
+				expander.c
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 
@@ -43,9 +43,13 @@ CFLAGS		:=	-Wall -Wextra -Werror $(ADDCCFLAGS)
 
 CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR)
 
-LIBFLAGS	:=	-L$(LIBFT_DIR) -l:$(LIBFT_NAME)
+LIBFLAGS	:=	-L$(LIBFT_DIR) -l:$(LIBFT_NAME) -lreadline
 
 RM			:= rm -rf
+
+# * V PATH ******************************************************************* #
+
+vpath %.c $(SRC_DIR)
 
 # **************************************************************************** #
 
@@ -62,7 +66,7 @@ $(OBJ_DIR):
 	@mkdir $(OBJ_DIR)
 	@echo "Creating $(OBJ_DIR) directory."
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c 
+$(OBJ_DIR)%.o: %.c 
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $< -c -o $@
 	@echo "Compiling $@."
 
