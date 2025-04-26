@@ -5,6 +5,40 @@ and an expander that expands environmental veriables.
 
 [TOKENIZER]
 
+Potential for binary tree creation. Also could be done later on based on the
+created tokens. Main goal should be proper token creation.
+
+Creates seperate tokens out of a string.
+
+We want tokens to be created with context for live syntac checking but the
+tokens and their context should be in seperate arrays at the end.
+
+example:
+
+	This is what a token during creation should look like. It can easily ba
+	added to a t_list that can later on be transformed into two seperate arrays.
+
+typedef struct s_token
+{
+	char	*str;			//	The tokenized string
+	int		*type;			//	The context (or type) of the token
+}	t_token;
+
+After the creation and live syntax checking we want our list of tokens to be
+transformed into two arrays. One for the strings (so we can use that array as
+input for execve and so on (general uniformity).
+
+example:
+
+	This is what the final struct can look like that get's created out of the
+	list of tokens at the end of the tokenization process.
+
+typedef struct s_lineinfo
+{
+	char	*str;
+	char	**tokenstr;
+	int		*tokentype;
+}
 
 
 [EXPANDER]

@@ -6,7 +6,7 @@
 #    By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/04/25 14:59:58 by abronner         ###   ########.fr        #
+#    Updated: 2025/04/25 17:19:39 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,9 +14,11 @@ NAME		:=	minishell
 
 # **************************************************************************** #
 
-SRC_DIR		:=	srcs/ srcs/readline/ srcs/expander/
+SRC_DIR		:=	srcs/
 
 OBJ_DIR		:=	objs/
+
+SUB_DIR		:=	readline/ expander/
 
 INC_DIR		:=	incl/
 
@@ -49,25 +51,25 @@ RM			:= rm -rf
 
 # * V PATH ******************************************************************* #
 
-vpath %.c $(SRC_DIR)
+vpath %.c $(SRC_DIR) $(patsubst %, $(SRC_DIR)%, $(SUB_DIR))
 
 # **************************************************************************** #
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJS)
-	@$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) $(LIBFLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) $(LIBFLAGS) -o $(NAME)
 	@echo "Creating program $(NAME)."
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) ADDCCFLAGS=$(ADDCCFLAGS)
 
 $(OBJ_DIR):
-	@mkdir $(OBJ_DIR)
-	@echo "Creating $(OBJ_DIR) directory."
+	@mkdir -p $(OBJ_DIR)
+	@echo "Creating $(OBJ_DIR) directories."
 
 $(OBJ_DIR)%.o: %.c 
-	@$(CC) $(CFLAGS) $(CPPFLAGS) $< -c -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -c -o $@
 	@echo "Compiling $@."
 
 re: fclean all
