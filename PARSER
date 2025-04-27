@@ -35,11 +35,27 @@ example:
 
 typedef struct s_lineinfo
 {
-	char	*str;
-	char	**tokenstr;
-	int		*tokentype;
-}
+	char	*str;			//	The full input string (with additions)
+	char	**tokenstr;		//	The array of tokenized substrings
+	int		*tokentype;		//	The array of token types (context)
+}	t_lineinfo;
 
+Potentially the string doesn't need to be stored in the struct and instead can
+be added to history after the tokenization is complete and then just be freed.
+
+While checking the string, we might encounter special tokens that require us to
+append more to the original string. These tokens are ''' (single qoute), '"'
+(double qoute) and '<<' (here document redirection).
+
+For these functions there are two functions in /readline/readline_append.c that
+will append to the original string any new input:
+
+	rl_appdel: appends to the readline until a the delimiter string is found.
+		This is used for the '<<' here document redirection.
+
+	rl_appquo: appends to the readline until a fitting quote is encountered
+		in the lines read. This can be called in any of the quote tokenization
+		functions.
 
 [EXPANDER]
 

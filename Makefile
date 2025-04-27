@@ -6,7 +6,7 @@
 #    By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/04/25 17:19:39 by abronner         ###   ########.fr        #
+#    Updated: 2025/04/26 12:41:00 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ INC_DIR		:=	incl/
 
 # **************************************************************************** #
 
-SRCS		:=	readline.c \
+SRCS		:=	readline.c readline_append.c \
 				expander.c
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
