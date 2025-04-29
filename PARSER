@@ -87,3 +87,25 @@ Recursive approach: Encounter '$' -> call func to determine full length of the
 variable. Look up the value for the variable in env and return a pointer to the
 it's value from env (Skip the pre that set's the variable f.e. "PATH=").
 Call the expander recursive with the position in the string after the 
+
+[EXTRACT FROM THE BASH MAN PAGE]
+
+Definitions set for tokens by bash.
+
+	blank:	A Space or tab.
+
+	word:	A sequence of characters considered as a single unit by the shell.
+
+	name:	A word consisting only of alphanumeric characters and underscores,
+			and beginning with an alphabetic character or an underscore. Also
+			referred to as an 'identifier'.
+
+	metacharacter:	A character that, when unqouted, seperates words. One of the
+			following:
+
+				| & ; ( ) < > (space) (tab) (newline)
+
+	control operater:	A token, that performs a control function. It is one of
+			the following symbols:
+
+				|| & && ; ;; ;& ;;& ( ) | |& (newline)

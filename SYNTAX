@@ -1,0 +1,86 @@
+[SYNTAX]
+
+Based on the appearance of tokens they are treated as different kinds of lists.
+
+A list can contain a list inside itself.
+
+The different control operators have a different level of relevance:
+
+	Most relevant for lists creation:
+
+	[BRACES]
+
+	'( )'	Anything between braces is treated as a list on this list is only
+			closed once the closing brace is encountered. Braces can only be
+		placed on their own in a line (to execute commands in a subshell) or
+		after a different operator liek AND, OR or pipes.
+
+	[LOGICAL OPERATORS]
+	
+	'&&' and '||'	Anything in between any of these is treated and executed as
+					part of a their list until another one of the logical
+		operators or a pipe is encountered.
+
+	[PIPE]
+
+	'|'	Anything between to pipe symbols is treated as a list until another pipe
+		or logical operator is encountered.
+
+	[EXAMPLE]
+
+	abronner@abronner-HP-Pavilion-g6-Notebook-PC:~$ echo HELLO && echo WORLD | cat -e && (echo WORLD) || echo END
+		HELLO
+		WORLD$
+		WORLD
+
+	Based on the output we can see that the line get's split into multiple
+	lists:
+
+	The lists in this are seperated by double qoutes
+
+		"echo HELLO" && "echo WORLD" | "cat -e" "( "echo WORLD" )" || "echo END"
+
+Lists associated with a logical operator don't get executed if their conditions
+aren't met. If their conditions aren't met the previous return value is used to
+evaluate the next logical operator:
+
+	[EXAMPLE]
+
+	abronner@abronner-HP-Pavilion-g6-Notebook-PC:~$ echo HELLO || echo WORLD && echo '!'
+		HELLO
+		!
+	
+	echo HELLO executes and has a exit value of 0 (success) so the next list
+	after the OR operator doesn't get exectued. The 0 return value is then
+	carried over to the next list. Since that list is also associated with a
+	logical operator it is evaluated with the return value. Since the logical
+	operator is a AND the next list get's executed.
+
+This gives us a solid base for the structuring of a tree to chain the commands.
+
+	The tree will execute in order.
+
+	Every list in the tree is associated with either a logical operator, a pipe
+	or a subshell.
+
+[LIST STRUCTS]
+
+typedef struct s_synlist		// Synlist is short for syntax list
+{
+	t_syntype	type;			// Holds the context of the list (logical operator, pipe, subshell)
+	void		*data;			// Holds an array of words that will be submitted to a execution command. Or a pointer to a new array of synlists in case of a subshell.
+}	t_synlist;
+
+	[EXAMPLE]
+
+	list 0_0:			list 0_1:
+
+	type:	WORD		type:	WORD
+	data:	list 1_0	data:	split
+
+	list 1_0:			list 1_1:		list 1_2:
+
+	type:	PIPE		type:	WORD	type:	OR
+	data:	list 2_0	data:	split	data:	list 3_0
+
+	list:
