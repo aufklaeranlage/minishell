@@ -142,4 +142,29 @@ abronner@c3a7c1:~/projects/minishell/tests$
 
 [CONTROL OPERATORS]
 
-'(' 
+Grouping control oeprators still need to be given exection context by logOps or
+pipes.
+
+abronner@c3a2c10:~/projects/minishell$ cat -e (cat -e) cat -e
+	bash: syntax error near unexpected token `('
+abronner@c3a2c10:~/projects/minishell$ cat -e (cat -e) | cat -e
+	bash: syntax error near unexpected token `('
+abronner@c3a2c10:~/projects/minishell$ cat -e | (cat -e) | cat -e
+
+[ENVIRONMENT]
+
+abronner@c3a2c10:~$ ARG=WORLD echo $ARG && ARG=HELLO && (echo $ARG)
+	
+	HELLO
+
+Assignments only happen in the main shell if they are given without any
+additional commands.
+
+abronner@c3a2c10:~$ ARG=HELLO bash -c 'echo $ARG' && echo $ARG && ARG=WORLD bash -c 'echo $ARG'
+	HELLO
+
+	WORLD
+
+Assignments are set for each command, but not in the main shell. The mainshell
+is taking a look at every command split before execution and deciding wether to
+start a child process that deal with it in the main shell.
