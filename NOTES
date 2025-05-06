@@ -168,3 +168,57 @@ abronner@c3a2c10:~$ ARG=HELLO bash -c 'echo $ARG' && echo $ARG && ARG=WORLD bash
 Assignments are set for each command, but not in the main shell. The mainshell
 is taking a look at every command split before execution and deciding wether to
 start a child process that deal with it in the main shell.
+
+[SYNTAX]
+
+abronner@c3a2c10:~$ echo start || echo hello | cat -e && echo end
+	start
+	end
+abronner@c3a2c10:~$ echo start && echo hello | cat -e && echo end
+	start
+	hello$
+	end
+
+abronner@c3a2c10:~$ echo start && echo hello | cat -e | cat -e && echo end
+	start
+	hello$$
+	end
+abronner@c3a2c10:~$ echo start || echo hello | cat -e | cat -e && echo end
+	start
+	end
+
+Commands are chained together as groups. We differentiate betweeen two group
+kinds: shell (or subshell) and pipes. 
+
+	(Sub-)Shell groups split their tokens by logical operators.
+
+	Pipes split their groups by the pipe symbol.
+
+	Inside of either of those groups the other group can exists:
+
+	[EXAMPLE]
+
+	echo start && ( echo sub | echo shell && ( echo sub || echo sub | echo shell ) | echo pipe ) | echo pipe
+
+	' 01 ------------------------------------------------------------------------------------------------- '
+				  | 02 ----------------------------------------------------------------------------------- |
+				  ( 03 ----------------------------------------------------------------------- )
+				    | 04 -------------- |    | 05 ------------------------------------------ |
+				 							 ( 06 ------------------------------ )
+														   | 07 -------------- |
+
+	G ID	GROUP TYPE	GROUP TOKENS
+
+	01		shell		'echo start' 'group 02'
+
+	02		pipe		'group 03' 'echo pipe'
+
+	03		subshell	'group 04' 'group 05'
+
+	04		pipe		'echo sub' 'echo shell'
+
+	05		pipe		'group 06' 'echo pipe'
+
+	06		subshell	'echo sub' 'group 07'
+
+	07		pipe		'echo sub' 'echo shell'
