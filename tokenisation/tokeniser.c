@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/04/27 14:34:46 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/07 15:32:21 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,40 @@ static int	set_type(char *tmp, char **env)
 		return (FLAG);
 	else
 		return (TEXT);
+}
+
+size_t	delimiter(int *d_type, t_token	*list, size_t i)
+{
+	while (i < list->size)
+	{
+		if (list->type[i] == PIPE || list->type[i] == OR \
+			|| list->type[i] == AND)
+		{
+			*d_type = list->type[i];
+			return (i);
+		}
+		i++;
+	}
+	return (0);
+}
+
+t_token	*subtoken(t_token *list, size_t start, size_t end)
+{
+	t_token		*cmd;
+	size_t		x;
+
+	cmd = malloc(sizeof(t_token));
+	cmd->content = malloc(sizeof(char *) * (end - start));
+	cmd->type = malloc(sizeof(int) * (end - start));
+	cmd->size = end - start;
+	x = 0;
+	while (start + x < end)
+	{
+		cmd->content[x] = ft_strdup(list->content[start + x]);
+		cmd->type[x] = list->type[start + x];
+		x++;
+	}
+	return (cmd);
 }
 
 static void	lst_to_tokens(t_token *out, t_wrap *list, char **env)
@@ -56,10 +90,11 @@ static void	lst_to_tokens(t_token *out, t_wrap *list, char **env)
 	}
 }
 
-t_token	*split_line_to_tokens(char *str, char **env)
+t_group	*create_execution_list(char *str, char **env)
 {
 	t_token	*out;
 	t_wrap	*list;
+	t_group	*group;
 
 	list = convert_str(str);
 	if (!list)
@@ -74,5 +109,7 @@ t_token	*split_line_to_tokens(char *str, char **env)
 		return (NULL);
 	lst_to_tokens(out, list, env);
 	ft_wrapclear(list, free);
-	return (out);
+	group = create_groups(out, 0, 0);
+	free(out);
+	return (group);
 }

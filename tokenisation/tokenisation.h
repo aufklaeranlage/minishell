@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/04/27 14:25:49 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/07 15:34:40 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,24 @@
 # define O_BR            28			// (
 # define C_BR            29 		// )
 
+# define CMD				30
+# define GROUP				31 
+
+typedef struct s_group	t_group;
 typedef struct s_token
 {
 	size_t	size;
 	int		*type;
 	char	**content;
 }	t_token;
+
+typedef struct s_group
+{
+	int			data_type;
+	void		*data;
+	int			exec_type;	
+	t_group		*next;
+}	t_group;
 
 // Utils
 int		is_falg(char *str);
@@ -64,5 +76,15 @@ int		specifier_one(char *str);
 // Modules
 t_wrap	*convert_str(char *str);
 char	*convert_subfunction(char *str, t_wrap *list);
+
+// Tokenisation helpers
+t_token	*subtoken(t_token *list, size_t start, size_t end);
+size_t	delimiter(int *d_type, t_token	*list, size_t i);
+
+// Create groups
+t_group	*create_groups(t_token *list, size_t i, size_t j);
+
+// Split to execution commands list
+t_group	*create_execution_list(char *str, char **env);
 
 #endif
