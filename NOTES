@@ -222,3 +222,26 @@ kinds: shell (or subshell) and pipes.
 	06		subshell	'echo sub' 'group 07'
 
 	07		pipe		'echo sub' 'echo shell'
+
+[VARIABLE ASSIGNMENT FOR PIPE]
+
+abronner@c3a2c10:~/projects/minishell$ ARG=HELLO echo start | bash -c 'echo $ARG'
+
+abronner@c3a2c10:~/projects/minishell$ echo start | ARG=HELLO bash -c 'echo $ARG'
+	HELLO
+abronner@c3a2c10:~/projects/minishell$ echo start && ARG=HELLO echo start | bash -c 'echo $ARG' && echo end
+	start
+
+	end
+
+An assignment can't happen for a whole pipe. It can only happen for single
+commands or subshells.
+
+[VARIABLE ASSIGNMENT IN INBUILTS]
+
+abronner@c3a2c10:~/projects/minishell$ ARG=HELLO (echo $ARG && bash -c 'echo $ARG')
+	bash: syntax error near unexpected token `('
+abronner@c3a2c10:~/projects/minishell$ (ARG=HELLO cd .. && bash -c 'echo $ARG')
+
+
+Assignments can only happen for single commands, not for whole subshells nor pipes.

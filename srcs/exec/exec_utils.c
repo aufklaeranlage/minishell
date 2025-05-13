@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   group.h                                            :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/05 15:59:30 by abronner         ###   ########.fr       */
+/*   Created: 2025/05/07 11:29:52 by abronner          #+#    #+#             */
+/*   Updated: 2025/05/13 11:48:27 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GROUP_H
-# define GROUP_H
+#include "exec.h"
 
-typedef struct 
-
-typedef struct s_group
+size_t	exec_assign(t_token *tok, char ***env)
 {
-	int				data_type;
-	int				exec_type;
-	void			*data;
-	struct s_group	*next;
-}	t_group;
+	size_t	i;
 
-#endif
+	i = 0;
+	while (i < tok->size && tok->type == ASSIGN)
+	{
+		++i;
+	}
+	return (i);
+}
+
+int	childreturn(int wstatus)
+{
+	if (WIFEXITED(wstatus))
+		return (WEXITSTATUS(wstatus));
+	if (WIFSIGNALED(wstatus))
+		return (WTERMSIG(wstatus));
+	return (-1);
+}

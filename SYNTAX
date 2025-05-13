@@ -63,15 +63,22 @@ This gives us a solid base for the structuring of a tree to chain the commands.
 	Every list in the tree is associated with either a logical operator, a pipe
 	or a subshell.
 
-[LIST STRUCTS]
+[GROUP STRUCTS]
 
-typedef struct s_synlist		// Synlist is short for syntax list
+typedef struct s_group
 {
-	int			data_type;		// Holds the context of the list (logical operator, pipe, subshell)
-	void		*data;			// Holds an array of words that will be submitted to a execution command. Or a pointer to a new array of synlists in case of a subshell.
-	int			exec_type;		// Holds the context for exection.
-	t_synlist	next;
-}	t_synlist;
+	int		type;
+	void	*data;
+	int		logic;
+	t_group	*next;
+}	t_group;
+
+typedef struct s_token
+{
+	size_t	size;
+	int		*type;
+	char	**content;
+}	t_token;
 
 The single commands in a line are seperated by control operators. These
 operators either give them a context for exection or a context for grouping.
@@ -85,41 +92,41 @@ Braces are grouping operators, logOps and pipes are exection operators. Each
 command except the last one in a group needs an exection operator to tell
 under which conditions the next command is supposed to be executed. 
 
+Commands are chained together as groups. We differentiate betweeen two group
+kinds: shell (or subshell) and pipes. 
+
+	(Sub-)Shell groups split their tokens by logical operators.
+
+	Pipes split their groups by the pipe symbol.
+
+	Inside of either of those groups the other group can exists:
+
 	[EXAMPLE]
 
-	cmd1	||	cmd2	&&	(	cmd3	|	(	cmd4	||	cmd5	)	)	|	cmd6
+	echo start && ( echo sub | echo shell && ( echo sub || echo sub | echo shell ) | echo pipe ) | echo pipe
 
-	Groups:
+	' 01 ------------------------------------------------------------------------------------------------- '
+				  | 02 ----------------------------------------------------------------------------------- |
+				  ( 03 ----------------------------------------------------------------------- )
+				    | 04 -------------- |    | 05 ------------------------------------------ |
+				 							 ( 06 ------------------------------ )
+														   | 07 -------------- |
 
-		G1:		cmd1	->	cmd2	->	G2	->	cmd6
+	G ID	GROUP TYPE	GROUP TOKENS
 
-		G2:		cmd3	->	G3
+	01		shell		'echo start' 'group 02'
 
-		G3:		cmd4	->	cmd5
+	02		pipe		'group 03' 'echo pipe'
 
-	LIST NODES:		DATA_TYPE	DATA		EXEC_TYPE	NEXT
+	03		subshell	'group 04' 'group 05'
 
-	GROUP 1:
+	04		pipe		'echo sub' 'echo shell'
 
-		cmd1:		cmd			char **		OR			cmd2
+	05		pipe		'group 06' 'echo pipe'
 
-		cmd2:		cmd			char **		AND			group2
+	06		subshell	'echo sub' 'group 07'
 
-		group2:		group		synlist		PIPE		cmd6
-
-		cmd6:		cmd			char **		LAST		NULL
-
-	GROUP 2:
-
-		cmd3:		cmd			char **		PIPE		group3
-
-		group3:		group		synlist		LAST		NULL
-
-	GROUP3:
-
-		cmd4:		cmd			char **		OR			cmd5
-
-		cmd5:		cmd			char **		LAST		NULL
+	07		pipe		'echo sub' 'echo shell'
 
 [EXECUTION]
 
@@ -136,3 +143,6 @@ stops execution.
 Redirection can only properly happen in the child process. Need for a function
 that takes as input the command to be executed, the environment and the in, out
 and err redirections.
+
+An assignment can't happen for a whole pipe. It can only happen for single
+commands or subshells.
