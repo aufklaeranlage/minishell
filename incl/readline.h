@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:50:10 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/26 16:07:16 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:44:31 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*rl_getline(char *prompt);
 
 //	READLINE APPEND
 
-int		rl_appdel(char **str, char *del);
+int		rl_appdel(char **line, char *del, char **ret);
 
 int		rl_appquo(char **line, char quote);
 
