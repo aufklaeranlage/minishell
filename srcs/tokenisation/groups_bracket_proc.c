@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:30:12 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/20 00:23:09 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/20 23:25:55 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ static int	set_connection_type(t_group *group, t_tokens *list, size_t j)
 {
 	if (j < list->size)
 	{
-		if (list->data[j].type == PIPE)
+		if (list->type[j] == PIPE)
 			group->exec_type = PIPE;
-		else if (list->data[j].type == OR)
+		else if (list->type[j] == OR)
 			group->exec_type = OR;
-		else if (list->data[j].type == AND)
+		else if (list->type[j] == AND)
 			group->exec_type = AND;
 		else
 			group->exec_type = 0;
@@ -43,16 +43,6 @@ static int	create_bracket_content(t_group *group, t_tokens *sub)
 	return (1);
 }
 
-static void	clean_subtokens(t_tokens *sub)
-{
-	if (sub)
-	{
-		if (sub->data)
-			free(sub->data);
-		free(sub);
-	}
-}
-
 int	process_bracket_content(t_group *group, t_tokens *list, size_t i, size_t j)
 {
 	t_tokens	*sub;
@@ -64,6 +54,6 @@ int	process_bracket_content(t_group *group, t_tokens *list, size_t i, size_t j)
 	group->data_type = GROUP;
 	set_connection_type(group, list, j);
 	success = create_bracket_content(group, sub);
-	clean_subtokens(sub);
+	del_tokens(sub);
 	return (success);
 }

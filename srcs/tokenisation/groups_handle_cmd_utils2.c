@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/19 23:55:53 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/20 23:25:29 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ int	copy_valid_tokens(t_tokens *filtered, t_tokens *sub, t_group *group)
 	k = 0;
 	while (k < sub->size)
 	{
-		if (sub->data[k].type < RED_IN || sub->data[k].type > ADD_OUT)
+		if (sub->type[k] < RED_IN || sub->type[k] > ADD_OUT)
 		{
-			filtered->data[filtered->size].type = sub->data[k].type;
-			filtered->data[filtered->size].cont = ft_strdup(sub->data[k].cont);
-			if (!filtered->data[filtered->size].cont)
+			filtered->type[filtered->size] = sub->type[k];
+			filtered->content[filtered->size] = ft_strdup(sub->content[k]);
+			if (!filtered->content[filtered->size])
 			{
 				cleanup_filtered_tokens(filtered, sub, group);
 				return (0);
@@ -32,24 +32,15 @@ int	copy_valid_tokens(t_tokens *filtered, t_tokens *sub, t_group *group)
 		}
 		k++;
 	}
+	filtered->content[filtered->size] = NULL;
 	return (1);
 }
 
 void	cleanup_filtered_tokens(t_tokens *fltrd, t_tokens *sub, t_group *group)
 {
-	size_t	m;
-
-	m = 0;
-	while (m < fltrd->size)
-	{
-		free(fltrd->data[m].cont);
-		m++;
-	}
-	free(fltrd->data);
-	free(fltrd);
-	free(sub->data);
-	free(sub);
-	free_redirection(group->red);
+	del_tokens(fltrd);
+	del_tokens(sub);
+	del_tokens(group->red);
 	free(group);
 }
 
@@ -57,8 +48,8 @@ void	setup_next_group(t_group *group, t_tokens *list, size_t j, t_group *pnt)
 {
 	if (j < list->size)
 	{
-		if (list->data[j].type == AND || list->data[j].type == OR \
-			|| list->data[j].type == PIPE)
+		if (list->type[j] == AND || list->type[j] == OR \
+			|| list->type[j] == PIPE)
 			j++;
 		if (j < list->size)
 			group->next = create_groups(list, pnt, j, 0);
@@ -91,7 +82,7 @@ t_tokens	*proc_cmd_tokens(t_group *group, t_tokens *list, size_t i, size_t j)
 	sub = get_command_tokens(list, i, j);
 	if (!sub)
 	{
-		free_redirection(group->red);
+		del_tokens(group->red);
 		free(group);
 		return (NULL);
 	}
@@ -101,7 +92,6 @@ t_tokens	*proc_cmd_tokens(t_group *group, t_tokens *list, size_t i, size_t j)
 		return (NULL);
 	if (!copy_valid_tokens(filtered, sub, group))
 		return (NULL);
-	free(sub->data);
-	free(sub);
+	del_tokens(sub);
 	return (filtered);
 }

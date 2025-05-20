@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redirection.c                                      :+:      :+:    :+:   */
+/*   groups_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:44:00 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/19 23:03:56 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/20 23:34:12 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,43 +17,61 @@ static int	count_redir_tokens(t_tokens *list, size_t i)
 	size_t	count;
 
 	count = 0;
-	while (i < list->size && list->data[i].type != PIPE \
-		&& list->data[i].type != AND && list->data[i].type != OR \
-		&& list->data[i].type != C_BR)
+	while (i < list->size && list->type[i] != PIPE \
+		&& list->type[i] != AND && list->type[i] != OR \
+		&& list->type[i] != C_BR)
 	{
-		if (list->data[i].type >= RED_IN && list->data[i].type <= ADD_OUT)
+		if (list->type[i] >= RED_IN && list->type[i] <= ADD_OUT)
 			count++;
 		i++;
 	}
 	return (count);
 }
 
-static int	copy_redirections(t_token *dest, t_tokens *list, size_t i)
+static t_tokens	*create_redir_tokens(int count)
+{
+	t_tokens	*red;
+
+	if (count == 0)
+		return (NULL);
+	red = malloc(sizeof(t_tokens));
+	if (!red)
+		return (NULL);
+	red->size = count;
+	red->type = malloc(sizeof(int) * count);
+	red->content = malloc(sizeof(char *) * (count + 1));
+	if (!red->type || !red->content)
+		return (del_tokens(red));
+	red->content[count] = NULL;
+	return (red);
+}
+
+static int	copy_redirections(t_tokens *dest, t_tokens *list, size_t i)
 {
 	size_t	iter;
 
 	iter = 0;
-	while (i < list->size && list->data[i].type != PIPE \
-		&& list->data[i].type != AND && list->data[i].type != OR \
-		&& list->data[i].type != C_BR)
+	while (i < list->size && list->type[i] != PIPE \
+		&& list->type[i] != AND && list->type[i] != OR \
+		&& list->type[i] != C_BR)
 	{
-		if (list->data[i].type >= RED_IN && list->data[i].type <= ADD_OUT)
+		if (list->type[i] >= RED_IN && list->type[i] <= ADD_OUT)
 		{
-			dest[iter].type = list->data[i].type;
-			dest[iter].cont = ft_strdup(list->data[i].cont);
-			if (!dest[iter].cont)
+			dest->type[iter] = list->type[i];
+			dest->content[iter] = ft_strdup(list->content[i]);
+			if (!dest->content[iter])
 				return (-1);
 			iter++;
 		}
 		i++;
 	}
-	dest[iter].cont = NULL;
 	return (0);
 }
 
 void	redirection(t_group *group, t_tokens *list, size_t i)
 {
-	int	count;
+	int			count;
+	t_tokens	*red;
 
 	count = count_redir_tokens(list, i);
 	if (count == 0)
@@ -61,10 +79,12 @@ void	redirection(t_group *group, t_tokens *list, size_t i)
 		group->red = NULL;
 		return ;
 	}
-	group->red = malloc(sizeof(t_token) * (count + 1));
-	if (!group->red || copy_redirections(group->red, list, i) < 0)
+	red = create_redir_tokens(count);
+	if (!red || copy_redirections(red, list, i) < 0)
 	{
-		free(group->red);
+		del_tokens(red);
 		group->red = NULL;
+		return ;
 	}
+	group->red = red;
 }

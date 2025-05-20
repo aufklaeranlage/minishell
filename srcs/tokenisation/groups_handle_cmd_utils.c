@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/19 23:40:49 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/20 23:34:27 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	is_valid_cmd_position(t_tokens *list, size_t i)
 	if (i >= list->size)
 		return (0);
 	j = i;
-	while (j < list->size && list->data[j].type != PIPE \
-		&& list->data[j].type != AND && list->data[j].type != OR \
-		&& list->data[j].type != C_BR)
+	while (j < list->size && list->type[j] != PIPE \
+		&& list->type[j] != AND && list->type[j] != OR \
+		&& list->type[j] != C_BR)
 	{
 		j++;
 	}
@@ -68,7 +68,7 @@ size_t	count_valid_tokens(t_tokens *sub)
 	k = 0;
 	while (k < sub->size)
 	{
-		if (sub->data[k].type < RED_IN || sub->data[k].type > ADD_OUT)
+		if (sub->type[k] < RED_IN || sub->type[k] > ADD_OUT)
 			valid_count++;
 		k++;
 	}
@@ -82,24 +82,24 @@ t_tokens	*filter_tokens(size_t valid_count, t_group *group, t_tokens *sub)
 	filtered = malloc(sizeof(t_tokens));
 	if (!filtered)
 	{
-		free(sub->data);
-		free(sub);
-		free_redirection(group->red);
+		del_tokens(sub);
+		del_tokens(group->red);
 		free(group);
 		return (NULL);
 	}
 	if (valid_count <= 0)
 		valid_count = 1;
-	filtered->data = malloc(sizeof(t_token) * valid_count);
-	if (!filtered->data)
+	filtered->size = 0;
+	filtered->type = malloc(sizeof(int) * valid_count);
+	filtered->content = malloc(sizeof(char *) * (valid_count + 1));
+	if (!filtered->type || !filtered->content)
 	{
-		free(filtered);
-		free(sub->data);
-		free(sub);
-		free_redirection(group->red);
+		del_tokens(filtered);
+		del_tokens(sub);
+		del_tokens(group->red);
 		free(group);
 		return (NULL);
 	}
-	filtered->size = 0;
+	filtered->content[0] = NULL;
 	return (filtered);
 }
