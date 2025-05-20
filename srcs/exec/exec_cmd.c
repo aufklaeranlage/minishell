@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/13 12:00:41 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:14:09 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ static char *cmd_getbin(char *name, char **env);
 //		If there are assignments before the string of arrays it will change
 //		it's environment, which will have no effects on the other processes
 
+#define CMD 5
+
 int	exec_cmd(t_token *tok, char **env)
 {
-	int		pid;
 	char	*bin;
 	size_t	i;
 
@@ -32,7 +33,7 @@ int	exec_cmd(t_token *tok, char **env)
 		;	//	ERROR	: tokenizer err
 	bin = cmd_getbin((char *)tok->cont[i], env);
 	if (!bin)
-		return (errormsg((char *)tok->cont[i], -1);
+		return (errormsg((char *)tok->cont[i], "command not found"), -1);
 	if (execve(bin, (char **)(tok->cont + i), env) == -1)
 		;	//	ERROR	: execve fail
 	//	FREE EVERYTHING (Maybe needs to be done up the tree)
@@ -49,7 +50,7 @@ static char *cmd_getbin(char *name, char **env)
 	size_t	i;
 
 	i = 0;
-	paths = ft_getenv("PATH", env);
+	paths = ft_split(ft_getenv("PATH", env), ':' );
 	if (!paths)
 		return (NULL);
 	while (paths[i])
@@ -57,7 +58,7 @@ static char *cmd_getbin(char *name, char **env)
 		tmp = ft_strjoin(paths[i], "/");
 		if (!tmp)
 			return (ft_freesplit(paths), NULL);
-		bin = ft_strjoin(tmp, execname);
+		bin = ft_strjoin(tmp, name);
 		free(tmp);
 		if (!bin)
 			return (ft_freesplit(paths), NULL);

@@ -6,11 +6,13 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:25:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/13 11:29:48 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:06:34 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "group.h"
+#include "exec.h"
+
+static int	exec_shell_child(void *cont, int type, char **env);
 
 //	Returns value of last executable.
 
@@ -32,24 +34,30 @@ int	exec_shell(t_token *tok, char **env)
 			if (tok->type[i] >= 5 && tok->type[i] <= 11)
 				ret = exec_inbuilt(tok->cont[i], env, tok->type[i]);
 			else
-			{
-				//	EXECUTE ALL REGUALR COMMANDS IN CHILDREN
-				pid = fork();
-				if (!pid)
-				{
-					if (tok->type[i] == EXEC)
-						ret = exec_cmd(tok->cont[i], env);
-					else if (tok->type[i] == SHELL)
-						ret = exec_shell(tok->cont[i], env);
-					else if (tok->type[i] == PIPE)
-						ret = exec_pipe(tok->cont[i], env);
-					exit(ret);
-				}
-				else
-					waitpid(pid, &ret, NULL);
-			}
+				ret = exec_shell_child(tok->cont[i], tok->type[i], env);
 		}
 		++i;
 	}
 	return (childreturn(ret));
+}
+
+static int	exec_shell_child(void *cont, int type, char **env)
+{
+	int		ret;
+	pid_t	pid;
+
+	pid = fork();
+	if (!pid)
+	{
+		if (type == EXEC)
+			ret = exec_cmd(cont, env);
+		else if (type == SHELL)
+			ret = exec_shell(cont, env);
+		else if (type[i] == PIPE)
+			ret = exec_pipe(cont, env);
+		exit(ret);
+	}
+	else
+		waitpid(pid, &ret, NULL);
+	return (ret);
 }

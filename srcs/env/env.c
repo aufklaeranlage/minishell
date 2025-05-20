@@ -6,11 +6,13 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:54:38 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/19 12:41:15 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:36:21 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+
+static int		env_replace(char *var, char **env);
 
 static size_t	env_contains(char *varname, char **env);
 
@@ -26,6 +28,8 @@ int	env_insert(char *var, char ***env)
 	size_t	count;
 	size_t	i;
 	
+	if (env_replace(var, *env))
+		return (0);
 	count = ft_splitcount((const char **)(*env));
 	tmp = malloc((count + 2) * sizeof(*tmp));
 	if (!tmp)
@@ -41,6 +45,29 @@ int	env_insert(char *var, char ***env)
 	free(*env);
 	*env = tmp;
 	return (0);
+}
+
+static int	env_replace(char *var, char **env)
+{
+	char	*varname;
+	size_t	size;
+	size_t	pos;
+
+	size = 0;
+	while (var[size] && var[size] != '=')
+		++size;
+	if (!var[size])
+		varname = var;
+	else
+		varname = ft_substr(var, 0, size);
+	if (!varname)
+		return (0);	//	MALLOC ERROR
+	pos = env_contains(varname, env);
+	if (!pos)
+		return (0);	//	VAR NOT IN ENV
+	free(env[pos]);
+	env[pos] = var;
+	return (1);
 }
 
 //	env_removes() removes a variable of the name varname from the environment

@@ -6,15 +6,11 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:58:18 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/13 11:59:22 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:11:55 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-
-static int	red_open_file(char *filename, int flags, int mode);
-
-static int	red_cut_cont(t_token *tok, size_t i);
 
 int	red_open_file(char *filename, int flags, int mode)
 {
