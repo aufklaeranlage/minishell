@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:43:42 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:47:40 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:56:08 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 		dst[i] = src[i];
 		++i;
 	}
-	if (size)
-		dst[i] = 0;
+	while (i < size)
+		dst[i++] = 0;
 	while (src[i])
 		++i;
 	return (i);

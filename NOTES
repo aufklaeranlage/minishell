@@ -142,4 +142,119 @@ abronner@c3a7c1:~/projects/minishell/tests$
 
 [CONTROL OPERATORS]
 
-'(' 
+Grouping control oeprators still need to be given exection context by logOps or
+pipes.
+
+abronner@c3a2c10:~/projects/minishell$ cat -e (cat -e) cat -e
+	bash: syntax error near unexpected token `('
+abronner@c3a2c10:~/projects/minishell$ cat -e (cat -e) | cat -e
+	bash: syntax error near unexpected token `('
+abronner@c3a2c10:~/projects/minishell$ cat -e | (cat -e) | cat -e
+
+[ENVIRONMENT]
+
+abronner@c3a2c10:~$ ARG=WORLD echo $ARG && ARG=HELLO && (echo $ARG)
+	
+	HELLO
+
+Assignments only happen in the main shell if they are given without any
+additional commands.
+
+abronner@c3a2c10:~$ ARG=HELLO bash -c 'echo $ARG' && echo $ARG && ARG=WORLD bash -c 'echo $ARG'
+	HELLO
+
+	WORLD
+
+Assignments are set for each command, but not in the main shell. The mainshell
+is taking a look at every command split before execution and deciding wether to
+start a child process that deal with it in the main shell.
+
+[SYNTAX]
+
+abronner@c3a2c10:~$ echo start || echo hello | cat -e && echo end
+	start
+	end
+abronner@c3a2c10:~$ echo start && echo hello | cat -e && echo end
+	start
+	hello$
+	end
+
+abronner@c3a2c10:~$ echo start && echo hello | cat -e | cat -e && echo end
+	start
+	hello$$
+	end
+abronner@c3a2c10:~$ echo start || echo hello | cat -e | cat -e && echo end
+	start
+	end
+
+Commands are chained together as groups. We differentiate betweeen two group
+kinds: shell (or subshell) and pipes. 
+
+	(Sub-)Shell groups split their tokens by logical operators.
+
+	Pipes split their groups by the pipe symbol.
+
+	Inside of either of those groups the other group can exists:
+
+	[EXAMPLE]
+
+	echo start && ( echo sub | echo shell && ( echo sub || echo sub | echo shell ) | echo pipe ) | echo pipe
+
+	' 01 ------------------------------------------------------------------------------------------------- '
+				  | 02 ----------------------------------------------------------------------------------- |
+				  ( 03 ----------------------------------------------------------------------- )
+				    | 04 -------------- |    | 05 ------------------------------------------ |
+				 							 ( 06 ------------------------------ )
+														   | 07 -------------- |
+
+	G ID	GROUP TYPE	GROUP TOKENS
+
+	01		shell		'echo start' 'group 02'
+
+	02		pipe		'group 03' 'echo pipe'
+
+	03		subshell	'group 04' 'group 05'
+
+	04		pipe		'echo sub' 'echo shell'
+
+	05		pipe		'group 06' 'echo pipe'
+
+	06		subshell	'echo sub' 'group 07'
+
+	07		pipe		'echo sub' 'echo shell'
+
+[VARIABLE ASSIGNMENT FOR PIPE]
+
+abronner@c3a2c10:~/projects/minishell$ ARG=HELLO echo start | bash -c 'echo $ARG'
+
+abronner@c3a2c10:~/projects/minishell$ echo start | ARG=HELLO bash -c 'echo $ARG'
+	HELLO
+abronner@c3a2c10:~/projects/minishell$ echo start && ARG=HELLO echo start | bash -c 'echo $ARG' && echo end
+	start
+
+	end
+
+An assignment can't happen for a whole pipe. It can only happen for single
+commands or subshells.
+
+[VARIABLE ASSIGNMENT IN INBUILTS]
+
+abronner@c3a2c10:~/projects/minishell$ ARG=HELLO (echo $ARG && bash -c 'echo $ARG')
+	bash: syntax error near unexpected token `('
+abronner@c3a2c10:~/projects/minishell$ (ARG=HELLO cd .. && bash -c 'echo $ARG')
+
+
+Assignments can only happen for single commands, not for whole subshells nor pipes.
+
+[UNSET]
+
+	Unset can unset multiple variables in one go.
+
+abronner@c3a2c10:~/projects/minishell$ export ARG1=1 ARG2=2 ARG3=3
+abronner@c3a2c10:~/projects/minishell$ env | grep ARG
+	ARG1=1
+	ARG3=3
+	ARG2=2
+abronner@c3a2c10:~/projects/minishell$ unset ARG1 ARG2
+abronner@c3a2c10:~/projects/minishell$ env | grep ARG
+	ARG3=3

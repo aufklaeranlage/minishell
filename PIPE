@@ -1,0 +1,45 @@
+[PIPE]
+
+The pipe needs to execute a chain of commands. Inside these commands the can
+be multiple redirections from and to files and temporary stuff that get's added
+during the reading of a line.
+
+For easier differentiation we want to split up the original token array into
+multiple arrays that get used for each line. Each of these arrays can also have
+(here document) redirections associated with them.
+
+Inside the pipes there can be syntax execution too 
+
+[CONTROL OPERATORS]
+
+Multiple pipes or commands connected by control operators are referred to as
+lists. The control Operators are && and || also known as AND and OR.
+
+	[&&	(AND)]
+
+		cmd1 && cmd2
+
+		The AND control operator makes it so that cmd2 only is executed if
+		cmd1 returns an exit status of zero (success).
+
+	[|| (OR)]
+
+		cmd1 || cmd2
+
+		The OR control operator makes it so that cmd2 only is executed if cmd1
+		returns a non-zero exit status.
+
+The return value of AND and OR lists is the exit status of the last command
+exectued in the list.
+
+[COMPOUND COMMANDS]
+
+A compound commmand is one of the following. In most cases a list in a command's
+description may be seperated from the rest of the command by one of more
+newlines, and may be followed by a newline in place of a semicolon.
+
+	[ (list) ]
+
+	The list is executed in a subshel. Variable assignments and builtin commands
+	that affect the shell's environment do not remain in effect after the
+	command completes- The return status is the exit status of list.

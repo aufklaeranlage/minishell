@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 14:30:56 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 15:16:53 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:57:13 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,5 @@ char	**ft_cutsplit(const char **split, size_t offset, size_t cut_len)
 		if (!ret[i++])
 			return (ft_freesplit(ret), NULL);
 	}
-	ret[i] = NULL;
 	return (ret);
 }

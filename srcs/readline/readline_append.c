@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:07:16 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/26 16:16:45 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/14 12:45:49 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ static char	*appqou_rec(char quote, size_t offset);
 //	one and finally the newly created string is put into the position the
 //	original string was stored in.
 
-int	rl_appdel(char **line, char *del)
+int	rl_appdel(char **line, char *del, char **ret)
 {
-	char	*ret;
+	char	*new_line;
 	size_t	len;
 	
 	if (!line || !*line || !del)
 		return (1);
 	len = ft_strlen(*line);
-	ret = appdel_rec(del, ft_strlen(del), len);
-	if (!ret)
+	*ret = appdel_rec(del, ft_strlen(del), len);
+	if (!*ret)
 		return (1);
-	ft_strncpy(ret, line, len);	
+	new_line = ft_strjoin(*line, *ret);
 	free(*line);
-	*line = ret;
+	*line = new_line;
 	return (0);
 }
 
