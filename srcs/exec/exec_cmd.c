@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/19 15:14:09 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:44:59 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ static char *cmd_getbin(char *name, char **env);
 //		If there are assignments before the string of arrays it will change
 //		it's environment, which will have no effects on the other processes
 
-#define CMD 5
-
 int	exec_cmd(t_token *tok, char **env)
 {
+	int		pid;
 	char	*bin;
 	size_t	i;
 
@@ -58,7 +57,7 @@ static char *cmd_getbin(char *name, char **env)
 		tmp = ft_strjoin(paths[i], "/");
 		if (!tmp)
 			return (ft_freesplit(paths), NULL);
-		bin = ft_strjoin(tmp, name);
+		bin = ft_strjoin(tmp, execname);
 		free(tmp);
 		if (!bin)
 			return (ft_freesplit(paths), NULL);
