@@ -146,3 +146,53 @@ and err redirections.
 
 An assignment can't happen for a whole pipe. It can only happen for single
 commands or subshells.
+
+[GENERAL COMMAND STRUCTURE]
+
+A command consists of a cmdname, potential arguments, assignments and
+redirections. Assignments always need to be infront of the cmdname, or rather
+the first NON-Assignment in a split is the cmd. Everyhting after the command
+that isn't a redirection is a argument to that command.
+
+	[EXAMPLE]
+
+	REDIRECTION ASSIGNEMENT ASSIGNMENT CMD ARG ARG ARG REDIRECTION ARG REDIRECTION
+	i
+
+	->	CUT OUT redirections
+
+	ASSIGNEMENT ASSIGNMENT CMD ARG ARG ARG ARG
+	i
+
+	->	MAKE ASSIGNMENTS
+
+	ASSIGNEMENT ASSIGNMENT CMD ARG ARG ARG ARG
+						   i
+
+[GENERAL SHELL STRUCTURE]
+
+A subshell consists of brackets that group together some other commands or
+groups to execute and potentially some redirections. A subshell doesn't take
+anything except redirections in it's exection group.
+
+	[EXAMPLE]
+
+	redirection (cmd || cmd) redirection
+
+		->	consists only of redirections in the execution group outside of the
+			brackets.	->	Valid subshell
+
+	assignment (cmd || cmd) redirection
+
+		->	subshell after an assignment in the same execution group
+			->	Invalid subshell ( '(' is the syntax error)
+
+	redirection (cmd || cmd) assignment
+
+		->	assignment after subshell in the same execution group
+			->	Invalid assignment ( 'assignment' is the syntax error)
+
+	abronner@c3a3c5:~/projects/minishell$ ARG=a (cat)
+		bash: syntax error near unexpected token `('
+	abronner@c3a3c5:~/projects/minishell$ (cat) ARG=b
+		bash: syntax error near unexpected token `ARG=b'

@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/20 11:44:59 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:40:27 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,21 @@ static char *cmd_getbin(char *name, char **env);
 //		If there are assignments before the string of arrays it will change
 //		it's environment, which will have no effects on the other processes
 
-int	exec_cmd(t_token *tok, char **env)
+int	exec_cmd(t_group *group, char **env)
 {
 	int		pid;
 	char	*bin;
 	size_t	i;
 
-	if (exec_reddir(tok))
+	if (exec_reddir(group))
 		;	//	FREE EVERYTHING MALLOC ERROR
-	i = exec_assign(tok, &env);
-	if (tok->type[i] != CMD)
+	i = exec_assign((t_token *)group->data, &env);
+	if (group->data_type != STD_CMD)
 		;	//	ERROR	: tokenizer err
-	bin = cmd_getbin((char *)tok->cont[i], env);
+	bin = cmd_getbin(((t_token *)group->data)->content[i], env);
 	if (!bin)
-		return (errormsg((char *)tok->cont[i], "command not found"), -1);
-	if (execve(bin, (char **)(tok->cont + i), env) == -1)
+		return (errormsg((char *)group->cont[i], "command not found"), -1);
+	if (execve(bin, (char **)(group->cont + i), env) == -1)
 		;	//	ERROR	: execve fail
 	//	FREE EVERYTHING (Maybe needs to be done up the tree)
 	return (127);

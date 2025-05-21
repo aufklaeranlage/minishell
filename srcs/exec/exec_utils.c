@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:29:52 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/13 11:48:27 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:23:03 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ size_t	exec_assign(t_token *tok, char ***env)
 	i = 0;
 	while (i < tok->size && tok->type == ASSIGN)
 	{
+		//	ASSIGN ENV
 		++i;
 	}
 	return (i);
