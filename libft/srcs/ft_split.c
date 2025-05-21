@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:43:29 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 14:30:45 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/21 15:43:19 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,13 @@ void	ft_freesplit(char **split)
 {
 	size_t	i;
 
+	if (!split)
+		return ;
 	i = 0;
 	while (split[i])
-		free(split[i++]);
+	{
+		free(split[i]);
+		++i;
+	}
 	free(split);
 }

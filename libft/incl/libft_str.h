@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 12:08:22 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/03 14:32:05 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:07:09 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,7 @@ void		ft_freesplit(char **split);
 char		**ft_splitlcpy(char **split, size_t len);
 
 char		**ft_cutsplit(const char **split, size_t offset, size_t cut_len);
+
+char		**ft_splitrmv(char **split, size_t pos);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/21 10:40:27 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:47:36 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	exec_cmd(t_group *group, char **env)
 	char	*bin;
 	size_t	i;
 
-	if (exec_reddir(group))
+	if (exec_reddir(group->red))
 		;	//	FREE EVERYTHING MALLOC ERROR
 	i = exec_assign((t_token *)group->data, &env);
 	if (group->data_type != STD_CMD)

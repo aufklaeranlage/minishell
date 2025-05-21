@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/21 11:28:39 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/21 13:53:34 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 
+# include "libft.h"
 # include "pipe.h"
 # include "errors.h"
 # include "env.h"
@@ -38,7 +39,7 @@ int		open_heredoc(char *hd_str);
 
 //	UTILS
 
-size_t	exec_assign(t_tokens *tok, char ***env);
+int		exec_assign(t_tokens *tok, char ***env);
 
 int		childreturn(int wstatus);
 

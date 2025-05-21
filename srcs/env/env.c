@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:54:38 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/20 11:36:21 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/21 17:33:58 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int		env_replace(char *var, char **env);
 
 static size_t	env_contains(char *varname, char **env);
 
-static void		env_cpy(size_t count, size_t pos, char **tmp, char **env);
+static void		env_cpy(size_t count, size_t pos, char **new, char **env);
 
 //	env_insert() inserts a given variable assignment that consists of a
 //	variable name and a variable name seperated by an equal sign at the end
@@ -24,50 +24,41 @@ static void		env_cpy(size_t count, size_t pos, char **tmp, char **env);
 
 int	env_insert(char *var, char ***env)
 {
-	char	**tmp;
+	char	**new;
 	size_t	count;
 	size_t	i;
 	
-	if (env_replace(var, *env))
+	if (!env_replace(var, *env))
 		return (0);
 	count = ft_splitcount((const char **)(*env));
-	tmp = malloc((count + 2) * sizeof(*tmp));
-	if (!tmp)
+	new = malloc((count + 2) * sizeof(*new));
+	if (!new)
 		return (1);
 	i = 0;
 	while (i < count)
 	{
-		tmp[i] = (*env)[i];
+		new[i] = (*env)[i];
 		++i;
 	}
-	tmp[i] = var;
-	tmp[i + 1] = NULL;
+	new[i] = var;
+	new[i + 1] = NULL;
 	free(*env);
-	*env = tmp;
+	*env = new;
 	return (0);
 }
 
 static int	env_replace(char *var, char **env)
 {
-	char	*varname;
-	size_t	size;
 	size_t	pos;
 
-	size = 0;
-	while (var[size] && var[size] != '=')
-		++size;
-	if (!var[size])
-		varname = var;
-	else
-		varname = ft_substr(var, 0, size);
-	if (!varname)
-		return (0);	//	MALLOC ERROR
-	pos = env_contains(varname, env);
-	if (!pos)
-		return (0);	//	VAR NOT IN ENV
+	if (!env)
+		return (1);
+	pos = env_contains(var, env);
+	if (!pos--)
+		return (1);	//	VAR NOT IN ENV
 	free(env[pos]);
 	env[pos] = var;
-	return (1);
+	return (0);
 }
 
 //	env_removes() removes a variable of the name varname from the environment
@@ -77,60 +68,42 @@ static int	env_replace(char *var, char **env)
 
 int	env_remove(char *varname, char ***env)
 {
-	char 	**tmp;
+	char 	**new;
 	size_t	pos;
-	size_t	count;
 
-	count = ft_splitcount((const char **)(*env));
-	pos = env_contains(varname, *env);
-	if (!count || !pos)
-		return (1);
-	tmp = malloc(count * sizeof(*tmp));
-	if (!tmp)
+	if (!varname || !env || !*env || !**env)
 		return (0);
-	env_cpy(count, pos, tmp, *env);
+	pos = env_contains(varname, *env);
+	if (!pos--)
+		return (0);
+	new = ft_splitrmv(*env, pos);
+	if (!new)
+		return (1);
 	free((*env)[pos]);
 	free(*env);
-	tmp[count] = NULL;
-	*env = tmp;
-	return (1);
+	*env = new;
+	return (0);
 }
 
 //	env_contains() checks if a variable with the name of varname exists in the
 //	environment env. If it does it returns it's position, otherwise it
 //	returns 0.
 
-static size_t	env_contains(char *varname, char **env)
+static size_t	env_contains(char *var, char **env)
 {
 	size_t	varlen;
 	size_t	i;
 
-	varlen = ft_strlen(varname);
-	i = 0;
-	while (env[i])
+	varlen = 0;
+	while (var[varlen] && var[varlen] != '=' )
+		++varlen;
+	++varlen;
+	i = 1;
+	while (i > 0 && env[i - 1])
 	{
-		if (!ft_strncmp(varname, env[i], varlen))
+		if (!ft_strncmp(var, env[i - 1], varlen))
 			return (i);
 		++i;
 	}
 	return (0);
-}
-
-//	env_cpy() copies everything except the string at pos from env to tmp.
-
-static void	env_cpy(size_t count, size_t pos, char **tmp, char **env)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < pos)
-	{
-		tmp[i] = env[i];
-		++i;
-	}
-	while (i < count)
-	{
-		tmp[i] = env[i + 1];
-		++i;
-	}
 }

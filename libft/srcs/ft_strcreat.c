@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:43:34 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:25:38 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/21 16:43:05 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strdup(const char *s)
 	char	*out;
 	size_t	slen;
 
+	if (!s)
+		return (NULL);
 	slen = ft_strlen(s) + 1;
 	out = malloc(slen * sizeof(*out));
 	if (!out)
