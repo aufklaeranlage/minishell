@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/21 12:47:36 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/22 12:40:15 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ static char *cmd_getbin(char *name, char **env);
 
 int	exec_cmd(t_group *group, char **env)
 {
-	int		pid;
+	char	**argv;
 	char	*bin;
-	size_t	i;
 
 	if (exec_reddir(group->red))
 		;	//	FREE EVERYTHING MALLOC ERROR
-	i = exec_assign((t_token *)group->data, &env);
-	if (group->data_type != STD_CMD)
-		;	//	ERROR	: tokenizer err
-	bin = cmd_getbin(((t_token *)group->data)->content[i], env);
+	exec_assign((t_tokens *)group->data, &env);
+	argv = ((t_tokens *)group->data)->content;
+	/*if (group->data_type != STD_CMD)*/
+	/*	;	//	ERROR	: tokenizer err*/
+	bin = cmd_getbin(argv[0], env);
 	if (!bin)
-		return (errormsg((char *)group->cont[i], "command not found"), -1);
-	if (execve(bin, (char **)(group->cont + i), env) == -1)
+		return (errormsg(argv[0], "command not found"), -1);
+	if (execve(bin, argv, env) == -1)
 		;	//	ERROR	: execve fail
 	//	FREE EVERYTHING (Maybe needs to be done up the tree)
 	return (127);
@@ -57,7 +57,7 @@ static char *cmd_getbin(char *name, char **env)
 		tmp = ft_strjoin(paths[i], "/");
 		if (!tmp)
 			return (ft_freesplit(paths), NULL);
-		bin = ft_strjoin(tmp, execname);
+		bin = ft_strjoin(tmp, name);
 		free(tmp);
 		if (!bin)
 			return (ft_freesplit(paths), NULL);

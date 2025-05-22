@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/21 13:53:34 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/22 12:41:28 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int		exec_shell(t_tokens *tok, char **env);
 
 //	CMD
 
-int		exec_cmd(t_tokens *tok, char **env);
+int		exec_cmd(t_group *group, char **env);
 
 //	RED DIR
 
