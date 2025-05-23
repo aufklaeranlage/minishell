@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:54:38 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/21 17:33:58 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/22 16:14:47 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 static int		env_replace(char *var, char **env);
 
 static size_t	env_contains(char *varname, char **env);
-
-static void		env_cpy(size_t count, size_t pos, char **new, char **env);
 
 //	env_insert() inserts a given variable assignment that consists of a
 //	variable name and a variable name seperated by an equal sign at the end

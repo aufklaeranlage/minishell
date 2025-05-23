@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:31:15 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/21 11:33:24 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/22 16:46:49 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static int	red_out(t_tokens *tok, int fd[2], size_t i)
 {
 	int	flags;
 
+	flags = 0;
 	if (fd[1] && fd[1] != -1)
 		close(fd[1]);
 	if (tok->type[i] == RED_OUT)

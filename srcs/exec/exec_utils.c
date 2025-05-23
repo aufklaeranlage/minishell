@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:29:52 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/21 17:40:51 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:17:54 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	exec_assign(t_tokens *tok, char ***env)
 {
 	char	**tmp;
 	size_t	i;
-	size_t	j;
 
 	i = 0;
 	while (i < tok->size && ft_strchr(tok->content[i], '=' ))
@@ -57,6 +56,8 @@ static char	**exec_cutassign(char **src, size_t size, size_t offset)
 
 int	childreturn(int wstatus)
 {
+	if (wstatus == 0)
+		return (0);
 	if (WIFEXITED(wstatus))
 		return (WEXITSTATUS(wstatus));
 	if (WIFSIGNALED(wstatus))

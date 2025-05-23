@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/22 12:41:28 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:17:44 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,11 @@
 
 //	SHELL
 
-int		exec_shell(t_tokens *tok, char **env);
+int		exec_shell(t_group *group, char ***env);
+
+//	PIPE
+
+int		exec_pipe(t_group *group, char **env);
 
 //	CMD
 

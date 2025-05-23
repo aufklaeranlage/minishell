@@ -6,58 +6,69 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:25:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/19 15:06:34 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:17:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static int	exec_shell_child(void *cont, int type, char **env);
+static int	exec_shell_child(t_group *group, int type, char **env);
+
+static int	exec_inbuilt(t_group *group, char ***env);
 
 //	Returns value of last executable.
 
-int	exec_shell(t_token *tok, char **env)
+int	exec_shell(t_group *group, char ***env)
 {
 	int		ret;
-	int		pid;
-	size_t	i;
 
-	exec_reddir(tok);
+	exec_reddir(group->red);
 	ret = 0;
-	i = 0;
-	while (i < tok->size)
+	while (group)
 	{
-		//	EXECUTE IF LOGIC IS CORRECT
-		if ((tok->logic[i] == AND && !ret) || (tok->logic[i] == OR && ret))
+		if (group->exec_type == SMCLN || (group->exec_type == AND && !ret)
+			|| (group->exec_type == OR && ret))
 		{
-			//	DON'T EXECUTE INBUILTS IN CHILDREN
-			if (tok->type[i] >= 5 && tok->type[i] <= 11)
-				ret = exec_inbuilt(tok->cont[i], env, tok->type[i]);
+			if (group->data_type >= INCMD_ECHO
+				&& group->data_type <= INCMD_UNSET)
+				ret = exec_inbuilt(group, env);
 			else
-				ret = exec_shell_child(tok->cont[i], tok->type[i], env);
+				ret = exec_shell_child(group, group->data_type, *env);
 		}
-		++i;
+		while (group->data_type == PIPE)
+			group = group->next;
+		if (group->next == NULL)
+			break ;
+		group = group->next;
 	}
 	return (childreturn(ret));
 }
 
-static int	exec_shell_child(void *cont, int type, char **env)
+static int	exec_shell_child(t_group *group, int type, char **env)
 {
 	int		ret;
 	pid_t	pid;
 
+	ret = 0;
 	pid = fork();
 	if (!pid)
 	{
-		if (type == EXEC)
-			ret = exec_cmd(cont, env);
-		else if (type == SHELL)
-			ret = exec_shell(cont, env);
-		else if (type[i] == PIPE)
-			ret = exec_pipe(cont, env);
+		if (type == CMD)
+			ret = exec_cmd(group, env);
+		else if (type == GROUP)
+			ret = exec_shell(group, &env);
+		else if (type == PIPE)
+			ret = exec_pipe(group, env);
 		exit(ret);
 	}
 	else
-		waitpid(pid, &ret, NULL);
+		waitpid(pid, &ret, 0);
 	return (ret);
+}
+
+static int	exec_inbuilt(t_group *group, char ***env)
+{
+	(void)group;
+	(void)env;
+	return (0);
 }

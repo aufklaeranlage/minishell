@@ -6,11 +6,15 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:52:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/21 14:06:55 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:16:53 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+
+static size_t	exec_pipe_getsize(t_group *group);
+
+static void	exec_pipe_child(t_group *group, size_t id, char **env);
 
 //	exec_pipe() executes one or more tokens in a s_token struct in a pipe.
 
@@ -27,33 +31,44 @@ int	exec_pipe(t_group *group, char **env)
 	if (id < count)
 	{
 		free(pid_arr);
-		while (les than id)
-			group = group->next;
-//		if (group->type[id] >= 5 && group->type[id] <= 11)
-//			ret = exec_inbuilt(group->cont[i], env, group->type[i]);
-		/*else*/ if (group->type[id] == EXEC)
-			ret = exec_cmd(group->cont[id], env);
-		else if (group->type[id] == SHELL)
-			ret = exec_shell(group->cont[id], env);
-//		else if (group->type[id] == PIPE)
-//			;	//	ERROR
-		exit(ret);
+		exec_pipe_child(group, id, env);
 	}
 	else
-		waitpid(pid_arr[group->size - 1], &ret, 0);
+		waitpid(pid_arr[count - 1], &ret, 0);
 	free(pid_arr);
 	return (childreturn(ret));
 }
 
-static size_t	exec_pipe_getsize(t_group *g)
+static size_t	exec_pipe_getsize(t_group *group)
 {
 	size_t	i;
 
 	i = 0;
-	while (g->exec_type == PIPE)
+	while (group->exec_type == PIPE)
 	{
 		++i;
-		g = g->next;
+		group = group->next;
 	}
 	return (i);
+}
+
+static void	exec_pipe_child(t_group *group, size_t id, char **env)
+{
+	size_t	ret;
+
+	while (id)
+	{
+		group = group->next;
+		--id;
+	}
+	ret = 0;
+	/*if (group->type[id] >= 5 && group->type[id] <= 11)*/
+	/*	ret = exec_inbuilt(group->cont[i], env, group->type[i]);*/
+	/*else*/ if (group->data_type == CMD)
+		ret = exec_cmd(group, env);
+	else if (group->data_type == GROUP)
+		ret = exec_shell(group, &env);
+	/*else if (group->type[id] == PIPE)*/
+	/*	;	//	ERROR*/
+	exit(ret);
 }
