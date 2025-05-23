@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:50:10 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/14 12:44:31 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:32:42 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,6 @@
 
 # include "libft.h"
 # include "expander.h"
-
-# ifndef RL_PROMPT
-#  define RL_PROMPT "minichill $>"
-# endif
 
 //	READLINE GENERAL
 

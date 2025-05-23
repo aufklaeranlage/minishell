@@ -6,7 +6,7 @@
 #    By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/05/23 14:24:24 by abronner         ###   ########.fr        #
+#    Updated: 2025/05/23 14:33:48 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,8 @@ SRCS		:=	env.c \
 				groups_delimiter.c groups_handle_cmd.c \
 				groups_handle_cmd_utils2.c groups_handle_cmd_utils.c \
 				groups_redirection.c groups_subtoken.c tokens_convert_str.c \
-				tokens_convert_sub.c tokens_create.c tokens_utils.c
+				tokens_convert_sub.c tokens_create.c tokens_utils.c \
+				main.c
 				
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))

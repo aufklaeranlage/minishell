@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/21 00:15:46 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/23 15:14:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,38 +20,6 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <fcntl.h>
-
-# define STR		     3			// 'some string'
-# define EXPAND_STR      4			// "Some string $PATH etc."
-# define INCMD_ECHO      5
-# define INCMD_CD        6
-# define INCMD_PWD       7
-# define INCMD_EXIT      8
-# define INCMD_EXPORT    9
-# define INCMD_ENV       10
-# define INCMD_UNSET     11
-# define STD_CMD		 12			// all comands from PC-s $PATH
-# define FLAG            13  		// -l --long and etc.
-# define RED_IN          14  		// <
-# define RED_OUT         15  		// >
-# define HERE_DOC        16			// <<
-# define ADD_OUT		 17			// >>
-# define SMCLN           18			// ;
-# define CLN			 19 		// :
-# define DQ              20 		// "
-# define SQ              21 		// '
-# define NEW_LINE        22 		// \n
-# define BIN_AND         23  		// &
-# define PIPE            24 		// |
-# define AND             25 		// &&
-# define OR              26 		// ||
-# define TEXT            27
-# define O_BR            28			// (
-# define C_BR            29			// )
-# define WILDCARD        30 
-
-# define CMD				31
-# define GROUP				32 
 
 typedef struct s_group	t_group;
 

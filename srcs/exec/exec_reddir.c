@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:31:15 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/22 16:46:49 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:36:43 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	exec_reddir(t_tokens *tok)
 	size_t	i;
 	int		fd[2];
 
+	if (!tok)
+		return (0);
 	bzero(fd, 2 * sizeof(fd));
 	i = 0;
 	while (i < tok->size)

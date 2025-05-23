@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:25:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:17:11 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:10:07 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ int	exec_shell(t_group *group, char ***env)
 				ret = exec_inbuilt(group, env);
 			else
 				ret = exec_shell_child(group, group->data_type, *env);
+			while (group->exec_type == PIPE)
+				group = group->next;
 		}
-		while (group->data_type == PIPE)
-			group = group->next;
 		if (group->next == NULL)
 			break ;
 		group = group->next;
@@ -57,13 +57,13 @@ static int	exec_shell_child(t_group *group, int type, char **env)
 			ret = exec_cmd(group, env);
 		else if (type == GROUP)
 			ret = exec_shell(group, &env);
-		else if (type == PIPE)
+		else if (group->exec_type == PIPE)
 			ret = exec_pipe(group, env);
 		exit(ret);
 	}
 	else
 		waitpid(pid, &ret, 0);
-	return (ret);
+	return (childreturn(ret));
 }
 
 static int	exec_inbuilt(t_group *group, char ***env)
