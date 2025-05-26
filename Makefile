@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+         #
+#    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/05/23 14:33:48 by abronner         ###   ########.fr        #
+#    Updated: 2025/05/26 14:08:57 by akuzmin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_DIR		:=	srcs/
 
 OBJ_DIR		:=	objs/
 
-SUB_DIR		:=	env/ errors/ exec/ expander/ readline/ tokenisation/
+SUB_DIR		:=	env/ errors/ exec/ expander/ readline/ tokenisation/ inbuilds/
 
 INC_DIR		:=	incl/
 
@@ -29,13 +29,17 @@ SRCS		:=	env.c \
 				exec_shell.c exec_utils.c pipe.c \
 				errormsg.c \
 				expander.c \
-				create_execution_list.c groups_bracket_proc.c \
-				groups_bracket_red.c groups_create.c groups_create_utils.c \
-				groups_delimiter.c groups_handle_cmd.c \
-				groups_handle_cmd_utils2.c groups_handle_cmd_utils.c \
-				groups_redirection.c groups_subtoken.c tokens_convert_str.c \
-				tokens_convert_sub.c tokens_create.c tokens_utils.c \
-				main.c
+				tokens_create.c tokens_utils.c \
+				tokens_convert_str.c tokens_convert_sub.c \
+				groups_handle_cmd.c groups_handle_cmd_utils.c \
+				groups_handle_cmd_utils2.c groups_bracket_proc.c \
+				append_tokens.c groups_create_utils.c groups_create.c \
+				groups_delimiter.c groups_redirection.c groups_subtoken.c \
+				create_execution_list.c create_handle_errors.c \
+				main.c \
+				print_group_data.c \
+				ft_echo.c ft_pwd.c ft_cd.c ft_env.c ft_unset.c ft_export.c \
+				ft_exit.c inbuilds.c wildcard.c
 				
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
@@ -44,7 +48,7 @@ OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
 
 LIBFT_NAME	:=	libft.a
 
-LIBFT_DIR	:=	libft
+LIBFT_DIR	:=	./libft
 
 LIBFT		:=	$(LIBFT_DIR)/$(LIBFT_NAME)
 
@@ -53,10 +57,15 @@ LIBFT		:=	$(LIBFT_DIR)/$(LIBFT_NAME)
 CC			:=	cc
 
 CFLAGS		:=	-Wall -Wextra -Werror $(ADDCCFLAGS)
-
+# For school PC
 CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR)
 
 LIBFLAGS	:=	-L$(LIBFT_DIR) -l:$(LIBFT_NAME) -lreadline
+
+# For my own
+# CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I/opt/homebrew/opt/readline/include
+
+# LIBFLAGS	:=	-L$(LIBFT_DIR) -L/opt/homebrew/opt/readline/lib -lft -lreadline
 
 RM			:= rm -rf
 

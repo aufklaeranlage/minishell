@@ -6,13 +6,14 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/20 23:25:24 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/23 10:05:41 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/tokenisation.h"
 
-t_group	*handle_command_group(t_tokens *list, t_group *parrent, size_t i)
+t_group	*handle_command_group(t_tokens *list, t_group *parrent, \
+	size_t origin_i, size_t i)
 {
 	t_group		*group;
 	t_tokens	*filtered;
@@ -25,6 +26,7 @@ t_group	*handle_command_group(t_tokens *list, t_group *parrent, size_t i)
 	if (!filtered)
 		return (NULL);
 	group->data = filtered;
+	redirection(group, list, origin_i);
 	setup_next_group(group, list, j, parrent);
 	return (group);
 }

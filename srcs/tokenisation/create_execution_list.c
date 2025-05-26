@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/21 00:09:08 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:56:03 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,33 @@ static int	wrap_operations(t_tokens **out, char *str, char **env)
 	return (0);
 }
 
+void	return_cmd_type(t_group *parsed_group)
+{
+	size_t		i;
+	t_tokens	*token;
+
+	while (parsed_group != NULL)
+	{
+		if (parsed_group->data_type == CMD)
+		{
+			token = (t_tokens *)parsed_group->data;
+			i = 0;
+			while (token->content[i])
+			{
+				if (cmd_specifier(token->content[i]) != 0)
+					parsed_group->data_type = cmd_specifier(token->content[i]);
+				i++;
+			}
+			if (parsed_group->data_type == CMD)
+				parsed_group->data_type = STD_CMD;
+		}
+		else if (parsed_group->data_type == GROUP)
+			return_cmd_type((t_group *)parsed_group->data);
+		parsed_group = parsed_group->next;
+	}
+}
+
+// TEST IT: <<EOF (ls | cat -e) <in >out
 int	create_execution_list(t_group *group, char *str, char **env)
 {
 	t_tokens	*tokens;
@@ -74,9 +101,15 @@ int	create_execution_list(t_group *group, char *str, char **env)
 	if (!group)
 		return (1);
 	tokens = NULL;
-	if (wrap_operations(&tokens, str, env))
+	if (wrap_operations(&tokens, str, env) || parser_input_validation(tokens))
+	{
+		del_tokens(tokens);
 		return (1);
+	}
+	// PRINT TOKENS
+	print_tokens(tokens);
 	parsed_group = create_groups(tokens, NULL, 0, 0);
+	return_cmd_type(parsed_group);
 	del_tokens(tokens);
 	if (!parsed_group)
 		return (1);
@@ -87,6 +120,5 @@ int	create_execution_list(t_group *group, char *str, char **env)
 	group->next = parsed_group->next;
 	group->parrent = parsed_group->parrent;
 	free(parsed_group);
-	// CHECK FOR  ANY VIOLATIONS IN USAGE
 	return (0);
 }

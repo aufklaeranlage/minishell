@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:30:12 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/20 23:25:55 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/23 11:24:17 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ static int	set_connection_type(t_group *group, t_tokens *list, size_t j)
 {
 	if (j < list->size)
 	{
-		if (list->type[j] == PIPE)
+		if (list->type[j] == SMCLN)
+			group->exec_type = SMCLN;
+		else if (list->type[j] == PIPE)
 			group->exec_type = PIPE;
 		else if (list->type[j] == OR)
 			group->exec_type = OR;
@@ -43,17 +45,20 @@ static int	create_bracket_content(t_group *group, t_tokens *sub)
 	return (1);
 }
 
-int	process_bracket_content(t_group *group, t_tokens *list, size_t i, size_t j)
+int	process_bracket_content(t_group *group, t_tokens *list, \
+	size_t i, size_t *j)
 {
 	t_tokens	*sub;
 	int			success;
 
-	sub = subtoken(list, i + 1, j - 1);
+	sub = subtoken(list, skip_special_tokens(list, i) + 1, *j - 1);
 	if (!sub)
 		return (0);
 	group->data_type = GROUP;
-	set_connection_type(group, list, j);
+	set_connection_type(group, list, *j);
 	success = create_bracket_content(group, sub);
+	redirection(group, list, i);
+	redirection(group, list, *j);
 	del_tokens(sub);
 	return (success);
 }

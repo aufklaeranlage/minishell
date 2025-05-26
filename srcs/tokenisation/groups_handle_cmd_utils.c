@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/20 23:34:27 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/26 14:30:01 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@ t_group	*init_cmd_group(t_tokens *list, t_group *parrent, size_t i)
 	group->parrent = parrent;
 	group->data_type = CMD;
 	group->data = NULL;
-	group->exec_type = 0;
+	group->exec_type = SMCLN;
 	j = delimiter(&group->exec_type, list, i);
 	if (j == 0)
 		j = list->size;
-	redirection(group, list, i);
 	return (group);
 }
 

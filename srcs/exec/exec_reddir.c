@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_reddir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:31:15 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:36:43 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/26 11:01:55 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	exec_reddir(t_tokens *tok)
 
 	if (!tok)
 		return (0);
-	bzero(fd, 2 * sizeof(fd));
+	// Was 	bzero(fd, 2 * sizeof(fd));
+	bzero(fd, sizeof(fd));
 	i = 0;
 	while (i < tok->size)
 	{

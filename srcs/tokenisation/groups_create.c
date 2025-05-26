@@ -6,17 +6,18 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/20 23:25:42 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/23 11:22:18 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/tokenisation.h"
 
-static size_t	skip_special_tokens(t_tokens *list, size_t i)
+size_t	skip_special_tokens(t_tokens *list, size_t i)
 {
 	while (i < list->size \
 		&& (list->type[i] == AND || list->type[i] == OR \
-			|| list->type[i] == PIPE || list->type[i] == C_BR))
+			|| list->type[i] == PIPE || list->type[i] == C_BR \
+			|| list->type[i] == SMCLN))
 		i++;
 	while (i < list->size && list->type[i] >= RED_IN \
 		&& list->type[i] <= ADD_OUT)
@@ -29,10 +30,10 @@ static t_group	*handle_bracket_case(t_tokens *list, t_group *parrent, \
 {
 	t_group	*group;
 
-	group = handle_bracket_group(list, i, j);
+	group = handle_bracket_group(list, skip_special_tokens(list, i), j);
 	if (!group)
 		return (NULL);
-	if (!process_bracket_content(group, list, i, *j))
+	if (!process_bracket_content(group, list, i, j))
 	{
 		free(group);
 		return (NULL);
@@ -63,20 +64,22 @@ static int	is_valid_input(t_tokens *list, size_t i)
 t_group	*create_groups(t_tokens *list, t_group *parrent, size_t i, size_t j)
 {
 	t_group	*group;
+	size_t	origin_i;
 
 	if (!is_valid_input(list, i))
 		return (NULL);
+	origin_i = i;
 	i = skip_special_tokens(list, i);
 	if (i >= list->size)
 		return (NULL);
 	if (list->type[i] == O_BR)
 	{
-		group = handle_bracket_case(list, parrent, i, &j);
+		group = handle_bracket_case(list, parrent, origin_i, &j);
 		if (!group)
 			return (NULL);
 		setup_next_bracket_group(group, list, &j, parrent);
 	}
 	else
-		group = handle_command_group(list, parrent, i);
+		group = handle_command_group(list, parrent, origin_i, i);
 	return (group);
 }

@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:44:44 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/26 16:18:25 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h>
+
 #include <stdlib.h>
 
 #include "minichill.h"
@@ -30,13 +30,12 @@ int main(int ac, char **av, char **env)
             break;
         t_group *group = malloc(sizeof(t_group));
         add_history(buf);
-        if (create_execution_list(group, buf, local_env))
-            return (1);
-		exec_shell(group, &env);
-        /*//display groups partions*/
-        /*grouped_tokens_display(group);*/
-        /*// THISH SHEAT IS INCORECT*/
-        /*inbuilds(group->data, local_env, buf);*/
+        if (!create_execution_list(group, buf, local_env))
+        {
+            //display groups partions
+            grouped_tokens_display(group);
+            exec_shell(group, &local_env);
+        }    
         free(buf);
     }
     ft_freesplit(local_env);

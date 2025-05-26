@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/23 15:14:11 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:04:48 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 
+# include "defines.h"
 # include "libft.h"
 # include <stdlib.h>
 # include <unistd.h>
@@ -22,7 +23,6 @@
 # include <fcntl.h>
 
 typedef struct s_group	t_group;
-
 typedef struct s_tokens
 {
 	size_t	size;
@@ -41,6 +41,7 @@ typedef struct s_group
 }	t_group;
 
 // Utils
+void		append_tokens(t_tokens **t1, t_tokens *t2);
 size_t		delimiter(int *d_type, t_tokens *list, size_t i);
 int			set_type(char *tmp, char **env);
 void		*del_tokens(t_tokens *out);
@@ -61,7 +62,8 @@ void		redirection(t_group *group, t_tokens	*list, size_t i);
 void		lst_to_tokens(t_tokens *out, t_wrap *list, char **env);
 
 // GROUPS HANDLE CMD
-t_group		*handle_command_group(t_tokens *list, t_group *parrent, size_t i);
+t_group		*handle_command_group(t_tokens *list, t_group *parrent, \
+	size_t origin_i, size_t i);
 
 // GROUPS HANDLE CMD UTILS
 int			is_valid_cmd_position(t_tokens *list, size_t i);
@@ -86,16 +88,23 @@ t_tokens	*proc_cmd_tokens(t_group *group, t_tokens *list, \
 // HANDLE BRACKETS
 t_group		*handle_bracket_group(t_tokens *list, size_t i, size_t *j_out);
 int			process_bracket_content(t_group *group, t_tokens *list, \
-	size_t i, size_t j);
-int			handle_bracket_redirection(t_group *group, t_tokens *list, \
-	size_t j);
+	size_t i, size_t *j);
+
 // void		free_redirection(t_token *red); DEPRICATED
+size_t		skip_special_tokens(t_tokens *list, size_t i);
 
 // Create groups
 t_group		*create_groups(t_tokens *list, t_group *parrent, size_t i, \
 	size_t j);
 
+// CHECK ERRORS BEFORE CREATING EXECUTION_LIST
+int			parser_input_validation(t_tokens *tokens);
+
 // Split to execution commands list
 int			create_execution_list(t_group *group, char *str, char **env);
+
+// ERROR VISUALISATION DELETE AT PRODUCTION
+void	print_tokens(t_tokens *tokens);
+void	grouped_tokens_display(t_group *group);
 
 #endif
