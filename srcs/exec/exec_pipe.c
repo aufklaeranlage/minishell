@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:52:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:56:49 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:41:34 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static size_t	exec_pipe_getsize(t_group *group)
 {
 	size_t	i;
 
-	i = 0;
+	i = 1;
 	while (group->exec_type == PIPE)
 	{
 		++i;
