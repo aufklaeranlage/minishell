@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minichill.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:30:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:32:13 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:56:19 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@
 # include "pipe.h"
 # include "readline.h"
 # include "tokenisation.h"
+# include "inbuilds.h"
 
 #endif

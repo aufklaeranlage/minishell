@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:25:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 15:10:07 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/26 12:44:56 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minichill.h"
 #include "exec.h"
 
 static int	exec_shell_child(t_group *group, int type, char **env);
@@ -53,7 +54,7 @@ static int	exec_shell_child(t_group *group, int type, char **env)
 	pid = fork();
 	if (!pid)
 	{
-		if (type == CMD)
+		if (type == STD_CMD)
 			ret = exec_cmd(group, env);
 		else if (type == GROUP)
 			ret = exec_shell(group, &env);
@@ -68,7 +69,9 @@ static int	exec_shell_child(t_group *group, int type, char **env)
 
 static int	exec_inbuilt(t_group *group, char ***env)
 {
-	(void)group;
-	(void)env;
+	t_tokens *token;
+
+	token = (t_tokens *)group->data;
+	inbuilds(token, *env);
 	return (0);
 }

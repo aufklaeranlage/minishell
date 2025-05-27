@@ -3,13 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/27 13:17:21 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:50:03 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdio.h>
+
 #include <stdlib.h>
 
 #include "minichill.h"

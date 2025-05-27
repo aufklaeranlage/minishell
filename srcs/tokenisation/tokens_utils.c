@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/19 23:03:56 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:40:20 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@ char	*minishell_getexec(char *execname, char **env)
 	char	**paths;
 	size_t	i;
 
+	exec = NULL;
+	if (ft_strrchr(execname, '/'))
+	{
+		if (access(execname, F_OK | X_OK) == 0)
+			return (ft_strrchr(execname, '/') + 1);
+		return (NULL);
+	}
 	paths = ft_splitpaths((ft_getenv("PATH", env)));
 	tmp = ft_strjoin("/", execname);
 	if (!tmp)

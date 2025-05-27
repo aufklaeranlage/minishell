@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:35:23 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:37:58 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/23 16:01:46 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@
 # define TEXT            27
 # define O_BR            28			// (
 # define C_BR            29			// )
-# define WILDCARD        30 
+# define WILDCARD        30
+# define ASSIGNMENT      31
 
-# define CMD				31
-# define GROUP				32 
+# define CMD				33
+# define GROUP				34 
 
 # define SHNAME "minichill"
 

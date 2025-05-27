@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 23:03:56 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/20 23:25:37 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/21 14:42:57 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ size_t	delimiter(int *d_type, t_tokens *list, size_t i)
 	while (i < list->size)
 	{
 		if (list->type[i] == PIPE || list->type[i] == OR \
-			|| list->type[i] == AND)
+			|| list->type[i] == AND || list->type[i] == SMCLN)
 		{
 			*d_type = list->type[i];
 			return (i);

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:44:00 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/20 23:34:12 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/23 11:25:50 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,8 @@ void	redirection(t_group *group, t_tokens *list, size_t i)
 		group->red = NULL;
 		return ;
 	}
-	group->red = red;
+	if (!group->red)
+		group->red = red;
+	else
+		append_tokens(&(group->red), red);
 }

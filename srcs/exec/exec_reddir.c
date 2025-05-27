@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_reddir.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:31:15 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/27 13:24:29 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/27 14:51:28 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
