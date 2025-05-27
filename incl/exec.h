@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:17:44 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:16:06 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 # include "errors.h"
 # include "env.h"
 # include "tokenisation.h"
+
+//	WRAPPER
+
+int		exec_wrapper(t_group *group, char ***env);
 
 //	SHELL
 

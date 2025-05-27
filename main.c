@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:44:44 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:17:21 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdio.h>
@@ -32,7 +32,7 @@ int main(int ac, char **av, char **env)
         add_history(buf);
         if (create_execution_list(group, buf, local_env))
             return (1);
-		exec_shell(group, &env);
+		exec_wrapper(group, &env);
         /*//display groups partions*/
         /*grouped_tokens_display(group);*/
         /*// THISH SHEAT IS INCORECT*/

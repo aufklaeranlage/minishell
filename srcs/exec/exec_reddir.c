@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:31:15 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:36:43 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/27 13:24:29 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int	exec_reddir(t_tokens *tok)
 
 	if (!tok)
 		return (0);
-	bzero(fd, 2 * sizeof(fd));
+	fd[0] = -1;
+	fd[1] = -1;
 	i = 0;
 	while (i < tok->size)
 	{
@@ -46,7 +47,7 @@ int	exec_reddir(t_tokens *tok)
 
 static int	red_in(t_tokens *tok, int fd[2], size_t i)
 {
-	if (fd[0])
+	if (fd[0] != -1)
 		close(fd[0]);
 	if (tok->type[i] == RED_IN)
 		fd[0] = open((char *)tok->content[i], O_RDONLY, NULL);
@@ -65,7 +66,7 @@ static int	red_out(t_tokens *tok, int fd[2], size_t i)
 	int	flags;
 
 	flags = 0;
-	if (fd[1] && fd[1] != -1)
+	if (fd[1] != -1)
 		close(fd[1]);
 	if (tok->type[i] == RED_OUT)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
@@ -82,12 +83,12 @@ static int	red_out(t_tokens *tok, int fd[2], size_t i)
 
 static void	red_dup(int fd[2])
 {
-	if (fd[0] && fd[0] != -1)
+	if (fd[0] != -1)
 	{
 		dup2(fd[0], STDIN);
 		close(fd[0]);
 	}
-	if (fd[1] && fd[1] != -1)
+	if (fd[1] != -1)
 	{
 		dup2(fd[1], STDOUT);
 		close(fd[1]);

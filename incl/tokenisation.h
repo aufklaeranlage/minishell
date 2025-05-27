@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/23 15:14:11 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/27 12:57:04 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define TOKENISATION_H
 
 # include <stdio.h>
+
+# include "defines.h"
 
 # include "libft.h"
 # include <stdlib.h>
