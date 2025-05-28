@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/27 13:16:06 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:36:18 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 
+# include "inbuilds.h"
 # include "libft.h"
 # include "pipe.h"
 # include "errors.h"
@@ -36,6 +37,10 @@ int		exec_pipe(t_group *group, char **env);
 //	CMD
 
 int		exec_cmd(t_group *group, char **env);
+
+//	INBUILT CMD
+
+int		exec_inbuilt(t_group *group, char ***env);
 
 //	RED DIR
 

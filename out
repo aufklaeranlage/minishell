@@ -1,15 +1,0 @@
-[?2004hminichill $>ls -la > out^C[?2004ln   4096 May 27 14:46 .
-drwxr-xr-x 14 abronner 2024_berlin    195 May 23 16:41 ..
-drwxr-xr-x  2 abronner 2024_berlin     93 May 27 14:46 ABOUT
-drwxr-xr-x  8 abronner 2024_berlin   4096 May 27 14:46 .git
--rw-r--r--  1 abronner 2024_berlin     42 May 22 12:50 .gitignore
-drwxr-xr-x  2 abronner 2024_berlin    175 May 27 14:46 incl
-drwxr-xr-x  6 abronner 2024_berlin     85 May 27 14:46 libft
--rw-r--r--  1 abronner 2024_berlin   1741 May 27 14:46 main.c
--rw-r--r--  1 abronner 2024_berlin   3418 May 27 14:46 Makefile
--rwxr-xr-x  1 abronner 2024_berlin 123656 May 27 14:46 minishell
-drwxr-xr-x  2 abronner 2024_berlin   4096 May 27 14:46 objs
--rw-r--r--  1 abronner 2024_berlin      0 May 27 14:46 out
--rw-r--r--  1 abronner 2024_berlin   7713 May 27 14:46 print_group_data.c
-drwxr-xr-x  9 abronner 2024_berlin    111 May 27 14:46 srcs
-drwxr-xr-x  2 abronner 2024_berlin     24 May 22 12:50 tests

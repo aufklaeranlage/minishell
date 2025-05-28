@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/27 14:50:03 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:23:36 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int main(int ac, char **av, char **env)
         add_history(buf);
         if (create_execution_list(group, buf, local_env))
             return (1);
+        //display groups partions
+        grouped_tokens_display(group);
 		exec_wrapper(group, &env);
-        /*//display groups partions*/
-        /*grouped_tokens_display(group);*/
         /*// THISH SHEAT IS INCORECT*/
         /*inbuilds(group->data, local_env, buf);*/
         free(buf);
