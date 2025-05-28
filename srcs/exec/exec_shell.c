@@ -6,59 +6,59 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:25:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/28 15:21:27 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:16:36 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minichill.h"
 #include "exec.h"
 
-static int	exec_shell_child(t_group *group, char **env);
+static int	exec_shell_child(t_group *grp, char **env);
 
 //	Returns value of last executable.
 
-int	exec_shell(t_group *group, char ***env)
+int	exec_shell(t_group *grp, char ***env)
 {
 	int		ret;
 	int		cond;
 
-	exec_reddir(group->red);
+	exec_reddir(grp->red);
 	ret = 0;
-	cond = group->exec_type;
-	if (group->exec_type == PIPE)
-		ret = exec_shell_child(group, *env);
-	else if (group->data_type >= INCMD_ECHO
-		&& group->data_type <= INCMD_UNSET)
-		ret = exec_inbuilt(group, env);
+	cond = grp->exec_type;
+	if (grp->exec_type == PIPE)
+		ret = exec_shell_child(grp, *env);
+	else if (grp->data_type >= INCMD_ECHO
+		&& grp->data_type <= INCMD_UNSET)
+		ret = exec_inbuilt(grp, env);
 	else
-		ret = exec_shell_child(group, *env);
-	while (group->exec_type == PIPE)
-		group = group->next;
-	group = group->next;
-	while (group)
+		ret = exec_shell_child(grp, *env);
+	while (grp->exec_type == PIPE)
+		grp = grp->next;
+	grp = grp->next;
+	while (grp)
 	{
 		if (cond == SMCLN || (cond == AND && !ret)
 			|| (cond == OR && ret))
 		{
-			cond = group->exec_type;
-			if (group->exec_type == PIPE)
-				ret = exec_shell_child(group, *env);
-			else if (group->data_type >= INCMD_ECHO
-				&& group->data_type <= INCMD_UNSET)
-				ret = exec_inbuilt(group, env);
+			cond = grp->exec_type;
+			if (grp->exec_type == PIPE)
+				ret = exec_shell_child(grp, *env);
+			else if (grp->data_type >= INCMD_ECHO
+				&& grp->data_type <= INCMD_UNSET)
+				ret = exec_inbuilt(grp, env);
 			else
-				ret = exec_shell_child(group, *env);
-			while (group->exec_type == PIPE)
-				group = group->next;
+				ret = exec_shell_child(grp, *env);
+			while (grp->exec_type == PIPE)
+				grp = grp->next;
 		}
-		if (group->next == NULL)
+		if (grp->next == NULL)
 			break ;
-		group = group->next;
+		grp = grp->next;
 	}
-	return (childreturn(ret));
+	return (exec_cleanup(grp->parent), childreturn(ret));
 }
 
-static int	exec_shell_child(t_group *group, char **env)
+static int	exec_shell_child(t_group *grp, char **env)
 {
 	int		ret;
 	pid_t	pid;
@@ -67,12 +67,13 @@ static int	exec_shell_child(t_group *group, char **env)
 	pid = fork();
 	if (!pid)
 	{
-		if (group->exec_type == PIPE)
-			ret = exec_pipe(group, env);
-		else if (group->data_type == STD_CMD)
-			ret = exec_cmd(group, env);
-		else if (group->data_type == GROUP)
-			ret = exec_shell(group->data, &env);
+		if (grp->exec_type == PIPE)
+			ret = exec_pipe(grp, env);
+		else if (grp->data_type == STD_CMD)
+			ret = exec_cmd(grp, env);
+		else if (grp->data_type == GROUP)
+			ret = exec_shell(grp->data, &env);
+		exec_cleanup(grp->parrent);
 		exit(ret);
 	}
 	else

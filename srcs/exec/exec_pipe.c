@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:52:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/27 15:34:49 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:19:50 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,13 @@ static void	exec_pipe_child(t_group *group, size_t id, char **env)
 	}
 	ret = 0;
 	if (group->data_type >= INCMD_ECHO && group->data_type <= INCMD_UNSET)
+	{
 		ret = exec_inbuilt(group, &env);
+		exec_cleanup(grp->parrent);
+	}
 	else if (group->data_type == STD_CMD)
 		ret = exec_cmd(group, env);
 	else if (group->data_type == GROUP)
 		ret = exec_shell(group, &env);
-	/*else if (group->type[id] == PIPE)*/
-	/*	;	//	ERROR*/
 	exit(ret);
 }

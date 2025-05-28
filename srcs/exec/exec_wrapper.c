@@ -6,33 +6,34 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:12:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/27 15:43:29 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:12:40 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	exec_wrapper(t_group *group, char ***env)
+int	exec_wrapper(t_group *grp, char ***env)
 {
 	int	ret;
 	int	pid;
 
-	if (!group)
+	if (!grp)
 		return (1);
 	ret = 0;
-	if (group->exec_type == PIPE)
-		ret = exec_pipe(group, *env);
-	else if (group->data_type == STD_CMD)
+	if (grp->exec_type == PIPE)
+		ret = exec_pipe(grp, *env);
+	else if (grp->data_type == STD_CMD)
 	{
 		pid = fork();
 		if (!pid)
-			exec_cmd(group, *env);
+			exec_cmd(grp, *env);
 		waitpid(pid, &ret, 0);
 		ret = childreturn(ret);
 	}
-	else if (group->data_type >= INCMD_ECHO && group->data_type <= INCMD_UNSET)
-		ret = exec_inbuilt(group, env);
-	else if (group->data_type == GROUP)
-		ret = exec_shell(group->data, env);
+	else if (grp->data_type >= INCMD_ECHO && grp->data_type <= INCMD_UNSET)
+		ret = exec_inbuilt(grp, env);
+	else if (grp->data_type == GROUP)
+		ret = exec_shell(grp->data, env);
+	group_free(grp);
 	return (ret);
 }

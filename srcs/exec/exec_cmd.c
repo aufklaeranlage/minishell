@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/22 12:40:15 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:14:53 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,20 @@ static char *cmd_getbin(char *name, char **env);
 //		If there are assignments before the string of arrays it will change
 //		it's environment, which will have no effects on the other processes
 
-int	exec_cmd(t_group *group, char **env)
+int	exec_cmd(t_group *grp, char **env)
 {
 	char	**argv;
 	char	*bin;
 
-	if (exec_reddir(group->red))
-		;	//	FREE EVERYTHING MALLOC ERROR
-	exec_assign((t_tokens *)group->data, &env);
-	argv = ((t_tokens *)group->data)->content;
-	/*if (group->data_type != STD_CMD)*/
-	/*	;	//	ERROR	: tokenizer err*/
+	if (exec_reddir(grp->red))
+		exec_cleanup(grp->parrent);
+	exec_assign((t_tokens *)grp->data, &env);
+	argv = ((t_tokens *)grp->data)->content;
 	bin = cmd_getbin(argv[0], env);
 	if (!bin)
 		return (errormsg(argv[0], "command not found"), -1);
 	if (execve(bin, argv, env) == -1)
-		;	//	ERROR	: execve fail
-	//	FREE EVERYTHING (Maybe needs to be done up the tree)
+		exec_cleanup(grp->parrent);
 	return (127);
 }
 

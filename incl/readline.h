@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:50:10 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:32:42 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:42:41 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# include "defines.h"
 # include "libft.h"
 # include "expander.h"
 
@@ -30,5 +31,9 @@ char	*rl_getline(char *prompt);
 int		rl_appdel(char **line, char *del, char **ret);
 
 int		rl_appquo(char **line, char quote);
+
+//	HERE DOC
+
+char	*rl_heredoc(char *del);
 
 #endif

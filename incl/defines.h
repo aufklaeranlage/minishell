@@ -6,12 +6,14 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:35:23 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 16:01:46 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/05/28 16:42:20 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINES_H
 # define DEFINES_H
+
+# define HD_PROMPT "> "
 
 # define STDIN 0
 # define STDOUT 1
