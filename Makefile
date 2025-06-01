@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/05/27 15:35:26 by abronner         ###   ########.fr        #
+#    Updated: 2025/06/01 22:35:01 by akuzmin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC_DIR		:=	srcs/
 
 OBJ_DIR		:=	objs/
 
-SUB_DIR		:=	env/ errors/ exec/ expander/ readline/ tokenisation/ inbuilds/
+SUB_DIR		:=	env/ errors/ exec/ expander/ readline/ tokenisation/ inbuilds/ sig/
 
 INC_DIR		:=	incl/
 
@@ -39,7 +39,8 @@ SRCS		:=	env.c \
 				main.c \
 				print_group_data.c \
 				ft_echo.c ft_pwd.c ft_cd.c ft_env.c ft_unset.c ft_export.c \
-				ft_exit.c inbuilds.c wildcard.c
+				ft_exit.c inbuilds.c wildcard.c \
+				sig.c
 				
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
@@ -58,14 +59,14 @@ CC			:=	cc
 
 CFLAGS		:=	-Wall -Wextra -Werror $(ADDCCFLAGS)
 # For school PC
-CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR)
+# CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR)
 
-LIBFLAGS	:=	-L$(LIBFT_DIR) -l:$(LIBFT_NAME) -lreadline
+# LIBFLAGS	:=	-L$(LIBFT_DIR) -l:$(LIBFT_NAME) -lreadline
 
 # For my own
-# CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I/opt/homebrew/opt/readline/include
+CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I/opt/homebrew/opt/readline/include
 
-# LIBFLAGS	:=	-L$(LIBFT_DIR) -L/opt/homebrew/opt/readline/lib -lft -lreadline
+LIBFLAGS	:=	-L$(LIBFT_DIR) -L/opt/homebrew/opt/readline/lib -lft -lreadline
 
 RM			:= rm -rf
 

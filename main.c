@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/28 15:23:36 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/01 22:45:53 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ int main(int ac, char **av, char **env)
     char        **local_env;
     (void)ac;
     (void)av;
-    local_env = ft_splitcpy(env); 
+    local_env = ft_splitcpy(env);
+    
+    signal_handler_init();
     while (1)
     {
         buf = readline(RL_PROMPT);
@@ -30,13 +32,12 @@ int main(int ac, char **av, char **env)
             break;
         t_group *group = malloc(sizeof(t_group));
         add_history(buf);
-        if (create_execution_list(group, buf, local_env))
-            return (1);
+        create_execution_list(group, buf, local_env);
         //display groups partions
-        grouped_tokens_display(group);
+        // grouped_tokens_display(group);
+
 		exec_wrapper(group, &env);
-        /*// THISH SHEAT IS INCORECT*/
-        /*inbuilds(group->data, local_env, buf);*/
+        
         free(buf);
     }
     ft_freesplit(local_env);

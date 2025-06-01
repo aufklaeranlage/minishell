@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:30:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 15:56:19 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/01 22:36:52 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@
 # include "readline.h"
 # include "tokenisation.h"
 # include "inbuilds.h"
+# include "sig.h"
 
 #endif
