@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 23:03:56 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 11:54:35 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/02 15:05:53 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ const char	*token_type_to_str(int type)
         case TEXT: return ("TEXT");
         case BIN_AND: return ("BIN_AND");
         case SMCLN: return ("SEMICOLON(;)");
-        case CLN: return ("COLON(:)");
+        // case CLN: return ("COLON(:)");
         default: return ("UNKNOWN");
     }
 }

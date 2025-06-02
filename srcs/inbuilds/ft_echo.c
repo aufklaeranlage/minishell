@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 15:33:17 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/02 14:57:00 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*path_to_str(char *str, char **env)
 	return (ft_strdup(""));
 }
 
-static char	*expand_path(char *str, char **env)
+char	*expand_path(char *str, char **env)
 {
 	char	*result;
 	char	*tmp;
@@ -106,6 +106,8 @@ int ft_echo(t_tokens *tokens, char **env)
 			out = ft_strjoin(out, tokens->content[i]);
 		
 		printf("%s", out);
+		if (i < tokens->size - 1)
+			printf(" ");
 		i++;
 	}
 	if (new_line)

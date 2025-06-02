@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/27 14:51:48 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/02 14:49:30 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ int			cmd_specifier(char *str);
 char		*minishell_getexec(char *execname, char **env);
 int			specifier_two(char *str);
 int			specifier_one(char *str);
+
+/**
+ * NEW TO PREPARE STRING BEFORE ALL, 
+ * BECAUSE OF IT NEED TO MAKE ALL CODE OF THIS PART LIGHTER
+ */
+char		*prepare_str(char *str, char **env);
 
 // Modules
 t_wrap		*convert_str(char *str);

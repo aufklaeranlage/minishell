@@ -6,11 +6,12 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/01 22:46:27 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/02 14:53:01 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/tokenisation.h"
+#include "inbuilds.h"
 
 void	*del_tokens(t_tokens *out)
 {
@@ -92,6 +93,50 @@ void	return_cmd_type(t_group *parsed_group)
 	}
 }
 
+char *prepare_str(char *str, char **env)
+{
+    char *new;
+    char *out;
+    char *sub;
+	char *expanded;
+	size_t len;
+    size_t i = 0;
+
+    new = malloc(ft_strlen(str) * 10 + 1);
+    if (!new)
+        return (str);
+    while (*str)
+    {
+        if (*str == '\'' && ft_strchr(str + 1, '\''))
+        {
+            len = ft_strchr(str + 1, '\'') - str - 1;
+            sub = ft_substr(str + 1, 0, len);
+            ft_strlcpy(new + i, sub, len + 1);
+            i += len;
+            str += len + 2;
+            free(sub);
+        }
+        else if (*str == '"' && ft_strchr(str + 1, '"'))
+        {
+            len = ft_strchr(str + 1, '"') - str - 1;
+            sub = ft_substr(str + 1, 0, len);
+            expanded = expand_path(sub, env);
+            ft_strlcpy(new + i, expanded, ft_strlen(expanded) + 1);
+            i += ft_strlen(expanded);
+            str += len + 2;
+            free(sub);
+            free(expanded);
+        }
+        else
+            new[i++] = *str++;
+    }
+    new[i] = '\0';
+    out = ft_strdup(new);
+    free(new);
+	//free(str);
+    return (out);
+}
+
 // TEST IT: <<EOF (ls | cat -e) <in >out
 int	create_execution_list(t_group *group, char *str, char **env)
 {
@@ -101,6 +146,7 @@ int	create_execution_list(t_group *group, char *str, char **env)
 	if (!group)
 		return (1);
 	tokens = NULL;
+	str = prepare_str(str, env);
 	if (wrap_operations(&tokens, str, env) || parser_input_validation(tokens))
 	{
 		del_tokens(tokens);

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 16:50:35 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/02 13:52:24 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static int	process_regular(t_tokens *out, size_t i, char *tmp)
 		free(tmp);
 		return (1);
 	}
-	
 	if (ft_strchr(tmp, '=') != NULL)
 		out->type[i] = ASSIGNMENT;
 	return (0);
@@ -72,6 +71,12 @@ static int	process_token(t_tokens *out, size_t i, t_list **curr, char **env)
 		return (1);
 	out->type[i] = set_type(tmp, env);
 	result = 0;
+	if (ft_strrchr(tmp, '/') - tmp == 1 && tmp[0] == '.' \
+		&& access(tmp, F_OK | X_OK) == 0)
+	{
+		out->type[i] = STD_CMD;
+		result = process_regular(out, i, tmp);;
+	}
 	if (out->type[i] >= RED_IN && out->type[i] <= ADD_OUT)
 	{
 		result = process_redirect(out, i, curr, tmp);

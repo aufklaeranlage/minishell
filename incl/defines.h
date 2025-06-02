@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:35:23 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 16:01:46 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/02 15:05:10 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define HERE_DOC        16			// <<
 # define ADD_OUT		 17			// >>
 # define SMCLN           18			// ;
-# define CLN			 19 		// :
+// # define CLN			 19 		// :
 # define DQ              20 		// "
 # define SQ              21 		// '
 # define NEW_LINE        22 		// \n

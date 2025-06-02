@@ -38,6 +38,9 @@ int		ft_unset(t_tokens *tokens, char ***env);
 int		ft_export(char **env);
 int		ft_exit(t_tokens *tokens, char **env);
 
+// UTILS FOR USE OUTSIDE
+char	*expand_path(char *str, char **env);
+
 // Bonus
 int		is_wildcard(char *str);
 char	*expand_wildcard(char *str, char **env);

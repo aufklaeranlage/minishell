@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/01 23:19:46 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/02 14:56:20 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,13 @@ static t_wrap	*init_token_list(void)
 static char	*handle_text_token(char *str, t_wrap *list)
 {
 	char	*start;
-	char	*tmp;
 	void	*node;
-	size_t	is_space_after;
 
 	start = str;
-	is_space_after = 0;
-	while (*str && !specifier_one(str) \
-	&& !specifier_two(str) && *str != ' ')
+	while (*str && !specifier_one(str) && !specifier_two(str) \
+	&& *str != ' ')
 		str++;
-	tmp = ft_substr(start, 0, str - start);
-	if (str[1] == ' ' && cmd_specifier(tmp) == 0)
-		is_space_after = 1;
-	free(tmp);
-	node = ft_lstnew(ft_substr(start, 0, str - start + is_space_after));
+	node = ft_lstnew(ft_substr(start, 0, str - start));
 	if (node)
 		ft_wrapadd_back(list, node);
 	return (str);

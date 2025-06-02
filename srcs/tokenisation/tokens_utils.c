@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 16:40:20 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/02 15:05:35 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int	specifier_two(char *str)
 		return (C_BR);
 	if (str[0] == ';')
 		return (SMCLN);
-	if (str[0] == ':')
-		return (CLN);
+	// if (str[0] == ':')
+	// 	return (CLN);
 	if (str[0] == '\n')
 		return (NEW_LINE);
 	if (str[0] == '\"' && ft_strchr(str + 1, '\"') == NULL)
@@ -64,6 +64,7 @@ char	*minishell_getexec(char *execname, char **env)
 	size_t	i;
 
 	exec = NULL;
+	
 	if (ft_strrchr(execname, '/'))
 	{
 		if (access(execname, F_OK | X_OK) == 0)
