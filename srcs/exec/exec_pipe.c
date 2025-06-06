@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:52:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/28 16:19:50 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/06 09:15:18 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 static size_t	exec_pipe_getsize(t_group *group);
 
-static void	exec_pipe_child(t_group *group, size_t id, char **env);
+static void		exec_pipe_child(t_group *group, size_t id, char **env);
+
+static int		exec_pipe_wait(int count, int *pid_arr);
 
 //	exec_pipe() executes one or more tokens in a s_token struct in a pipe.
 
@@ -34,7 +36,7 @@ int	exec_pipe(t_group *group, char **env)
 		exec_pipe_child(group, id, env);
 	}
 	else
-		waitpid(pid_arr[count - 1], &ret, 0);
+		ret = exec_pipe_wait(count, pid_arr);
 	free(pid_arr);
 	return (childreturn(ret));
 }
@@ -72,4 +74,19 @@ static void	exec_pipe_child(t_group *group, size_t id, char **env)
 	else if (group->data_type == GROUP)
 		ret = exec_shell(group, &env);
 	exit(ret);
+}
+
+static int	exec_pipe_wait(int count, int *pid_arr)
+{
+	int	ret;
+	int	i;
+
+	ret = 0;
+	i = 0;
+	while (i < count)
+	{
+		waitpid(pid_arr[i], &ret, 0);
+		++i;
+	}
+	return (ret);
 }
