@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/06/01 22:35:01 by akuzmin          ###   ########.fr        #
+#    Updated: 2025/06/06 15:27:22 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ INC_DIR		:=	incl/
 SRCS		:=	env.c \
 				exec_cmd.c exec_pipe.c exec_reddir.c exec_reddir_heredoc.c \
 				exec_shell.c exec_utils.c pipe.c exec_wrapper.c exec_inbuilt.c \
+				exec_cleanup.c \
 				errormsg.c \
 				expander.c \
 				tokens_create.c tokens_utils.c \

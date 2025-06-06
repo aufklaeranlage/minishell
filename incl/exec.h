@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/27 15:36:18 by abronner         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:15:10 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 
+# include "shell.h"
 # include "inbuilds.h"
 # include "libft.h"
 # include "pipe.h"
@@ -24,23 +25,23 @@
 
 //	WRAPPER
 
-int		exec_wrapper(t_group *group, char ***env);
+int		exec_wrapper(t_group *grp, char ***env);
 
 //	SHELL
 
-int		exec_shell(t_group *group, char ***env);
+int		exec_shell(t_group *grp, char ***env);
 
 //	PIPE
 
-int		exec_pipe(t_group *group, char **env);
+int		exec_pipe(t_group *grp, char **env);
 
 //	CMD
 
-int		exec_cmd(t_group *group, char **env);
+int		exec_cmd(t_group *grp, char **env);
 
 //	INBUILT CMD
 
-int		exec_inbuilt(t_group *group, char ***env);
+int		exec_inbuilt(t_group *grp, char ***env);
 
 //	RED DIR
 
@@ -55,5 +56,11 @@ int		open_heredoc(char *hd_str);
 int		exec_assign(t_tokens *tok, char ***env);
 
 int		childreturn(int wstatus);
+
+//	CLEANUP
+
+void	exec_cleanup(t_shell *shell);
+
+void	group_free(t_group *grp);
 
 #endif
