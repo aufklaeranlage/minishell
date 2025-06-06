@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:50:10 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/28 16:42:41 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/06 15:00:10 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "defines.h"
 # include "libft.h"
 # include "expander.h"
+# include "errors.h"
 
 //	READLINE GENERAL
 
