@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   INBUILDS.h                                     :+:      :+:    :+:   */
+/*   inbuilds.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/13 16:21:44 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/10 11:21:03 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
+
+# define EXPUSE "export: usage: export [name[=value] ...] or export [-p]\n"
 
 // Inbuilds
 int		inbuilds(t_tokens *tokens, char **env);
