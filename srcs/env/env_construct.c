@@ -6,13 +6,15 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:33:27 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/10 14:49:05 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:51:14 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-int		env_replaceconstructed(t_env *env)
+static char	*env_constructvarstr(char *var, char *val);
+
+int	env_replaceconstructed(t_env *env)
 {
 	char	**tmp;
 
@@ -39,15 +41,32 @@ char	**env_construct(t_env *env)
 	j = 0;
 	while (i < env->size)
 	{
-		if (env->state[i] == ENVEXP && env->val)
+		if (env->state[i] == ENVEXP && env->val[i])
 		{
 			ret[j] = env_constructvarstr(env->var[i], env->val[i]);
 			if (!ret[j])
-				return (ft_splitfree(ret), NULL);
+				return (ft_freesplit(ret), NULL);
 			++j;
 		}
 		++i;
 	}
 	ret[j] = NULL;
+	return (ret);
+}
+
+static char	*env_constructvarstr(char *var, char *val)
+{
+	char	*ret;
+	char	*tmp;
+
+	if (!var)
+		return (NULL);
+	if (!val)
+		return (ft_strdup(var));
+	tmp = ft_strjoin(var, "=");
+	if (!tmp)
+		return (NULL);
+	ret = ft_strjoin(tmp, val);
+	free(tmp);
 	return (ret);
 }

@@ -6,13 +6,14 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/10 11:27:15 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:00:44 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
+#include "env.h"
 
-static int	export_flagcheck(t_token *tok);
+static void	exp_print(t_env *env);
 
 //	tok is the token that contains the strings to insert. env is a pointer to
 //	the local environment of the shell. exp is a pointer to the global
@@ -21,43 +22,35 @@ static int	export_flagcheck(t_token *tok);
 
 int	ft_export(t_token *tok, t_env *env)
 {
-	int		ret;
 	size_t	i;
 	
-	if (export_flagcheck(tok))
+	if (!tok || !env)
 		return (1);
-	
-}
-
-static int	export_flagcheck(t_token *tok)
-{
-	size_t	i;
-
+	if (tok->size == 1)
+		return (exp_print(env), 0);
 	i = 1;
 	while (i < tok->size)
-	{
-		if (tok->content[i][0] == '-')
-		{
-			if (tok->content[i][1] != 'p')
-			{
-				errormsg(SHNAME, "export", tok->content[i], "invalid option");
-				ft_putstrfd(EXPUSE, 2)
-				return (1);
-			}
-		}
-		++i;
-	}
+		env_insert(tok->content[i++]);
 	return (0);
 }
 
-static int	export_all(char ***env, char **exp)
+static void	exp_print(t_env *env)
 {
-	size_t	count;
-	char	**tmp;
+	size_t	i;
 
-	count = ft_splitcount(*env);
-	tmp = ft_splitlcpy(env, count);
-	if (!tmp)
-		return (1);
-
+	i = 0;
+	while (i < env->size)
+	{
+		if (!env->val[i])
+			ft_putstr_fd("export ", 1);
+		ft_putstr_fd(env->var[i], 1);
+		if (env->val[i])
+		{
+			ft_putstr_fd("=\"", 1);
+			ft_putstr_fd(env->val[i], 1);
+			ft_putchar_fd('"', 1);
+		}
+		ft_putchar_fd('\n', 1);
+		++i;
+	}
 }

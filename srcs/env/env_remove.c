@@ -6,15 +6,17 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 11:49:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/10 14:50:13 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/11 11:01:39 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-static t_envstate	*env_statermv(t_envstate *state, size_t	pos, size_t	size);
+static int	*env_statermv(int *state, size_t pos, size_t size);
 
-static int			env_remove_parts(size_t pos, t_env *env);
+static int	env_removeparts(t_env *env, size_t pos);
+
+static char	**env_splitrmv(char **split, size_t pos, size_t size);
 
 //	env_removes() removes a variable of the name varname from the environment
 //	env. If the variable is removed, not present, or the environment is empty
@@ -27,7 +29,7 @@ int	env_remove(char *varname, t_env *env)
 
 	if (!varname || !env)
 		return (0);
-	pos = env_contains(varname, *env);
+	pos = env_contains(varname, env);
 	if (!pos--)
 		return (0);
 	if (env_removeparts(env, pos))
@@ -38,12 +40,12 @@ int	env_remove(char *varname, t_env *env)
 
 static int	env_removeparts(t_env *env, size_t pos)
 {
-	char 	**tmpvar;
-	char 	**tmpval;
-	char 	**tmpstate;
+	char	**tmpvar;
+	char	**tmpval;
+	int		*tmpstate;
 
-	tmpvar = ft_splitrmv(env->var, pos);
-	tmpval = ft_splitrmv(env->val, pos);
+	tmpvar = env_splitrmv(env->var, pos, env->size);
+	tmpval = env_splitrmv(env->val, pos, env->size);
 	tmpstate = env_statermv(env->state, pos, env->size);
 	if (!tmpvar || !tmpval || !tmpstate)
 		return (errormsg(SHNAME, "env", ENVERRSPC, NULL), free(tmpvar),
@@ -60,7 +62,7 @@ static int	env_removeparts(t_env *env, size_t pos)
 	return (0);
 }
 
-static t_envstate	*env_statermv(int *state, size_t	pos, size_t	size)
+static int	*env_statermv(int *state, size_t pos, size_t	size)
 {
 	int		*ret;
 	size_t	i;
@@ -81,5 +83,32 @@ static t_envstate	*env_statermv(int *state, size_t	pos, size_t	size)
 		ret[i] = state[i];
 		++i;
 	}
+	return (ret);
+}
+
+static char	**env_splitrmv(char **split, size_t pos, size_t size)
+{
+	char	**ret;
+	size_t	i;
+
+	if (!split)
+		return (NULL);
+	if (pos > size)
+		return (NULL);
+	ret = malloc(size-- * sizeof(*ret));
+	if (!ret)
+		return (NULL);
+	i = 0;
+	while (i < pos)
+	{
+		ret[i] = split[i];
+		++i;
+	}
+	while (i < size)
+	{
+		ret[i] = split[i + 1];
+		++i;
+	}
+	ret[i] = NULL;
 	return (ret);
 }
