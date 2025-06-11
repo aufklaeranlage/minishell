@@ -6,101 +6,68 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:54:38 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/11 11:01:08 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:15:34 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-static int	env_insert_parts(char *nvar, char *nval, int exp, t_env *env);
+static int	env_insert_node(char *varstr, int exp, t_env *env);
 
-static int	env_replace(char *var, char *val, int exp, t_env *env);
+static int	env_replace(char *varstr, int exp, t_env *env);
 
-static int	env_parts_init(size_t size, char ***var, char ***val, int **state);
-
-static void	env_parts_copy(char **var, char **val, int *state, t_env *env);
-
-int	env_insert(char *varstr, int exp, t_env *env)
+int	env_ins(char *varstr, int exp, t_env *env)
 {
-	char	*var;
-	char	*val;
-
 	if (!varstr || !env)
 		return (1);
-	if (env_splitvarstr(varstr, &var, &val))
-		return (1);
-	if (!env_replace(var, val, exp, env))
+	if (!env_replace(varstr, exp, env))
 		return (0);
-	if (env_insert_parts(var, val, exp, env))
-		return (free(var), free(val), 1);
-	env_replaceconstructed(env);
-	return (0);
-}
-
-static int	env_insert_parts(char *nvar, char *nval, int exp, t_env *env)
-{
-	char	**var;
-	char	**val;
-	int		*state;
-
-	if (env_parts_init(env->size + 1, &var, &val, &state))
+	if (env_insert_node(varstr, exp, env))
 		return (1);
-	env_parts_copy(var, val, state, env);
-	var[env->size] = nvar;
-	val[env->size] = nval;
-	state[env->size] = (exp != 0) * ENVEXP | (exp == 0) * ENVSET;
-	free(env->var);
-	free(env->val);
-	free(env->state);
-	env->var = var;
-	env->val = val;
-	env->state = state;
-	++env->size;
 	return (0);
 }
 
-static int	env_replace(char *var, char *val, int exp, t_env *env)
+static int	env_insert_node(char *varstr, int exp, t_env *env)
 {
-	size_t	pos;
+	t_list		*node;
+	t_envnode	*envnode;
 
-	pos = env_contains(var, env);
-	if (!pos--)
+	envnode = envnode_init(varstr, exp);
+	if (!envnode)
 		return (1);
-	free(env->var[pos]);
-	env->var[pos] = var;
-	free(env->val[pos]);
-	env->val[pos] = val;
-	if (exp)
-		env->state[pos] = ENVEXP;
-	env_replaceconstructed(env);
+	node = ft_lstnew((void *)envnode);
+	if (!node)
+		return (envnode_free(envnode), 1);
+	ft_wrapadd_back(env->wrap, node);
+	if (exp && envnode->val)
+		env_arr_ins(envnode->var, envnode->val, env);
 	return (0);
 }
 
-static int	env_parts_init(size_t size, char ***var, char ***val, int **state)
+static int	env_replace(char *varstr, int exp, t_env *env)
 {
-	++size;
-	*var = malloc(size * (sizeof(**var)));
-	*val = malloc(size * (sizeof(**val)));
-	*state = malloc(size * (sizeof(**state)));
-	if (!*var || !*val || !*state)
-		return (ft_freesplit(*var), ft_freesplit(*val), free(*state),
-			errormsg(SHNAME, "env", ENVERRINS, NULL), 1);
-	(*var)[size - 1] = NULL;
-	(*val)[size - 1] = NULL;
-	(*state)[size - 1] = 0;
-	return (0);
-}
+	t_envnode	*envnode;
+	char		*val;
+	size_t		varlen;
 
-static void	env_parts_copy(char **var, char **val, int *state, t_env *env)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < env->size)
+	envnode = env_contains(varstr, env);
+	if (!envnode)
+		return (1);
+	varlen = 0;
+	while (varstr[varlen] && varstr[varlen] != '=')
+		++varlen;
+	val = NULL;
+	if (varstr[varlen])
 	{
-		var[i] = env->var[i];
-		val[i] = env->val[i];
-		state[i] = env->state[i];
-		++i;
+		++varlen;
+		val = ft_strdup(varstr + varlen);
+		free(envnode->val);
+		envnode->val = val;
 	}
+	if ((exp || envnode->state) && envnode->val)
+	{
+		envnode->state = ENVEXP;
+		env_arr_rep(envnode->var, envnode->val, env);
+	}
+	return (0);
 }

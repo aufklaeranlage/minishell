@@ -6,67 +6,78 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:16:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/11 10:41:15 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/11 12:59:39 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-static t_env	*env_allocate(char **env);
+static t_env	*env_init_alloc(void);
 
-static int		env_saveparts(t_env *ret, char **env);
+static int		env_init_add(t_env *ret, char **env);
 
-t_env	*env_init(char **env)
+t_env	*env_init(char **envsplit)
 {
 	t_env	*ret;
 
-	if (!env)
+	if (!envsplit)
 		return (NULL);
-	ret = env_allocate(env);
+	ret = env_init_alloc();
 	if (!ret)
+		return (ret);
+	if (env_init_add(ret, envsplit))
 		return (NULL);
-	ret->constructed = NULL;
-	if (env_saveparts(ret, env))
-		return (env_free(ret), NULL);
-	ret->constructed = env_construct(ret);
-	if (!ret->constructed)
+	if (env_arr_init(ret))
 		return (env_free(ret), NULL);
 	return (ret);
 }
 
-static t_env	*env_allocate(char **env)
+static t_env	*env_init_alloc(void)
 {
 	t_env	*ret;
-	
+
 	ret = malloc(sizeof(*ret));
 	if (!ret)
 		return (NULL);
-	ret->size = ft_splitcount((const char **)env);
-	ret->var = malloc((ret->size + 1) * sizeof(ret->var));
-	ret->val = malloc((ret->size + 1) * sizeof(ret->val));
-	ret->state = malloc((ret->size + 1) * sizeof(ret->state));
-	if (!ret->var || !ret->val || !ret->state)
-		return (free(ret->var), free(ret->val),	free(ret->state), NULL);
+	ret->wrap = malloc(sizeof(*(ret->wrap)));
+	if (!ret->wrap)
+		return (free(ret), NULL);
+	ret->wrap->head = NULL;
+	ret->wrap->tail = NULL;
+	ret->arr = NULL;
 	return (ret);
 }
 
-static int	env_saveparts(t_env *ret, char **env)
+static int	env_init_add(t_env *ret, char **env)
 {
-	char	*var;
-	char	*val;
-	size_t	i;
+	size_t		i;
+	t_envnode	*cont;
+	t_list		*node;
 
+	if (!ret || !env)
+		return (1);
 	i = 0;
-	while (i < ret->size)
+	while (env[i])
 	{
-		if (env_splitvarstr(env[i], &var, &val))
+		cont = envnode_init(env[i], ENVEXP);
+		if (!cont)
 			return (env_free(ret), 1);
-		ret->var[i] = var;
-		ret->val[i] = val;
-		ret->state[i] = ENVEXP;
+		node = ft_lstnew((void *)cont);
+		if (!node)
+			return (envnode_free(cont), env_free(ret), 1);
+		ft_wrapadd_back(ret->wrap, node);
 		++i;
 	}
-	ret->var[i] = NULL;
-	ret->val[i] = NULL;
 	return (0);
+}
+
+void	env_free(t_env *env)
+{
+	if (!env)
+		return ;
+	if (env->wrap)
+		ft_wrapclear(env->wrap, &envnode_free_wrapper);
+	if (env->arr)
+		ft_freesplit(env->arr);
+	free(env);
 }

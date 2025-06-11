@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 12:16:59 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:28:22 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:43:58 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void		ft_wrapinsert(t_wrap *wrap, t_list *node, t_list *pos);
 void		ft_wrapclear(t_wrap *wrap, void (*del)(void *));
 
 void		ft_wrapdelfirst(t_wrap *wrap, void (*del)(void *));
+
+void		ft_wrapdellast(t_wrap *wrap, void (*del)(void *));
 
 //	WRAP ITER
 

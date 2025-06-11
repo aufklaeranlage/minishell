@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 10:28:47 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/11 10:35:24 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:03:40 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	env_print(t_env *env)
 	if (!env)
 		return (1);
 	i = 0;
-	while (env->constructed[i])
+	while (env->arr[i])
 	{
-		ft_putstr_fd(env->constructed[i], 1);
+		ft_putstr_fd(env->arr[i], 1);
 		ft_putchar_fd('\n', 1);
 		++i;
 	}
