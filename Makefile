@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/06/06 15:27:22 by abronner         ###   ########.fr        #
+#    Updated: 2025/06/12 11:10:51 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,12 +24,16 @@ INC_DIR		:=	incl/
 
 # **************************************************************************** #
 
-SRCS		:=	env.c \
+SRCS		:=	env_init.c envnode_init.c env_insert.c env_remove.c \
+				env_arr.c env_utils.c \
 				exec_cmd.c exec_pipe.c exec_reddir.c exec_reddir_heredoc.c \
 				exec_shell.c exec_utils.c pipe.c exec_wrapper.c exec_inbuilt.c \
 				exec_cleanup.c \
 				errormsg.c \
 				expander.c \
+				ft_echo.c ft_pwd.c ft_cd.c ft_env.c ft_unset.c ft_export.c \
+				ft_exit.c inbuilds.c wildcard.c \
+				sig.c
 				tokens_create.c tokens_utils.c \
 				tokens_convert_str.c tokens_convert_sub.c \
 				groups_handle_cmd.c groups_handle_cmd_utils.c \
@@ -39,9 +43,6 @@ SRCS		:=	env.c \
 				create_execution_list.c create_handle_errors.c \
 				main.c \
 				print_group_data.c \
-				ft_echo.c ft_pwd.c ft_cd.c ft_env.c ft_unset.c ft_export.c \
-				ft_exit.c inbuilds.c wildcard.c \
-				sig.c
 				
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
@@ -60,12 +61,12 @@ CC			:=	cc
 
 CFLAGS		:=	-Wall -Wextra -Werror $(ADDCCFLAGS)
 # For school PC
-# CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR)
+CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR)
 
-# LIBFLAGS	:=	-L$(LIBFT_DIR) -l:$(LIBFT_NAME) -lreadline
+LIBFLAGS	:=	-L$(LIBFT_DIR) -l:$(LIBFT_NAME) -lreadline
 
 # For my own
-CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I/opt/homebrew/opt/readline/include
+# CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR) -I/opt/homebrew/opt/readline/include
 
 LIBFLAGS	:=	-L$(LIBFT_DIR) -L/opt/homebrew/opt/readline/lib -lft -lreadline
 

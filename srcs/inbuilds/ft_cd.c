@@ -6,13 +6,13 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 14:39:16 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/12 10:53:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
 
-int ft_cd(t_tokens *tokens, char **env)
+int ft_cd(t_tokens *tokens, t_env *env)
 {
 	char *dir;
 

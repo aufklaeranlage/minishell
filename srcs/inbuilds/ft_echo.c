@@ -6,13 +6,13 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/02 14:57:00 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/12 10:55:27 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
 
-static char	*path_to_str(char *str, char **env)
+static char	*path_to_str(char *str, t_env *env)
 {
 	size_t	i;
 	char	*env_name;
@@ -28,7 +28,7 @@ static char	*path_to_str(char *str, char **env)
 	if (!env_name)
 		return (NULL);
 	ft_strlcpy(env_name, str, i + 1);
-	env_value = ft_getenv(env_name, env);
+	env_value = env_getval(env_name, env);
 	if (env_value)
 	{
 		env_value = ft_substr(ft_strdup(env_value), \
@@ -40,7 +40,7 @@ static char	*path_to_str(char *str, char **env)
 	return (ft_strdup(""));
 }
 
-char	*expand_path(char *str, char **env)
+char	*expand_path(char *str, t_env *env)
 {
 	char	*result;
 	char	*tmp;
@@ -85,7 +85,7 @@ char	*expand_path(char *str, char **env)
 	return (result);
 }
 
-int ft_echo(t_tokens *tokens, char **env)
+int ft_echo(t_tokens *tokens, t_env *env)
 {
 	size_t i = 1;
 	int new_line = 1;

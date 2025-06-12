@@ -6,13 +6,13 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:12:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/06 15:24:58 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:44:20 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	exec_wrapper(t_group *grp, char ***env)
+int	exec_wrapper(t_group *grp, t_env *env)
 {
 	int	ret;
 	int	pid;
@@ -21,12 +21,12 @@ int	exec_wrapper(t_group *grp, char ***env)
 		return (1);
 	ret = 0;
 	if (grp->exec_type == PIPE)
-		ret = exec_pipe(grp, *env);
+		ret = exec_pipe(grp, env);
 	else if (grp->data_type == STD_CMD)
 	{
 		pid = fork();
 		if (!pid)
-			exec_cmd(grp, *env);
+			exec_cmd(grp, env);
 		waitpid(pid, &ret, 0);
 		ret = childreturn(ret);
 	}

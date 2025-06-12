@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/02 14:49:30 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/12 10:46:00 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,17 @@
 
 # include "defines.h"
 # include "libft.h"
+# include "shell.h"
 
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/wait.h>
 # include <fcntl.h>
 
+typedef struct s_shell	t_shell;
+
 typedef struct s_group	t_group;
+
 typedef struct s_tokens
 {
 	size_t	size;
@@ -38,7 +42,7 @@ typedef struct s_group
 	t_tokens	*red;
 	void		*data;
 	t_group		*next;
-	t_group		*parrent;
+	t_shell		*shell;
 }	t_group;
 
 // Utils

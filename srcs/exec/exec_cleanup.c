@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:31:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/28 16:18:06 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:59:48 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ static void	token_free(t_tokens *tok);
 
 void	exec_cleanup(t_shell *shell)
 {
-	ft_freesplit(shell->exp);
-	shell->exp = NULL;
-	ft_freesplit(shell->env);
+	env_free(shell->env);
 	shell->env = NULL;
 	group_free(shell->cmd);
 	shell->cmd = NULL;
@@ -48,5 +46,5 @@ static void	token_free(t_tokens *tok)
 		return ;
 	ft_freesplit(tok->content);
 	free(tok->type);
-	free(token);
+	free(tok);
 }

@@ -6,11 +6,27 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 14:42:39 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/12 11:06:13 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
+#include "exec.h"
+
+int	ft_unset(t_tokens *tok, t_env *env)
+{
+	size_t	i;
+
+	exec_assign(tok, env);
+	i = 1;
+	while (i < tok->size)
+	{
+		if (env_rmv(tok->content[i], env))
+			return (1);
+		++i;
+	}
+	return (0);
+}
 
 // static t_wrap	*init_list(void)
 // {
@@ -40,50 +56,50 @@
 // 	}
 // }
 
-void	delete_from_env(char *name, char ***env)
-{
-	char	**new_env;
-	size_t	count;
-	size_t	len;
-	size_t	i;
-	size_t	j;
-
-	count = 0;
-	len = ft_strlen(name);
-	while ((*env)[count])
-		count++;
-	new_env = malloc(sizeof(char *) * (count + 1));
-	if (!new_env)
-		return ;
-	i = 0;
-	j = 0;
-	while ((*env)[i])
-	{
-		if (ft_strncmp((*env)[i], name, len) != 0 || (*env)[i][len] != '=')
-			new_env[j++] = (*env)[i];
-		i++;
-	}
-	new_env[j] = NULL;
-	free(*env);
-	*env = new_env;
-}
-
-/**
- * I Think ther is no way to change originat env
- * But steel need to check
- * Maybe we need to work with it local copy in all our programmmake
- */
-int	ft_unset(t_tokens *tokens, char ***env_ptr)
-{
-	size_t	i;
-
-	i = 1;
-	if (tokens->size <= 1)
-		return (0);
-	while (i < tokens->size)
-	{
-		delete_from_env(tokens->content[i], env_ptr);
-		i++;
-	}
-	return (0);
-}
+// void	delete_from_env(char *name, char ***env)
+// {
+// 	char	**new_env;
+// 	size_t	count;
+// 	size_t	len;
+// 	size_t	i;
+// 	size_t	j;
+//
+// 	count = 0;
+// 	len = ft_strlen(name);
+// 	while ((*env)[count])
+// 		count++;
+// 	new_env = malloc(sizeof(char *) * (count + 1));
+// 	if (!new_env)
+// 		return ;
+// 	i = 0;
+// 	j = 0;
+// 	while ((*env)[i])
+// 	{
+// 		if (ft_strncmp((*env)[i], name, len) != 0 || (*env)[i][len] != '=')
+// 			new_env[j++] = (*env)[i];
+// 		i++;
+// 	}
+// 	new_env[j] = NULL;
+// 	free(*env);
+// 	*env = new_env;
+// }
+//
+// /**
+//  * I Think ther is no way to change originat env
+//  * But steel need to check
+//  * Maybe we need to work with it local copy in all our programmmake
+//  */
+// int	ft_unset(t_tokens *tokens, char ***env_ptr)
+// {
+// 	size_t	i;
+//
+// 	i = 1;
+// 	if (tokens->size <= 1)
+// 		return (0);
+// 	while (i < tokens->size)
+// 	{
+// 		delete_from_env(tokens->content[i], env_ptr);
+// 		i++;
+// 	}
+// 	return (0);
+// }

@@ -6,13 +6,13 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:33:27 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/11 16:16:58 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:34:12 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-static char	*env_constructvarstr(char *var, char *val);
+static char	*env_constructvarstr(const char *var, const char *val);
 
 int	env_arr_init(t_env *env)
 {
@@ -41,7 +41,7 @@ int	env_arr_init(t_env *env)
 	return (0);
 }
 
-static char	*env_constructvarstr(char *var, char *val)
+static char	*env_constructvarstr(const char *var, const char *val)
 {
 	char	*ret;
 	char	*tmp;
@@ -58,7 +58,7 @@ static char	*env_constructvarstr(char *var, char *val)
 	return (ret);
 }
 
-int	env_arr_ins(char *var, char *val, t_env *env)
+int	env_arr_ins(const char *var, const char *val, t_env *env)
 {
 	char	*cpy;
 	char	**tmp;
@@ -83,7 +83,33 @@ int	env_arr_ins(char *var, char *val, t_env *env)
 	return (0);
 }
 
-int	env_arr_rmv(char *varstr, t_env *env)
+int	env_arr_rep(const char *var, const char *val, t_env *env)
+{
+	char	*cpy;
+	size_t	varlen;
+	size_t	i;
+
+	cpy = env_constructvarstr(var, val);
+	if (!cpy)
+		return (1);
+	varlen = ft_strlen(var);
+	i = 0;
+	while (env->arr[i])
+	{
+		if (!ft_strncmp(var, env->arr[i], varlen) && env->arr[i][varlen] == '=')
+		{
+			free(env->arr[i]);
+			env->arr[i] = cpy;
+			break ;
+		}
+		++i;
+	}
+	if (!env->arr[i])
+		return (free(cpy), env_arr_ins(var, val, env));
+	return (0);
+}
+
+int	env_arr_rmv(const char *varstr, t_env *env)
 {
 	char	**src;
 	char	**tmp;
@@ -109,31 +135,5 @@ int	env_arr_rmv(char *varstr, t_env *env)
 	tmp[i] = NULL;
 	free(env->arr);
 	env->arr = tmp;
-	return (0);
-}
-
-int	env_arr_rep(char *var, char *val, t_env *env)
-{
-	char	*cpy;
-	size_t	varlen;
-	size_t	i;
-
-	cpy = env_constructvarstr(var, val);
-	if (!cpy)
-		return (1);
-	varlen = ft_strlen(var);
-	i = 0;
-	while (env->arr[i])
-	{
-		if (!ft_strncmp(var, env->arr[i], varlen) && env->arr[i][varlen] == '=')
-		{
-			free(env->arr[i]);
-			env->arr[i] = cpy;
-			break ;
-		}
-		++i;
-	}
-	if (!env->arr[i])
-		return (free(cpy), env_arr_ins(var, val, env));
 	return (0);
 }

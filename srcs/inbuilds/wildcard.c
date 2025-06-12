@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 14:39:45 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/12 11:10:07 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ int	is_wildcard(char *str)
  *      return (zsh: no matches found: ger*ta)
  * Also need to check this things every time after execve()
  */
-char *expand_wildcard(char *str, char **env)
+char *expand_wildcard(char *str, t_env *env)
 {
 	char *before;
+
 	if (!is_wildcard(str))
 		return str;
-
 	before = ft_substr(str, 0, ft_strchr(str, '*') - str);
 	if (!before)
 		return (NULL);
 	//if (before[0] == '/')
-	char *const argv_list[] = {"/bin/ls", "-l", str, NULL};
-	execve("/bin/ls", argv_list, env);
+	char *argv_list[] = {"/bin/ls", "-l", str, NULL};
+	execve("/bin/ls", argv_list, env->arr);
 	
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:29:52 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/23 14:17:54 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:51:51 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	**exec_cutassign(char **src, size_t size, size_t offset);
 
-int	exec_assign(t_tokens *tok, char ***env)
+int	exec_assign(t_tokens *tok, t_env *env)
 {
 	char	**tmp;
 	size_t	i;
@@ -22,7 +22,7 @@ int	exec_assign(t_tokens *tok, char ***env)
 	i = 0;
 	while (i < tok->size && ft_strchr(tok->content[i], '=' ))
 	{
-		env_insert(tok->content[i], env);
+		env_ins(tok->content[i], ENVSET, env);
 		++i;
 	}
 	if (i == 0)

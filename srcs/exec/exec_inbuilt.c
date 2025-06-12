@@ -6,17 +6,17 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:31:56 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/28 16:13:02 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:41:24 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-int	exec_inbuilt(t_group *grp, char ***env)
+int	exec_inbuilt(t_group *grp, t_env *env)
 {
 	t_tokens *token;
 
 	token = (t_tokens *)grp->data;
-	inbuilds(token, *env);
+	inbuilds(token, env);
 	return (0);
 }

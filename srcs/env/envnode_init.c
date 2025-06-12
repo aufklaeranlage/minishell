@@ -6,13 +6,16 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 12:08:32 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/11 12:33:28 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:20:29 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-t_envnode	*envnode_init(char *varstr, int state)
+//	envnode_init() initializes a envnode with val, var and state set, depending
+//	on the input. The given varstr isn't freed.
+
+t_envnode	*envnode_init(const char *varstr, int state)
 {
 	t_envnode	*ret;
 	char		*var;

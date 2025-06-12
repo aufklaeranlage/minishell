@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/28 16:15:10 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:48:24 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,23 @@
 
 //	WRAPPER
 
-int		exec_wrapper(t_group *grp, char ***env);
+int		exec_wrapper(t_group *grp, t_env *env);
 
 //	SHELL
 
-int		exec_shell(t_group *grp, char ***env);
+int		exec_shell(t_group *grp, t_env *env);
 
 //	PIPE
 
-int		exec_pipe(t_group *grp, char **env);
+int		exec_pipe(t_group *grp, t_env *env);
 
 //	CMD
 
-int		exec_cmd(t_group *grp, char **env);
+int		exec_cmd(t_group *grp, t_env *env);
 
 //	INBUILT CMD
 
-int		exec_inbuilt(t_group *grp, char ***env);
+int		exec_inbuilt(t_group *grp, t_env *env);
 
 //	RED DIR
 
@@ -53,7 +53,7 @@ int		open_heredoc(char *hd_str);
 
 //	UTILS
 
-int		exec_assign(t_tokens *tok, char ***env);
+int		exec_assign(t_tokens *tok, t_env *env);
 
 int		childreturn(int wstatus);
 

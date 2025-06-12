@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/11 16:38:58 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:07:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	exp_print(t_env *env);
 //	environment of the shell.
 //	replaces already set variables in env with the new ones and 
 
-int	ft_export(t_token *tok, t_env *env)
+int	ft_export(t_tokens *tok, t_env *env)
 {
 	size_t	i;
 	
@@ -30,7 +30,7 @@ int	ft_export(t_token *tok, t_env *env)
 		return (exp_print(env), 0);
 	i = 1;
 	while (i < tok->size)
-		env_insert(tok->content[i++]);
+		env_ins(tok->content[i++], ENVEXP, env);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:16:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/11 12:59:39 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:32:30 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static t_env	*env_init_alloc(void);
 
-static int		env_init_add(t_env *ret, char **env);
+static int		env_init_add(t_env *ret, const char **env);
 
-t_env	*env_init(char **envsplit)
+t_env	*env_init(const char **envsplit)
 {
 	t_env	*ret;
 
@@ -48,7 +48,7 @@ static t_env	*env_init_alloc(void)
 	return (ret);
 }
 
-static int	env_init_add(t_env *ret, char **env)
+static int	env_init_add(t_env *ret, const char **env)
 {
 	size_t		i;
 	t_envnode	*cont;

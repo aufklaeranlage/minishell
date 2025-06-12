@@ -6,13 +6,13 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 11:52:03 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 09:30:08 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 10:31:43 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-t_envnode	*env_contains(char *var, t_env *env)
+t_envnode	*env_contains(const char *var, t_env *env)
 {
 	t_list		*node;
 	t_envnode	*envnode;
@@ -35,7 +35,17 @@ t_envnode	*env_contains(char *var, t_env *env)
 	return (NULL);
 }
 
-int	env_splitvarstr(char *varstr, char **var, char **val)
+char	*env_getval(const char *var, t_env *env)
+{
+	t_envnode	*envnode;
+
+	envnode = env_contains(var, env);
+	if (!envnode)
+		return (NULL);
+	return (envnode->val);
+}
+
+int	env_splitvarstr(const char *varstr, char **var, char **val)
 {
 	char	*tmp;
 	size_t	len;

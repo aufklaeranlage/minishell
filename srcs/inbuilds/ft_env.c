@@ -6,18 +6,24 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 14:48:40 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/12 11:01:21 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
 
-int	ft_env(char **env)
+int	ft_env(t_env *env)
 {
-	int	i;
+	size_t	i;
 
+	if (!env)
+		return (1);
 	i = 0;
-	while (env[i] != NULL)
-		printf("%s\n", env[i++]);
+	while (env->arr[i])
+	{
+		ft_putstr_fd(env->arr[i], 1);
+		ft_putchar_fd('\n', 1);
+		++i;
+	}
 	return (0);
 }

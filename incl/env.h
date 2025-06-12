@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/11 15:22:03 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 11:02:10 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ typedef struct	s_envnode
 
 //	ENV INIT
 
-t_env		*env_init(char **env);
+t_env		*env_init(const char **env);
 
 void		env_free(t_env *env);
 
 //	ENVNODE INIT
 
-t_envnode	*envnode_init(char *varstr, int state);
+t_envnode	*envnode_init(const char *varstr, int state);
 
 void		envnode_free(t_envnode *envnode);
 
@@ -54,30 +54,28 @@ void		envnode_free_wrapper(void *envnode);
 
 int			env_arr_init(t_env *env);
 
-int			env_arr_ins(char *var, char *val, t_env *env);
+int			env_arr_ins(const char *var, const char *val, t_env *env);
 
-int			env_arr_rmv(char *varstr, t_env *env);
+int			env_arr_rep(const char *var, const char *val, t_env *env);
 
-int			env_arr_rep(char *var, char *val, t_env *env);
+int			env_arr_rmv(const char *varstr, t_env *env);
 
 //	ENV INSERT
 
-int			env_ins(char *varstr, int exp, t_env *env);
+int			env_ins(const char *varstr, int exp, t_env *env);
 
 //	ENV REMOVE
 
-int			env_rmv(char *varname, t_env *env);
-
-//	ENV PRINT
-
-int			env_print(t_env *env);
+int			env_rmv(const char *varstr, t_env *env);
 
 //	ENV UTILS
 
-int			env_splitvarstr(char *varstr, char **var, char **val);
+t_envnode	*env_contains(const char *var, t_env *env);
+
+char		*env_getval(const char *var, t_env *env);
+
+int			env_splitvarstr(const char *varstr, char **var, char **val);
 
 size_t		env_expsize(t_env *env);
-
-t_envnode	*env_contains(char *var, t_env *env);
 
 #endif
