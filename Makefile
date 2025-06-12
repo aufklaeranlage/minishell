@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/06/12 11:10:51 by abronner         ###   ########.fr        #
+#    Updated: 2025/06/12 13:02:51 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,6 @@ SRCS		:=	env_init.c envnode_init.c env_insert.c env_remove.c \
 				expander.c \
 				ft_echo.c ft_pwd.c ft_cd.c ft_env.c ft_unset.c ft_export.c \
 				ft_exit.c inbuilds.c wildcard.c \
-				sig.c
 				tokens_create.c tokens_utils.c \
 				tokens_convert_str.c tokens_convert_sub.c \
 				groups_handle_cmd.c groups_handle_cmd_utils.c \
@@ -43,6 +42,7 @@ SRCS		:=	env_init.c envnode_init.c env_insert.c env_remove.c \
 				create_execution_list.c create_handle_errors.c \
 				main.c \
 				print_group_data.c \
+				sig.c
 				
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
@@ -59,7 +59,10 @@ LIBFT		:=	$(LIBFT_DIR)/$(LIBFT_NAME)
 
 CC			:=	cc
 
-CFLAGS		:=	-Wall -Wextra -Werror $(ADDCCFLAGS)
+CFLAGS		:=	-Wall -Wextra -Werror
+
+g:	CFLAGS	+=	-g
+
 # For school PC
 CPPFLAGS	:=	-I$(INC_DIR) -I$(LIBFT_DIR)/$(INC_DIR)
 
@@ -80,12 +83,14 @@ vpath %.c $(SRC_DIR) $(patsubst %, $(SRC_DIR)%, $(SUB_DIR))
 
 all: $(NAME)
 
+g: fclean $(NAME)
+
 $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJS)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) $(LIBFLAGS) -o $(NAME)
 	@echo "Creating program $(NAME)."
 
 $(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR) ADDCCFLAGS=$(ADDCCFLAGS)
+	@$(MAKE) -C $(LIBFT_DIR) CFLAGS="$(CFLAGS)"
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
