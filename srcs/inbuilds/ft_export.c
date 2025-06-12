@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/11 11:00:44 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:38:58 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,28 @@ int	ft_export(t_token *tok, t_env *env)
 
 static void	exp_print(t_env *env)
 {
-	size_t	i;
+	t_list		*node;
+	t_envnode	*envnode;
 
-	i = 0;
-	while (i < env->size)
+	if (!env || !env->wrap)
+		return ;
+	node = env->wrap->head;
+	while (node)
 	{
-		if (!env->val[i])
-			ft_putstr_fd("export ", 1);
-		ft_putstr_fd(env->var[i], 1);
-		if (env->val[i])
+		envnode = (t_envnode *)node->content;
+		if (envnode->state == ENVEXP)
 		{
-			ft_putstr_fd("=\"", 1);
-			ft_putstr_fd(env->val[i], 1);
-			ft_putchar_fd('"', 1);
+			if (!envnode->val)
+				ft_putstr_fd("export ", 1);
+			ft_putstr_fd(envnode->var, 1);
+			if (envnode->val)
+			{
+				ft_putstr_fd("=\"", 1);
+				ft_putstr_fd(envnode->val, 1);
+				ft_putchar_fd('"', 1);
+			}
+			ft_putchar_fd('\n', 1);
 		}
-		ft_putchar_fd('\n', 1);
-		++i;
+		node = node->next;
 	}
 }

@@ -6,17 +6,17 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:05:41 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/25 16:12:55 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:32:06 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expander.h"
 
-static char	*expander_getvar(char *var, size_t len, char **env);
+static char	*expander_getvar(char *var, t_env *env);
 
 static char	*expander_initret(char *str, size_t offset, size_t len);
 
-char	*expander(char *str, char **env, size_t offset)
+char	*expander(char *str, t_env *env, size_t offset)
 {
 	char	*ret;
 	char	*rep;
@@ -32,7 +32,7 @@ char	*expander(char *str, char **env, size_t offset)
 	var_len = 1;
 	while (str[i + var_len] && !ft_strchr(VAR_DEL, str[i + var_len]))
 		++var_len;
-	rep = expander_getvar(str + i + 1, var_len - 1, env);
+	rep = expander_getvar(str + i + 1, env);
 	rlen = 0;
 	if (rep)
 		rlen = ft_strlen(rep);
@@ -45,22 +45,16 @@ char	*expander(char *str, char **env, size_t offset)
 	return (ret);
 }
 
-static char	*expander_getvar(char *var, size_t len, char **env)
+static char	*expander_getvar(char *var, t_env *env)
 {
-	size_t	i;
+	t_envnode	*envnode;
 
-	if (!var || !len || !env)
+	if (!var || !env)
 		return (NULL);
-	i = 0;
-	while (env[i])
-	{
-		if (!ft_strncmp(var, env[i], len) && env[i][len] == '=')
-			break ;
-		++i;
-	}
-	if (!env[i])
+	envnode = env_contains(var, env);
+	if (!envnode)
 		return (NULL);
-	return (env[i] + len + 1);
+	return (envnode->val);
 }
 
 static char	*expander_initret(char *str, size_t offset, size_t len)

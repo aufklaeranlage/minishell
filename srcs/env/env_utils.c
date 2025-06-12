@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 11:52:03 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/11 13:43:46 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/12 09:30:08 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_envnode	*env_contains(char *var, t_env *env)
 	if (!var || !env)
 		return (NULL);
 	varlen = 0;
-	while (var[varlen] && var[varlen] != '=' )
+	while (var[varlen] && var[varlen] != '=' && !ft_isspace(var[varlen]))
 		++varlen;
 	node = env->wrap->head;
 	while (node)
