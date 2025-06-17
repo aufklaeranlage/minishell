@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:48:50 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/17 16:38:18 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ static char *cmd_getbin(char *name, t_env *env)
 	size_t	i;
 
 	i = 0;
-	paths = ft_split(env_getval(name, env), ':' );
+	if (ft_strrchr(name, '/') && access(name, F_OK | X_OK) == 0)
+        return (name);
+	paths = ft_split(ft_getenv("PATH", env->arr), ':' );
 	if (!paths)
 		return (NULL);
 	while (paths[i])

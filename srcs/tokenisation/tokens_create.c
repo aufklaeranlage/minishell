@@ -6,11 +6,11 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/02 13:52:24 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/13 11:05:53 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incl/tokenisation.h"
+#include "tokenisation.h"
 
 static int	process_redirect(t_tokens *out, size_t i, t_list **curr, char *tmp)
 {
@@ -71,12 +71,9 @@ static int	process_token(t_tokens *out, size_t i, t_list **curr, char **env)
 		return (1);
 	out->type[i] = set_type(tmp, env);
 	result = 0;
-	if (ft_strrchr(tmp, '/') - tmp == 1 && tmp[0] == '.' \
+	if (tmp[0] == '.' && tmp[1] == '/' \
 		&& access(tmp, F_OK | X_OK) == 0)
-	{
 		out->type[i] = STD_CMD;
-		result = process_regular(out, i, tmp);;
-	}
 	if (out->type[i] >= RED_IN && out->type[i] <= ADD_OUT)
 	{
 		result = process_redirect(out, i, curr, tmp);
@@ -86,7 +83,7 @@ static int	process_token(t_tokens *out, size_t i, t_list **curr, char **env)
 		result = process_string(out, i, tmp);
 	else if (out->type[i] == STD_CMD && access(tmp, F_OK | X_OK) == 0 \
 			&& ft_strchr(tmp, '/') && ft_strlen(tmp) + tmp - 1 != ft_strchr(tmp, '/'))
-		result = process_regular(out, i, minishell_getexec(tmp, env));
+		result = process_regular(out, i, tmp);
 	else
 		result = process_regular(out, i, tmp);
 	free(tmp);

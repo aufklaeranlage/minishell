@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 23:03:56 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/02 15:05:53 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/17 12:28:01 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	print_group(t_group *group, int depth, t_group *parent_to_check)
             continue;
         }
         
-        if (group->data_type == GROUP)
+        if (group->data_type == SHELL)
         {
             printf("%s│ Type: GROUP (nested commands)\n", indent);
             print_redirection_info(group, indent);

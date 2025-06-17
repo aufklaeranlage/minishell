@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:52:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:49:39 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:19:54 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	exec_pipe_child(t_group *grp, size_t id, t_env *env)
 	}
 	else if (grp->data_type == STD_CMD)
 		ret = exec_cmd(grp, env);
-	else if (grp->data_type == GROUP)
+	else if (grp->data_type == SHELL)
 		ret = exec_shell(grp, env);
 	exit(ret);
 }

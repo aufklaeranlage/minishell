@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/19 23:03:56 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/12 14:59:07 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static char	*convert_specifier_one(char *str, t_wrap *list)
 	void	*node;
 
 	node = NULL;
-	if (specifier_one(str) >= HERE_DOC)
+	if (specifier_one(str) == HERE_DOC || specifier_one(str) == ADD_OUT \
+		|| specifier_one(str) == AND || specifier_one(str) == OR)
 		node = ft_lstnew(ft_substr(str, 0, 2));
 	else
 		node = ft_lstnew(ft_substr(str, 0, 1));

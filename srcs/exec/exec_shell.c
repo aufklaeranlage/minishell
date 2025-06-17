@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:25:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:51:08 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:20:04 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	exec_shell_child(t_group *grp, t_env *env)
 			ret = exec_pipe(grp, env);
 		else if (grp->data_type == STD_CMD)
 			ret = exec_cmd(grp, env);
-		else if (grp->data_type == GROUP)
+		else if (grp->data_type == SHELL)
 			ret = exec_shell(grp->data, env);
 		exec_cleanup(grp->shell);
 		exit(ret);

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/12 10:46:00 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:13:17 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@
 
 # include "defines.h"
 # include "libft.h"
-# include "shell.h"
+// # include "shell.h"
 
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/wait.h>
 # include <fcntl.h>
 
-typedef struct s_shell	t_shell;
-
 typedef struct s_group	t_group;
 
+typedef struct s_tokens	t_tokens;
+
+typedef struct s_shell	t_shell;
 typedef struct s_tokens
 {
 	size_t	size;
@@ -42,8 +43,13 @@ typedef struct s_group
 	t_tokens	*red;
 	void		*data;
 	t_group		*next;
+	t_group		*parrent;
 	t_shell		*shell;
 }	t_group;
+
+
+t_group		*create_group_of_type(int type, t_group *parent);
+void		free_group_recursive(t_group *group);
 
 // Utils
 void		append_tokens(t_tokens **t1, t_tokens *t2);
@@ -55,12 +61,12 @@ int			cmd_specifier(char *str);
 char		*minishell_getexec(char *execname, char **env);
 int			specifier_two(char *str);
 int			specifier_one(char *str);
+char		*strjoin_and_free(char *s1, char *s2);
 
-/**
- * NEW TO PREPARE STRING BEFORE ALL, 
- * BECAUSE OF IT NEED TO MAKE ALL CODE OF THIS PART LIGHTER
- */
-char		*prepare_str(char *str, char **env);
+// HANDLE QUATATION
+
+int			update_values(t_wrap *list, char **env);
+char		*handle_quotes(char *str, char **env);
 
 // Modules
 t_wrap		*convert_str(char *str);
@@ -111,7 +117,28 @@ t_group		*create_groups(t_tokens *list, t_group *parrent, size_t i, \
 // CHECK ERRORS BEFORE CREATING EXECUTION_LIST
 int			parser_input_validation(t_tokens *tokens);
 
-// Split to execution commands list
+/**
+ * @brief Parses and transforms a raw command string 
+ * into an execution-ready group structure.
+ * This function tokenizes the input string, validates it, 
+ * parses it into grouped commands,
+ * and fills the provided `t_group` structure with execution-related data.
+ * It uses the following steps:
+ * - Tokenizes the input with `wrap_operations()`.
+ * - Validates tokens with `parser_input_validation()`.
+ * - Parses token structure into command groups using `create_groups()`.
+ * - Deduces the type of each command with `return_cmd_type()`.
+ * - Frees all temporary allocations.
+ * @param group Pointer to a pre-allocated t_group structure to be filled.
+ * @param str Raw command-line string to be parsed and transformed.
+ * @param env Array of environment variables used for expansions.
+ * @return int Returns 0 on success, 1 on failure 
+ * (invalid input or allocation error).
+ * @see wrap_operations()
+ * @see parser_input_validation()
+ * @see create_groups()
+ * @see return_cmd_type()
+ */
 int			create_execution_list(t_group *group, char *str, char **env);
 
 // ERROR VISUALISATION DELETE AT PRODUCTION

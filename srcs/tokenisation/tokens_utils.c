@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/02 15:05:35 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/13 10:43:10 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,13 @@ int	specifier_one(char *str)
 		return (RED_OUT);
 	if (*str == '<')
 		return (RED_IN);
+	// TEST
+	if (str[0] == '(')
+		return (O_BR);
+	if (str[0] == ')')
+		return (C_BR);
+	if (str[0] == ';')
+		return (SMCLN);
 	return (0);
 }
 
@@ -91,19 +98,19 @@ char	*minishell_getexec(char *execname, char **env)
 
 int	cmd_specifier(char *str)
 {
-	if (ft_strncmp(str, "echo", ft_strlen(str)) == 0)
+	if (ft_strncmp(str, "echo", ft_strlen(str)) == 0 && ft_strlen(str) == 4)
 		return (INCMD_ECHO);
-	if (ft_strncmp(str, "cd", ft_strlen(str)) == 0)
+	if (ft_strncmp(str, "cd", ft_strlen(str)) == 0 && ft_strlen(str) == 2)
 		return (INCMD_CD);
-	if (ft_strncmp(str, "exit", ft_strlen(str)) == 0)
+	if (ft_strncmp(str, "exit", ft_strlen(str)) == 0 && ft_strlen(str) == 4)
 		return (INCMD_EXIT);
-	if (ft_strncmp(str, "pwd", ft_strlen(str)) == 0)
+	if (ft_strncmp(str, "pwd", ft_strlen(str)) == 0 && ft_strlen(str) == 3)
 		return (INCMD_PWD);
-	if (ft_strncmp(str, "export", ft_strlen(str)) == 0)
+	if (ft_strncmp(str, "export", ft_strlen(str)) == 0 && ft_strlen(str) == 6)
 		return (INCMD_EXPORT);
-	if (ft_strncmp(str, "env", ft_strlen(str)) == 0)
+	if (ft_strncmp(str, "env", ft_strlen(str)) == 0 && ft_strlen(str) == 3)
 		return (INCMD_ENV);
-	if (ft_strncmp(str, "unset", ft_strlen(str)) == 0)
+	if (ft_strncmp(str, "unset", ft_strlen(str)) == 0 && ft_strlen(str) == 5)
 		return (INCMD_UNSET);
 	return (0);
 }

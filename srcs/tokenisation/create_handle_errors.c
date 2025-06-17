@@ -6,11 +6,11 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 14:38:24 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/17 13:31:45 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incl/tokenisation.h"
+#include "tokenisation.h"
 
 // CASE: $() + CASE: "CMD | | | CMD" + "CMD | "
 static int	prcr_c1(t_tokens *tokens, size_t i)
@@ -23,14 +23,14 @@ static int	prcr_c1(t_tokens *tokens, size_t i)
 		return (1);
 	}
 	if (i + 1 < tokens->size \
-		&& (tokens->type[i] >= BIN_AND && tokens->type[i] <= SMCLN) \
-		&& (tokens->type[i + 1] >= BIN_AND && tokens->type[i + 1] <= SMCLN))
+		&& (tokens->type[i] >= BIN_AND && tokens->type[i] <= OR) \
+		&& (tokens->type[i + 1] >= BIN_AND && tokens->type[i + 1] <= OR))
 	{
 		printf("zsh: parse error near '%s'\n", tokens->content[i + 1]);
 		return (1);
 	}
 	if (i + 1 == tokens->size \
-		&& (tokens->type[i] >= BIN_AND && tokens->type[i] <= SMCLN))
+		&& (tokens->type[i] >= BIN_AND && tokens->type[i] <= OR))
 	{
 		printf("zsh: parse error near '%s'\n", tokens->content[i]);
 		return (1);
@@ -59,7 +59,7 @@ static int	prcr_c2(t_tokens *tokens, size_t i, int cmd_start)
 	return (0);
 }
 
-static void	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
+static int	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
 {
 	while (tokens->type[*i] >= RED_IN && tokens->type[*i] <= ADD_OUT \
 		&& *i < tokens->size)
@@ -69,26 +69,28 @@ static void	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
 	{
 		(*cmd_start) = 1;
 		(*i)++;
+	
+		while ((*cmd_start) == 1 && *i < tokens->size)
+		{
+			(*i)++;
+			if ((tokens->type[*i] >= BIN_AND && tokens->type[*i] <= OR) \
+				|| tokens->type[*i] == O_BR)
+				(*cmd_start) = 0;
+		}
 	}
-	while ((*cmd_start) == 1 && *i < tokens->size)
+	else
 	{
-		(*i)++;
-		if ((tokens->type[*i] >= BIN_AND && tokens->type[*i] <= SMCLN) \
-			|| tokens->type[*i] == O_BR)
-			(*cmd_start) = 0;
+		printf("zsh: command not found: %s\n", tokens->content[*i]);
+		return (1);
 	}
+	return (0);
 }
 
 /**
-SHOULD BE CASE: "CMD ARG | NOT_CMD"
-if (cmd_start == 0 \
-	&& (tokens->type[i] != ASSIGNMENT || tokens->type[i] != O_BR \
-	|| !(tokens->type[i] >= INCMD_ECHO && tokens->type[i] <= STD_CMD)))
-{
-	printf("zsh: parse error near (CHECK) '%s'\n", tokens->content[i]);
-	return (1);
-}
-*/
+ * @brief Check is value valid or not
+ * @param tokens 
+ * @return int 0 - OK, 1 - KO
+ */
 int	parser_input_validation(t_tokens *tokens)
 {
 	size_t	i;
@@ -100,7 +102,8 @@ int	parser_input_validation(t_tokens *tokens)
 	cmd_start = 0;
 	while (i < tokens->size)
 	{
-		prcr_process(tokens, &i, &cmd_start);
+		if (prcr_process(tokens, &i, &cmd_start))
+			return (1);
 		if (prcr_c1(tokens, i) || prcr_c2(tokens, i, cmd_start))
 			return (1);
 		i++;

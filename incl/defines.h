@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:35:23 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/06 15:27:07 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:21:30 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # define STDOUT 1
 # define STDERR 2
 
-# define STR		     3			// 'some string'
-# define EXPAND_STR      4			// "Some string $PATH etc."
+# define STR		     3
+# define EXPAND_STR      4
 # define INCMD_ECHO      5
 # define INCMD_CD        6
 # define INCMD_PWD       7
@@ -49,8 +49,9 @@
 # define WILDCARD        30
 # define ASSIGNMENT      31
 
-# define CMD				33
-# define GROUP				34 
+# define CMD             100
+# define SHELL           101
+# define PIPELINE        102		// Currently unused
 
 # define SHNAME "minichill"
 

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:44:00 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/23 10:21:17 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/17 11:13:50 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ static void	join_tokens(t_tokens *out, t_tokens *t1, t_tokens *t2)
 	out->content[out->size] = NULL;
 }
 
+/**
+ * @brief Add tokens in list of tokens
+ * @param t1 pointer to original list of tokens
+ * @param t2 appendable elements
+ */
 void	append_tokens(t_tokens **t1, t_tokens *t2)
 {
 	t_tokens	*out;

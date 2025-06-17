@@ -6,13 +6,19 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/02 14:53:01 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/17 12:00:45 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incl/tokenisation.h"
-#include "inbuilds.h"
+#include "tokenisation.h"
 
+/**
+ * @brief Frees all memory allocated for the t_tokens structure.
+ * Frees the `content` array, the `type` array, 
+ * and the t_tokens structure itself.
+ * @param out Pointer to the t_tokens structure to be freed.
+ * @return Always returns NULL to simplify error handling in return statements.
+ */
 void	*del_tokens(t_tokens *out)
 {
 	size_t	i;
@@ -32,6 +38,19 @@ void	*del_tokens(t_tokens *out)
 	return (NULL);
 }
 
+/**
+ * @brief Allocates memory for the t_tokens structure and fills it with data.
+ *
+ * On allocation failure, frees any allocated memory using @ref del_tokens.
+ * After successful allocation, it fills the structure using @ref lst_to_tokens.
+ *
+ * @see del_tokens()
+ * @see lst_to_tokens()
+ * @param out Pointer to the t_tokens pointer to be allocated and filled.
+ * @param list Parsed data stored in t_wrap list format.
+ * @param env Environment variables used for variable expansion.
+ * @return 0 on success, 1 on failure.
+ */
 static int	process_tokens(t_tokens **out, t_wrap *list, char **env)
 {
 	*out = malloc(sizeof(t_tokens));
@@ -51,6 +70,22 @@ static int	process_tokens(t_tokens **out, t_wrap *list, char **env)
 	return (0);
 }
 
+/**
+ * @brief Parses a raw string into a token structure suitable for execution.
+ *
+ * Converts the input string into a wrapped list, updates its values using
+ * @ref update_values, then processes it into a t_tokens structure using
+ * @ref process_tokens. The list is cleared after use.
+ *
+ * @see convert_str()
+ * @see update_values()
+ * @see process_tokens()
+ * @see ft_wrapclear()
+ * @param out Pointer to the resulting token structure.
+ * @param str Input command string.
+ * @param env Environment variables for expansion.
+ * @return 0 on success, 1 on failure.
+ */
 static int	wrap_operations(t_tokens **out, char *str, char **env)
 {
 	t_wrap		*list;
@@ -58,6 +93,7 @@ static int	wrap_operations(t_tokens **out, char *str, char **env)
 	list = convert_str(str);
 	if (!list)
 		return (1);
+	update_values(list, env);
 	if (process_tokens(out, list, env))
 	{
 		ft_wrapclear(list, free);
@@ -67,11 +103,46 @@ static int	wrap_operations(t_tokens **out, char *str, char **env)
 	return (0);
 }
 
+// void pipeline_insert(t_group *group)
+// {
+// 	int is_pipe;
+// 	t_group *cpy;
+// 	int i;
+
+// 	is_pipe = 0;
+// 	while (group != NULL || group->exec_type != PIPE)
+// 		group =	group->next;
+// 	cpy = group;
+// 	while (group != NULL || group->exec_type == PIPE)
+// 	{
+// 		if (group->exec_type != PIPE)
+// 			break ;
+// 		is_pipe++;
+// 		group =	group->next;
+// 	}
+// 	if (is_pipe)
+// 		group = create_group_of_type(PIPELINE, group->parrent);
+// 	i = 0;
+// 	group->data = cpy;
+// 	while (i < is_pipe)
+// 	{
+// 		cpy->parrent = group;
+// 		i++;
+// 	}
+// }
+
+/**
+ * @brief Update `data_type` value, change regular `CMD`
+ * to more specific: `STD_CMD` or some of INBUILD CMD.
+ * If ther is `SHELL` --> call itself inside SHELL
+ * @param parsed_group as input get `t_group`
+ */
 void	return_cmd_type(t_group *parsed_group)
 {
 	size_t		i;
 	t_tokens	*token;
 
+	// pipeline_insert(parsed_group);
 	while (parsed_group != NULL)
 	{
 		if (parsed_group->data_type == CMD)
@@ -87,57 +158,12 @@ void	return_cmd_type(t_group *parsed_group)
 			if (parsed_group->data_type == CMD)
 				parsed_group->data_type = STD_CMD;
 		}
-		else if (parsed_group->data_type == GROUP)
+		else if (parsed_group->data_type == SHELL)
 			return_cmd_type((t_group *)parsed_group->data);
 		parsed_group = parsed_group->next;
 	}
 }
 
-char *prepare_str(char *str, char **env)
-{
-    char *new;
-    char *out;
-    char *sub;
-	char *expanded;
-	size_t len;
-    size_t i = 0;
-
-    new = malloc(ft_strlen(str) * 10 + 1);
-    if (!new)
-        return (str);
-    while (*str)
-    {
-        if (*str == '\'' && ft_strchr(str + 1, '\''))
-        {
-            len = ft_strchr(str + 1, '\'') - str - 1;
-            sub = ft_substr(str + 1, 0, len);
-            ft_strlcpy(new + i, sub, len + 1);
-            i += len;
-            str += len + 2;
-            free(sub);
-        }
-        else if (*str == '"' && ft_strchr(str + 1, '"'))
-        {
-            len = ft_strchr(str + 1, '"') - str - 1;
-            sub = ft_substr(str + 1, 0, len);
-            expanded = expand_path(sub, env);
-            ft_strlcpy(new + i, expanded, ft_strlen(expanded) + 1);
-            i += ft_strlen(expanded);
-            str += len + 2;
-            free(sub);
-            free(expanded);
-        }
-        else
-            new[i++] = *str++;
-    }
-    new[i] = '\0';
-    out = ft_strdup(new);
-    free(new);
-	//free(str);
-    return (out);
-}
-
-// TEST IT: <<EOF (ls | cat -e) <in >out
 int	create_execution_list(t_group *group, char *str, char **env)
 {
 	t_tokens	*tokens;
@@ -146,14 +172,11 @@ int	create_execution_list(t_group *group, char *str, char **env)
 	if (!group)
 		return (1);
 	tokens = NULL;
-	str = prepare_str(str, env);
 	if (wrap_operations(&tokens, str, env) || parser_input_validation(tokens))
 	{
 		del_tokens(tokens);
 		return (1);
 	}
-	// PRINT TOKENS
-	print_tokens(tokens);
 	parsed_group = create_groups(tokens, NULL, 0, 0);
 	return_cmd_type(parsed_group);
 	del_tokens(tokens);

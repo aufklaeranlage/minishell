@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokens_convert_str.c                               :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/02 14:56:20 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/13 09:55:54 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,27 @@ static char	*handle_text_token(char *str, t_wrap *list)
 	void	*node;
 
 	start = str;
-	while (*str && !specifier_one(str) && !specifier_two(str) \
-	&& *str != ' ')
+	while (*str && !specifier_one(str) && *str != ' ')
+	{
+		if (*str == '"')
+		{
+			str++;
+			if (ft_strchr(str, '"'))
+				str = ft_strchr(str, '"');
+		}
+		else if (*str == '\'')
+		{
+			str++;
+			if (ft_strchr(str, '\''))
+				str = ft_strchr(str, '\'');
+		}
 		str++;
-	node = ft_lstnew(ft_substr(start, 0, str - start));
-	if (node)
+	}
+	if (str != start)
+	{
+		node = ft_lstnew(ft_substr(start, 0, str - start));
 		ft_wrapadd_back(list, node);
+	}
 	return (str);
 }
 
@@ -51,6 +66,13 @@ static char	*handle_special_token(char *str, t_wrap *list)
 	return (str);
 }
 
+/**
+ * @brief Create node_list of elements form string
+ * -->	input: echo str1"str2 str3" str4 str5'str6 str7'
+ * --> output: {[echo], [str1"str2 str3"], [str4], [str5'str6 str7']}
+ * @param str 
+ * @return splited list of elements with type t_wrap(wraper for node_list).
+ */
 t_wrap	*convert_str(char *str)
 {
 	t_wrap	*list;
@@ -62,10 +84,11 @@ t_wrap	*convert_str(char *str)
 	{
 		if (*str == ' ')
 			str++;
-		else if (specifier_one(str) || specifier_two(str))
+		if (specifier_one(str))
 			str = handle_special_token(str, list);
 		else
 			str = handle_text_token(str, list);
 	}
 	return (list);
 }
+

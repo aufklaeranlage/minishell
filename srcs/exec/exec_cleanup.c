@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cleanup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:31:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:59:48 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:20:15 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	group_free(t_group *grp)
 	while (grp)
 	{
 		token_free(grp->red);
-		if (grp->exec_type == PIPE || grp->data_type == GROUP)
+		if (grp->exec_type == PIPE || grp->data_type == SHELL)
 			group_free((t_group *)grp->data);
 		else
 			token_free((t_tokens *)grp->data);

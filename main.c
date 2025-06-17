@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/01 22:45:53 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/17 16:39:05 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 #include "minichill.h"
 
-static char **ft_splitcpy(char **src);
+// static char **ft_splitcpy(char **src);
 
 int main(int ac, char **av, char **env)
 {
     char        *buf;
-    char        **local_env;
+    t_shell     *shell;
     (void)ac;
     (void)av;
-    local_env = ft_splitcpy(env);
+
+    shell = malloc(sizeof(t_shell));
+    shell->env = env_init((const char **)env);
     
     signal_handler_init();
     while (1)
@@ -30,26 +32,29 @@ int main(int ac, char **av, char **env)
         buf = readline(RL_PROMPT);
         if (!buf)
             break;
-        t_group *group = malloc(sizeof(t_group));
+        shell->cmd = malloc(sizeof(t_group));
         add_history(buf);
-        create_execution_list(group, buf, local_env);
-        //display groups partions
-        // grouped_tokens_display(group);
+        if (create_execution_list(shell->cmd, buf, env) == 0)
+        {
+            //display groups partions
+            // grouped_tokens_display(shell->cmd);
+            g_signal = exec_wrapper(shell->cmd, shell->env);
+        }
+        else
+            g_signal = 127; // ? IDK
 
-		exec_wrapper(group, &env);
-        
         free(buf);
     }
-    ft_freesplit(local_env);
+    env_free(shell->env);
     return (0);
 }
 
-static char **ft_splitcpy(char **src)
-{
-	char	**ret;
-	size_t	size;
+// static char **ft_splitcpy(char **src)
+// {
+// 	char	**ret;
+// 	size_t	size;
 
-	size = ft_splitcount((const char **)src);
-	ret = ft_splitlcpy(src, size);
-	return (ret);
-}
+// 	size = ft_splitcount((const char **)src);
+// 	ret = ft_splitlcpy(src, size);
+// 	return (ret);
+// }
