@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 16:11:26 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 23:39:34 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@
  */
 char	*strjoin_and_free(char *s1, char *s2)
 {
-    char	*res;
+	char	*res;
 
 	res = ft_strjoin(s1, s2);
-    free(s1);
-    return (res);
+	free(s1);
+	return (res);
 }
 
 static char	*handle_quoted_segment(char **out, char *p, char **env)
@@ -76,10 +76,9 @@ static char	*handle_unquoted_segment(char **out, char *p, char **env)
 
 /**
  * @brief Removes quotes and expands environment variables from a given string.
- *
- * Handles both single ('') and double ("") quotes. Single quotes prevent expansion.
+ * Handles both single ('') and double ("") quotes. 
+ * Single quotes prevent expansion.
  * Double-quoted and unquoted segments may be expanded via @ref expand_path.
- *
  * @see expand_path()
  * @param str Input string to be processed.
  * @param env Environment variables for expansion.
@@ -109,9 +108,7 @@ char	*handle_quotes(char *str, char **env)
 
 /**
  * @brief Updates the content of a token list by handling quotes and expansions.
- *
  * Applies @ref handle_quotes to each element in the t_wrap list.
- *
  * @see handle_quotes()
  * @param list Linked list of tokens to process.
  * @param env Environment variables for expansion.
@@ -121,9 +118,9 @@ int	update_values(t_wrap *list, char **env)
 {
 	t_list	*lst;
 	size_t	i;
-	
+
 	if (!list || !list->head)
-        return (1);
+		return (1);
 	lst = list->head;
 	i = 0;
 	while (i < list->size)

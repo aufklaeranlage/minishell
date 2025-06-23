@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 17:02:26 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 00:04:30 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,16 @@ int main(int ac, char **av, char **env)
         buf = readline(RL_PROMPT);
         if (!buf)
             break;
-        shell->cmd = malloc(sizeof(t_group));
+        shell->cmd = ft_calloc(1, sizeof(t_group));
         add_history(buf);
         if (create_execution_list(shell->cmd, buf, env) == 0)
         {
 			shellassign(shell->cmd, shell);
-            //display groups partions
-            // grouped_tokens_display(shell->cmd);
             g_signal = exec_first(shell->cmd, shell->env);
-			group_free(shell->cmd);
+            if (g_signal > 0 && g_signal != 127)
+                g_signal += 128;
         }
-        else
-			errormsg(SHNAME, "toks", "couldn't create grps", NULL);
-
+        group_free(shell->cmd);
         free(buf);
     }
     env_free(shell->env);

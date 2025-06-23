@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/13 09:55:54 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 23:41:58 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static t_wrap	*init_token_list(void)
 static char	*handle_text_token(char *str, t_wrap *list)
 {
 	char	*start;
-	void	*node;
 
 	start = str;
 	while (*str && !specifier_one(str) && *str != ' ')
@@ -48,10 +47,7 @@ static char	*handle_text_token(char *str, t_wrap *list)
 		str++;
 	}
 	if (str != start)
-	{
-		node = ft_lstnew(ft_substr(start, 0, str - start));
-		ft_wrapadd_back(list, node);
-	}
+		ft_wrapadd_back(list, ft_lstnew(ft_substr(start, 0, str - start)));
 	return (str);
 }
 
@@ -91,4 +87,3 @@ t_wrap	*convert_str(char *str)
 	}
 	return (list);
 }
-

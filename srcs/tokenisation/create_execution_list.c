@@ -6,37 +6,12 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/17 12:00:45 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenisation.h"
-
-/**
- * @brief Frees all memory allocated for the t_tokens structure.
- * Frees the `content` array, the `type` array, 
- * and the t_tokens structure itself.
- * @param out Pointer to the t_tokens structure to be freed.
- * @return Always returns NULL to simplify error handling in return statements.
- */
-void	*del_tokens(t_tokens *out)
-{
-	size_t	i;
-
-	i = 0;
-	if (!out)
-		return (NULL);
-	if (out->content)
-	{
-		while (i < out->size && out->content[i])
-			free(out->content[i++]);
-		free(out->content);
-	}
-	if (out->type)
-		free(out->type);
-	free(out);
-	return (NULL);
-}
+#include "minichill.h"
 
 /**
  * @brief Allocates memory for the t_tokens structure and fills it with data.
@@ -70,6 +45,30 @@ static int	process_tokens(t_tokens **out, t_wrap *list, char **env)
 	return (0);
 }
 
+int	check_brackets_balance(t_wrap *list)
+{
+	t_list	*cur;
+	int		counter;
+	char	*cont;
+
+	if (!list || !list->head)
+		return (0);
+	cur = list->head;
+	counter = 0;
+	while (cur)
+	{
+		cont = (char *)cur->content;
+		if (cont && cont[0] == '(')
+			counter++;
+		else if (cont && cont[0] == ')')
+			counter--;
+		if (counter < 0)
+			return (-1);
+		cur = cur->next;
+	}
+	return (counter);
+}
+
 /**
  * @brief Parses a raw string into a token structure suitable for execution.
  *
@@ -93,43 +92,16 @@ static int	wrap_operations(t_tokens **out, char *str, char **env)
 	list = convert_str(str);
 	if (!list)
 		return (1);
+	if (check_brackets_balance(list))
+		return (printf("minichill : unclosed brackets.\n"), \
+		ft_wrapclear(list, free), 1);
 	update_values(list, env);
 	if (process_tokens(out, list, env))
-	{
-		ft_wrapclear(list, free);
-		return (1);
-	}
+		return (ft_wrapclear(list, free), 1);
+	print_tokens(*out);
 	ft_wrapclear(list, free);
 	return (0);
 }
-
-// void pipeline_insert(t_group *group)
-// {
-// 	int is_pipe;
-// 	t_group *cpy;
-// 	int i;
-
-// 	is_pipe = 0;
-// 	while (group != NULL || group->exec_type != PIPE)
-// 		group =	group->next;
-// 	cpy = group;
-// 	while (group != NULL || group->exec_type == PIPE)
-// 	{
-// 		if (group->exec_type != PIPE)
-// 			break ;
-// 		is_pipe++;
-// 		group =	group->next;
-// 	}
-// 	if (is_pipe)
-// 		group = create_group_of_type(PIPELINE, group->parrent);
-// 	i = 0;
-// 	group->data = cpy;
-// 	while (i < is_pipe)
-// 	{
-// 		cpy->parrent = group;
-// 		i++;
-// 	}
-// }
 
 /**
  * @brief Update `data_type` value, change regular `CMD`
@@ -142,7 +114,6 @@ void	return_cmd_type(t_group *parsed_group)
 	size_t		i;
 	t_tokens	*token;
 
-	// pipeline_insert(parsed_group);
 	while (parsed_group != NULL)
 	{
 		if (parsed_group->data_type == CMD)
@@ -177,11 +148,12 @@ int	create_execution_list(t_group *group, char *str, char **env)
 		del_tokens(tokens);
 		return (1);
 	}
+	print_tokens(tokens);
 	parsed_group = create_groups(tokens, NULL, 0, 0);
 	return_cmd_type(parsed_group);
 	del_tokens(tokens);
 	if (!parsed_group)
-		return (1);
+		return (del_tokens(tokens), 1);
 	group->data_type = parsed_group->data_type;
 	group->exec_type = parsed_group->exec_type;
 	group->red = parsed_group->red;

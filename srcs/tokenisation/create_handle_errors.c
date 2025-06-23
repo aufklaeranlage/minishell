@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 16:35:33 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 23:50:24 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static int	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
 	{
 		(*cmd_start) = 1;
 		(*i)++;
-	
 		while ((*cmd_start) == 1 && *i < tokens->size)
 		{
 			if ((tokens->type[*i] >= BIN_AND && tokens->type[*i] <= OR) \
@@ -78,11 +77,6 @@ static int	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
 			(*i)++;
 		}
 	}
-	// else
-	// {
-	// 	printf("zsh: command not found: %s\n", tokens->content[*i]);
-	// 	return (1);
-	// }
 	return (0);
 }
 

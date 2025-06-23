@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 17:43:08 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 23:49:42 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	specifier_one(char *str)
 		return (RED_OUT);
 	if (*str == '<')
 		return (RED_IN);
-	// TEST
 	if (str[0] == '(')
 		return (O_BR);
 	if (str[0] == ')')
@@ -48,8 +47,6 @@ int	specifier_two(char *str)
 		return (C_BR);
 	if (str[0] == ';')
 		return (SMCLN);
-	// if (str[0] == ':')
-	// 	return (CLN);
 	if (str[0] == '\n')
 		return (NEW_LINE);
 	if (str[0] == '\"' && ft_strchr(str + 1, '\"') == NULL)
@@ -70,8 +67,6 @@ char	*minishell_getexec(char *execname, char **env)
 	char	**paths;
 	size_t	i;
 
-	exec = NULL;
-	
 	if (ft_strrchr(execname, '/'))
 	{
 		if (access(execname, F_OK | X_OK) == 0)
@@ -86,9 +81,7 @@ char	*minishell_getexec(char *execname, char **env)
 	while (paths[i])
 	{
 		exec = ft_strjoin(paths[i], tmp);
-		if (!exec)
-			return (ft_freesplit(paths), free(tmp), NULL);
-		if (access(exec, F_OK | X_OK) == 0)
+		if (!exec || access(exec, F_OK | X_OK) == 0)
 			return (ft_freesplit(paths), free(tmp), exec);
 		free(exec);
 		++i;

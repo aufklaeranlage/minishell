@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 18:12:52 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,6 @@ static int	process_redirect(t_tokens *out, size_t i, t_list **curr, char *tmp)
 	{
 		free(tmp);
 		return (1);
-	}
-	return (0);
-}
-
-static int	process_string(t_tokens *out, size_t i, char *tmp)
-{
-	if (ft_strlen(tmp) < 2)
-		out->content[i] = ft_strdup("");
-	else
-		out->content[i] = ft_strdup(tmp);
-	if (!out->content[i])
-	{
-		free(tmp);
-		out->content[i] = ft_strdup("");
-		if (!out->content[i])
-			return (1);
 	}
 	return (0);
 }
@@ -79,11 +63,6 @@ static int	process_token(t_tokens *out, size_t i, t_list **curr, char **env)
 		result = process_redirect(out, i, curr, tmp);
 		*curr = (*curr)->next;
 	}
-	else if (out->type[i] == STR || out->type[i] == EXPAND_STR)
-		result = process_string(out, i, tmp);
-	else if (out->type[i] == STD_CMD && access(tmp, F_OK | X_OK) == 0 \
-			&& ft_strchr(tmp, '/') && ft_strlen(tmp) + tmp - 1 != ft_strchr(tmp, '/'))
-		result = process_regular(out, i, tmp);
 	else
 		result = process_regular(out, i, tmp);
 	free(tmp);
