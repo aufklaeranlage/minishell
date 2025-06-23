@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 00:23:24 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ static int	wrap_operations(t_tokens **out, char *str, char **env)
 	update_values(list, env);
 	if (process_tokens(out, list, env))
 		return (ft_wrapclear(list, free), 1);
-	print_tokens(*out);
 	ft_wrapclear(list, free);
 	return (0);
 }
@@ -148,7 +147,6 @@ int	create_execution_list(t_group *group, char *str, char **env)
 		del_tokens(tokens);
 		return (1);
 	}
-	print_tokens(tokens);
 	parsed_group = create_groups(tokens, NULL, 0, 0);
 	return_cmd_type(parsed_group);
 	del_tokens(tokens);

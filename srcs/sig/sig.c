@@ -6,13 +6,13 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 21:51:40 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 00:11:21 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 00:35:27 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sig.h"
 
-int g_signal = 0;
+int	g_signal;
 
 void	disable_ctrlc_echo(void)
 {
@@ -32,7 +32,7 @@ void	handle_signal(int sign)
 		write(1, "\n", 1);
 		if (isatty(STDIN_FILENO))
 		{
-			// rl_replace_line("", 0);
+			rl_replace_line("", 0);
 			rl_on_new_line();
 			rl_redisplay();
 		}
@@ -118,8 +118,7 @@ void	setup_signals(int type)
  */
 void	signal_handler_init(void)
 {
-	if (g_signal)
-		g_signal = 0;
+	g_signal = 0;
 	disable_ctrlc_echo();
-	setup_shell_signals();
+	setup_signals(3);
 }

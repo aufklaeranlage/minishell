@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/12 11:10:07 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 00:32:50 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char *expand_wildcard(char *str, t_env *env)
 	if (!before)
 		return (NULL);
 	//if (before[0] == '/')
-	char *argv_list[] = {"/bin/ls", "-l", str, NULL};
+	char *argv_list[] = {"/bin/ls", str, NULL};
 	execve("/bin/ls", argv_list, env->arr);
 	
 	return (0);
