@@ -6,11 +6,12 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:16:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:32:30 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/17 13:08:59 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
+#include "inbuilds.h"
 
 static t_env	*env_init_alloc(void);
 
@@ -29,6 +30,7 @@ t_env	*env_init(const char **envsplit)
 		return (NULL);
 	if (env_arr_init(ret))
 		return (env_free(ret), NULL);
+	init_pwd(ret);
 	return (ret);
 }
 

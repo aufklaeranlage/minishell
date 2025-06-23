@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:43:34 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/21 16:43:05 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:22:46 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	out = malloc(len-- * sizeof(char));
 	if (!out)
 		return (NULL);
+	out[len] = '\0';
 	len = 0;
 	while (*s1)
 	{
@@ -54,7 +55,6 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		++s2;
 		++len;
 	}
-	out[len] = '\0';
 	return (out);
 }
 

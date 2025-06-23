@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 11:52:03 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:31:43 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 08:59:01 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,23 @@ char	*env_getval(const char *var, t_env *env)
 	if (!envnode)
 		return (NULL);
 	return (envnode->val);
+}
+
+char	*env_constructvarstr(const char *var, const char *val)
+{
+	char	*ret;
+	char	*tmp;
+
+	if (!var)
+		return (NULL);
+	if (!val)
+		return (ft_strdup(var));
+	tmp = ft_strjoin(var, "=");
+	if (!tmp)
+		return (NULL);
+	ret = ft_strjoin(tmp, val);
+	free(tmp);
+	return (ret);
 }
 
 int	env_splitvarstr(const char *varstr, char **var, char **val)

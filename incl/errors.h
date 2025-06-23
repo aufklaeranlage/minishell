@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:31:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/10 11:18:43 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:26:31 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 //	ERRORMSG
 
-void	errormsg(char *prog, char *obj, char *msg, char *opt);
+void	errormsg(const char *prog, const char *obj, const char *msg,
+			  const char *opt);
 
 #endif

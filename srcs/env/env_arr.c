@@ -6,13 +6,11 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:33:27 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:34:12 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 08:58:53 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
-
-static char	*env_constructvarstr(const char *var, const char *val);
 
 int	env_arr_init(t_env *env)
 {
@@ -39,23 +37,6 @@ int	env_arr_init(t_env *env)
 	}
 	env->arr[j] = NULL;
 	return (0);
-}
-
-static char	*env_constructvarstr(const char *var, const char *val)
-{
-	char	*ret;
-	char	*tmp;
-
-	if (!var)
-		return (NULL);
-	if (!val)
-		return (ft_strdup(var));
-	tmp = ft_strjoin(var, "=");
-	if (!tmp)
-		return (NULL);
-	ret = ft_strjoin(tmp, val);
-	free(tmp);
-	return (ret);
 }
 
 int	env_arr_ins(const char *var, const char *val, t_env *env)
