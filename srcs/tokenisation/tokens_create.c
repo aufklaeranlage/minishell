@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/13 11:05:53 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 18:12:52 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	process_string(t_tokens *out, size_t i, char *tmp)
 	if (ft_strlen(tmp) < 2)
 		out->content[i] = ft_strdup("");
 	else
-		out->content[i] = ft_substr(tmp, 1, ft_strlen(tmp) - 2);
+		out->content[i] = ft_strdup(tmp);
 	if (!out->content[i])
 	{
 		free(tmp);

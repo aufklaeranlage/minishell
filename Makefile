@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/06/23 15:00:12 by abronner         ###   ########.fr        #
+#    Updated: 2025/06/23 15:44:38 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRCS		:=	main.c \
 				env_utils.c \
 				errormsg.c \
 				exec_cleanup.c exec_inbuilt.c exec_reddir.c exec_shell.c \
-				exec_wrapper.c exec_cmd.c exec_pipe.c exec_reddir_heredoc.c \
+				exec_cmd.c exec_pipe.c exec_reddir_heredoc.c \
 				exec_utils.c pipe.c \
 				expander.c expand_value.c \
 				ft_cd.c ft_env.c ft_export.c ft_unset.c inbuild_utils.c \

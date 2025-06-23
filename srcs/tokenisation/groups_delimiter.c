@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 23:03:56 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/21 14:42:57 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 16:45:30 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,19 @@
 
 int	set_type(char *tmp, char **env)
 {
+	char	*exec;
+
 	if (specifier_one(tmp))
 		return (specifier_one(tmp));
-	else if (specifier_two(tmp))
+	if (specifier_two(tmp))
 		return (specifier_two(tmp));
-	else if (cmd_specifier(tmp))
+	if (cmd_specifier(tmp))
 		return (cmd_specifier(tmp));
-	else if (minishell_getexec(tmp, env))
-		return (STD_CMD);
-	else if (is_falg(tmp))
+	exec = minishell_getexec(tmp, env);
+	if (exec)
+		return (free(exec), STD_CMD);
+	free(exec);
+	if (is_falg(tmp))
 		return (FLAG);
 	else
 		return (TEXT);

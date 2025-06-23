@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/17 11:28:16 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 16:11:26 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static char	*handle_unquoted_segment(char **out, char *p, char **env)
 	exp = expand_path(tmp, env);
 	free(tmp);
 	*out = strjoin_and_free(*out, exp);
+	free(exp);
 	return (q);
 }
 

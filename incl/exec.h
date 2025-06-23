@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:48:24 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:45:55 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@
 # include "env.h"
 # include "tokenisation.h"
 
-//	WRAPPER
-
-int		exec_wrapper(t_group *grp, t_env *env);
-
 //	SHELL
+
+int		exec_first(t_group *grp, t_env *env);
 
 int		exec_shell(t_group *grp, t_env *env);
 

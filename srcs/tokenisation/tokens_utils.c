@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/13 10:43:10 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 17:43:08 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*minishell_getexec(char *execname, char **env)
 	if (ft_strrchr(execname, '/'))
 	{
 		if (access(execname, F_OK | X_OK) == 0)
-			return (ft_strrchr(execname, '/') + 1);
+			return (ft_strdup(execname));
 		return (NULL);
 	}
 	paths = ft_splitpaths((ft_getenv("PATH", env)));
@@ -87,13 +87,13 @@ char	*minishell_getexec(char *execname, char **env)
 	{
 		exec = ft_strjoin(paths[i], tmp);
 		if (!exec)
-			return (free(tmp), NULL);
+			return (ft_freesplit(paths), free(tmp), NULL);
 		if (access(exec, F_OK | X_OK) == 0)
-			return (free(tmp), exec);
+			return (ft_freesplit(paths), free(tmp), exec);
 		free(exec);
 		++i;
 	}
-	return (NULL);
+	return (ft_freesplit(paths), free(tmp), NULL);
 }
 
 int	cmd_specifier(char *str)

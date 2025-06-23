@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/17 16:39:05 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 17:02:26 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "minichill.h"
 
 // static char **ft_splitcpy(char **src);
+
+static void	shellassign(t_group *grp, t_shell *shell);
 
 int main(int ac, char **av, char **env)
 {
@@ -36,12 +38,14 @@ int main(int ac, char **av, char **env)
         add_history(buf);
         if (create_execution_list(shell->cmd, buf, env) == 0)
         {
+			shellassign(shell->cmd, shell);
             //display groups partions
             // grouped_tokens_display(shell->cmd);
-            g_signal = exec_wrapper(shell->cmd, shell->env);
+            g_signal = exec_first(shell->cmd, shell->env);
+			group_free(shell->cmd);
         }
         else
-            g_signal = 127; // ? IDK
+			errormsg(SHNAME, "toks", "couldn't create grps", NULL);
 
         free(buf);
     }
@@ -49,6 +53,16 @@ int main(int ac, char **av, char **env)
     return (0);
 }
 
+static void	shellassign(t_group *grp, t_shell *shell)
+{
+	while (grp)
+	{
+		grp->shell = shell;
+		if (grp->data_type == SHELL)
+			shellassign((t_group *)grp->data, shell);
+		grp = grp->next;
+	}
+}
 // static char **ft_splitcpy(char **src)
 // {
 // 	char	**ret;
