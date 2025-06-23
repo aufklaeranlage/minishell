@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/17 13:09:37 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:18:21 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		ft_exit(t_tokens *tokens, t_env *env);
 
 int		ft_cd(t_tokens *tokens, t_env *env);
 
-int		init_pwd(t_env *env)
+int		init_pwd(t_env *env);
 
 // UTILS FOR USE OUTSIDE
 char	*expand_path(char *str, t_env *env);

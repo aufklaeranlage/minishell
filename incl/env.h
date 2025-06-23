@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/17 12:52:12 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 08:59:34 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,13 @@ int			env_ins(const char *varstr, int exp, t_env *env);
 
 int			env_rmv(const char *varstr, t_env *env);
 
-//	ENV PARTS
-
-int			env_varrepval(const char *var, const char *val, t_env *env);
-
 //	ENV UTILS
 
 t_envnode	*env_contains(const char *var, t_env *env);
 
 char		*env_getval(const char *var, t_env *env);
+
+char		*env_constructvarstr(const char *var, const char *val);
 
 int			env_splitvarstr(const char *varstr, char **var, char **val);
 
