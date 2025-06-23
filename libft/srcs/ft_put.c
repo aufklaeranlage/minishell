@@ -6,18 +6,18 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:43:24 by abronner          #+#    #+#             */
-/*   Updated: 2025/04/02 12:50:20 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/19 17:27:18 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft_put.h"
 
-void	ft_putchar_fd(char c, int fd)
+void	ft_putchar_fd(const char c, int fd)
 {
 	write(fd, &c, 1);
 }
 
-void	ft_putstr_fd(char *s, int fd)
+void	ft_putstr_fd(const char *s, int fd)
 {
 	size_t	slen;
 
@@ -25,7 +25,7 @@ void	ft_putstr_fd(char *s, int fd)
 	write(fd, s, slen);
 }
 
-void	ft_putendl_fd(char *s, int fd)
+void	ft_putendl_fd(const char *s, int fd)
 {
 	ft_putstr_fd(s, fd);
 	ft_putchar_fd('\n', fd);
