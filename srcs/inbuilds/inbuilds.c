@@ -6,14 +6,17 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/12 11:08:07 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:04:50 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
 
-int	inbuilds(t_tokens *tok, t_env *env)
+int	inbuilds(t_group *grp, t_env *env)
 {
+	t_tokens	*tok;
+
+	tok = (t_tokens *)grp->data;
 	if (!tok->type)
 		return (-1);
 	if (tok->type[0] == INCMD_ECHO)
@@ -29,6 +32,6 @@ int	inbuilds(t_tokens *tok, t_env *env)
 	else if (tok->type[0] == INCMD_UNSET)
 		return (ft_unset(tok, env));
 	else if (tok->type[0] == INCMD_EXIT)
-		return (ft_exit(tok, env));
+		return (ft_exit(grp));
 	return (-1);
 }

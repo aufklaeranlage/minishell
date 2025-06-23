@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 11:57:28 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:00:37 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	cd_updateenv(t_env *env)
 	char	*op_str;
 	char	*p_str;
 
-	pwd = cd_curdir();
+	pwd = getcurdir();
 	oldpwd = env_getval("PWD", env);
 	if (!pwd || !oldpwd)
 		return (free(pwd), free(oldpwd), 1);
@@ -80,7 +80,9 @@ int	init_pwd(t_env *env)
 	char	*op_str;
 	char	*p_str;
 
-	dir = cd_curdir();
+	p_str = NULL;
+	op_str = NULL;
+	dir = getcurdir();
 	if (dir)
 	{
 		p_str = env_constructvarstr("PWD", dir);

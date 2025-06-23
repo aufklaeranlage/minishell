@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 12:00:09 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:45:31 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_pwd(void)
 	char	*dir;
 
 	dir = getcurdir();
-	if (!buf)
+	if (!dir)
 		return (errormsg(SHNAME, "pwd", PWDNDT, NULL), 1);
 	ft_putstr_fd(dir, 1);
 	return (0);

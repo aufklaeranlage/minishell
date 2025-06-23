@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 11:55:23 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 15:05:00 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define EXPUSE "export: usage: export [name[=value] ...] or export [-p]\n"
 
 // Inbuilds
-int		inbuilds(t_tokens *tokens, t_env *env);
+int		inbuilds(t_group *grp, t_env *env);
 
 // and list of it
 int		ft_echo(t_tokens *tokens, t_env *env);
@@ -38,7 +38,7 @@ int		ft_pwd(void);
 int		ft_env(t_env *env);
 int		ft_unset(t_tokens *tok, t_env *env);
 int		ft_export(t_tokens *tok, t_env *env);
-int		ft_exit(t_tokens *tokens, t_env *env);
+int		ft_exit(t_group *grp);
 
 //	CD
 
@@ -52,6 +52,6 @@ char	*expand_wildcard(char *str, t_env *env);
 
 //	UTILS
 
-char	*cd_curdir(void);
+char	*getcurdir(void);
 
 #endif

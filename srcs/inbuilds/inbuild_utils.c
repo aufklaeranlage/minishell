@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 11:54:48 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 11:56:03 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:39:58 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 //	At the end it calls strdup on the string and frees the probablz longer than
 //	needed dynamically allocated buffer used with getcwd.
 
-char	*cd_curdir(void)
+char	*getcurdir(void)
 {
 	char	*ret;
 	char	*dir;
