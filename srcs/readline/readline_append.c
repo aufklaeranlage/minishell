@@ -6,108 +6,45 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 12:07:16 by abronner          #+#    #+#             */
-/*   Updated: 2025/05/28 16:30:21 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 12:55:54 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "readline.h"
 
-static char	*appdel_rec(char *del, size_t dellen, size_t offset);
+#ifndef APPER
+# define APPERR "Couldn't append heredoc to readline"
+#endif
 
-static char	*appqou_rec(char quote, size_t offset);
+//	Wrapper function for rl_heredoc that also appends the result and delimiter
+//	to the readline buffer that can be stored in memory.
+//	EXPERIMENTAL USE!
 
-//	rl_appdel reads from readline until a line that matches the delimiter
-//	string is found. Once the delimiter is found it creates a new string
-//	with the combined total length of the original *line string and all the
-//	lines inputted. The inputted lines will be copied into the string one by
-//	one and finally the newly created string is put into the position the
-//	original string was stored in.
-
-int	rl_appdel(char **line, char *del, char **ret)
-{
-	char	*new_line;
-	size_t	len;
-	
-	if (!line || !*line || !del)
-		return (1);
-	len = ft_strlen(*line);
-	*ret = appdel_rec(del, ft_strlen(del), len);
-	if (!*ret)
-		return (1);
-	new_line = ft_strjoin(*line, *ret);
-	free(*line);
-	*line = new_line;
-	return (0);
-}
-
-static char	*appdel_rec(char *del, size_t dellen, size_t offset)
+char	*rl_hdapp(const char *del, char **line)
 {
 	char	*ret;
-	char	*buf;
-	size_t	buflen;
+	char	*newline;
+	size_t	sizes[3];
+	size_t	size;
+	size_t	pos;
 
-	buf = readline(">");
-	if (!buf)
+	ret = rl_heredoc(del);
+	if (!ret)
 		return (NULL);
-	buflen = ft_strlen(buf);
-	if (!ft_strncmp(buf, del, dellen) && buf[dellen] == '\n')
-	{
-		ret = malloc((offset + buflen + 1) * sizeof(ret));
-		ret[offset + buflen] = '\0';
-	}
-	else
-		ret = appdel_rec(del, dellen, offset + buflen);
-	if (!ret)
-		return (free(buf), NULL);
-	ft_strncpy(ret + offset, buf, buflen);
-	free(buf);
-	return (ret);
-}
-
-//	rl_appquo reads from readline until a line that contains the character
-//	specified in quote is found. Once the character is found it creates a new
-//	string with the combined total length of the original *line string and all
-//	the lines inputted. The inputted lines will be copied into the string one
-//	by one and finally the newly created string is put into the position the
-//	original string was stored in.
-
-int	rl_appquote(char **line, char quote)
-{
-	char	*ret;
-	size_t	len;
-	
-	if (!line || !*line)
-		return (1);
-	len = ft_strlen(*line);
-	ret = appquo_rec(quote, len);
-	if (!ret)
-		return (1);
-	ft_strncpy(ret, line, len);	
+	sizes[0] = ft_strlen(*line) + 1;
+	sizes[1] = ft_strlen(ret) + 1;
+	sizes[2] = ft_strlen(del) + 1;
+	size = sizes[0] + sizes[1] + sizes[2];
+	newline = malloc(size-- * sizeof(*newline));
+	if (!newline)
+		return (errormsg(SHNAME, "heredoc", APPERR, NULL), ret);
+	newline[size] = '\0';
+	pos = ft_strlcpy(newline, *line, sizes[0]);
+	newline[pos++] = '\n';
+	pos += ft_strlcpy(newline + pos, ret, sizes[1]);
+	newline[pos++] = '\n';
+	pos += ft_strlcpy(newline + pos, del, sizes[2]);
 	free(*line);
-	*line = ret;
-	return (0);
-}
-
-static char	*appqou_rec(char quote, size_t offset)
-{
-	char	*ret;
-	char	*buf;
-	size_t	buflen;
-
-	buf = readline(">");
-	if (!buf)
-		return (NULL);
-	buflen = ft_strlen(buf);
-	if (ft_strchr(buf, quote))
-	{
-		ret = malloc((offset + buflen + 1) * sizeof(ret));
-		ret[offset + buflen] = '\0';
-	}
-	else
-		ret = appquo_rec(quote, offset + buflen);
-	if (!ret)
-		return (free(buf), NULL);
-	ft_strncpy(ret + offset, buf, buflen);
-	free(buf);
+	*line = newline;
 	return (ret);
 }

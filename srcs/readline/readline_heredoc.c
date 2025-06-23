@@ -6,17 +6,24 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:30:40 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/06 15:24:48 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 13:10:20 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "readline.h"
 
-static char	*heredoc_rec(char *del, size_t dellen, size_t offset);
+#ifndef HDEOF
+# define HDEOF "here-document delimited by end-of-file"
+#endif
+
+static char	*heredoc_rec(const char *del, size_t dellen, size_t offset);
 
 static char	*heredoc_retinit(size_t size);
 
-char	*rl_heredoc(char *del)
+//	Returns the lines read into readline as a string. each line is seperated
+//	by a newline.
+
+char	*rl_heredoc(const char *del)
 {
 	char	*ret;
 
@@ -26,7 +33,12 @@ char	*rl_heredoc(char *del)
 	return (ret);
 }
 
-static char	*heredoc_rec(char *del, size_t dellen, size_t offset)
+//	The recursive loop that makes up the main functionallity. Runs recursively
+//	until the terminating conditon (line matches del with dellen) is met. Once
+//	that condition is met the return is initialized and the readline buffers are
+//	transfered into the combined string and freed.
+
+static char	*heredoc_rec(const char *del, size_t dellen, size_t offset)
 {
 	char	*ret;
 	char	*buf;
@@ -34,7 +46,7 @@ static char	*heredoc_rec(char *del, size_t dellen, size_t offset)
 
 	buf = readline(HD_PROMPT);
 	if (!buf)
-		return (errormsg("warning", "here-document delimited by end-of-file")
+		return (errormsg(SHNAME, "warning", HDEOF, NULL)
 			, heredoc_retinit(offset));
 	buflen = ft_strlen(buf);
 	if ((!ft_strncmp(buf, del, buflen) && buflen > 0))
@@ -47,16 +59,19 @@ static char	*heredoc_rec(char *del, size_t dellen, size_t offset)
 	if (!ret)
 		return (free(buf), NULL);
 	ft_strncpy(ret + offset, buf, buflen);
-	ret[offset + buflen] = '\n';
+	if (offset)
+		ret[offset - 1] = '\n';
 	free(buf);
 	return (ret);
 }
+
+//	Initializes a string of the total length of size and terminates it at size.
 
 static char	*heredoc_retinit(size_t size)
 {
 	char	*ret;
 
-	ret = malloc((size + 1) * sizeof(*ret));
+	ret = malloc(size-- * sizeof(*ret));
 	if (ret)
 		ret[size] = '\0';
 	return (ret);

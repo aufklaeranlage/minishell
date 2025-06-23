@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 11:39:36 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:55:23 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,9 @@ int		init_pwd(t_env *env);
 // Bonus
 int		is_wildcard(char *str);
 char	*expand_wildcard(char *str, t_env *env);
+
+//	UTILS
+
+char	*cd_curdir(void);
 
 #endif

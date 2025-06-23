@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:31:56 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 09:41:24 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:43:41 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	exec_inbuilt(t_group *grp, t_env *env)
 {
-	t_tokens *token;
+	t_tokens	*tok;
 
-	token = (t_tokens *)grp->data;
-	inbuilds(token, env);
+	tok = (t_tokens *)grp->data;
+	inbuilds(tok, env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:31:15 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:50:31 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:43:22 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	red_in(t_tokens *tok, int fd[2], size_t i)
 		fd[0] = open_heredoc((char *)tok->content[i]);
 	if (fd[0] == -1)
 		return (errormsg(SHNAME, (char *)tok->content[i], strerror(errno),
-				   NULL), 1);
+				NULL), 1);
 	return (0);
 }
 
@@ -76,7 +76,7 @@ static int	red_out(t_tokens *tok, int fd[2], size_t i)
 	fd[1] = open((char *)tok->content[i], flags, 0644);
 	if (fd[1] == -1)
 		return (errormsg(SHNAME, (char *)tok->content[i], strerror(errno),
-				   NULL), 1);
+				NULL), 1);
 	return (0);
 }
 

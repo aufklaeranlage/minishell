@@ -6,13 +6,13 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/17 16:38:18 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 11:46:15 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static char *cmd_getbin(char *name, t_env *env);
+static char	*cmd_getbin(char *name, t_env *env);
 
 //	exec_cmd:
 //		Executes a single command (array of string) stored in a token.
@@ -25,7 +25,7 @@ int	exec_cmd(t_group *grp, t_env *env)
 	char	*bin;
 
 	if (exec_reddir(grp->red))
-		exec_cleanup(grp->shell);
+		return (exec_cleanup(grp->shell), 1);
 	exec_assign((t_tokens *)grp->data, env);
 	argv = ((t_tokens *)grp->data)->content;
 	bin = cmd_getbin(argv[0], env);
@@ -38,7 +38,7 @@ int	exec_cmd(t_group *grp, t_env *env)
 
 //	cmd_getbin() gets the proper pinary
 
-static char *cmd_getbin(char *name, t_env *env)
+static char	*cmd_getbin(char *name, t_env *env)
 {
 	char	**paths;
 	char	*bin;
@@ -47,7 +47,7 @@ static char *cmd_getbin(char *name, t_env *env)
 
 	i = 0;
 	if (ft_strrchr(name, '/') && access(name, F_OK | X_OK) == 0)
-        return (name);
+		return (name);
 	paths = ft_split(ft_getenv("PATH", env->arr), ':' );
 	if (!paths)
 		return (NULL);
@@ -58,9 +58,7 @@ static char *cmd_getbin(char *name, t_env *env)
 			return (ft_freesplit(paths), NULL);
 		bin = ft_strjoin(tmp, name);
 		free(tmp);
-		if (!bin)
-			return (ft_freesplit(paths), NULL);
-		if (access(bin, F_OK | X_OK) == 0)
+		if (!bin || access(bin, F_OK | X_OK) == 0)
 			return (ft_freesplit(paths), bin);
 		free(bin);
 		++i;

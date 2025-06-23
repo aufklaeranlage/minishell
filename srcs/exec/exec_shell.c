@@ -6,12 +6,14 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:25:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/17 12:20:04 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 11:51:21 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minichill.h"
 #include "exec.h"
+
+static int	exec_shell_grploop(t_group *grp, int cond, t_env *env);
 
 static int	exec_shell_child(t_group *grp, t_env *env);
 
@@ -22,7 +24,7 @@ int	exec_shell(t_group *grp, t_env *env)
 	int		ret;
 	int		cond;
 
-	exec_reddir(grp->red);
+	// exec_reddir(grp->red);
 	ret = 0;
 	cond = grp->exec_type;
 	if (grp->exec_type == PIPE)
@@ -35,6 +37,14 @@ int	exec_shell(t_group *grp, t_env *env)
 	while (grp->exec_type == PIPE)
 		grp = grp->next;
 	grp = grp->next;
+	ret = exec_shell_grploop(grp, cond, env);
+	return (exec_cleanup(grp->shell), childreturn(ret));
+}
+
+static int	exec_shell_grploop(t_group *grp, int cond, t_env *env)
+{
+	int	ret;
+
 	while (grp)
 	{
 		if (cond == SMCLN || (cond == AND && !ret)
@@ -55,7 +65,7 @@ int	exec_shell(t_group *grp, t_env *env)
 			break ;
 		grp = grp->next;
 	}
-	return (exec_cleanup(grp->shell), childreturn(ret));
+	return (ret);
 }
 
 static int	exec_shell_child(t_group *grp, t_env *env)

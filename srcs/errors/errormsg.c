@@ -6,14 +6,14 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:30:34 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/19 17:26:18 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:42:16 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "errors.h"
 
 void	errormsg(const char *prog, const char *obj, const char *msg,
-			  const char *opt)
+const char *opt)
 {
 	ft_putstr_fd(prog, STDERR);
 	ft_putstr_fd(": ", STDERR);

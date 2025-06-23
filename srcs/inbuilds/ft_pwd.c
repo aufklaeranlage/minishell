@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/05/26 15:35:25 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 12:00:09 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 
 int	ft_pwd(void)
 {
-	char	*buf;
+	char	*dir;
 
-	buf = NULL;
-	buf = getcwd(buf, 1024);
+	dir = getcurdir();
 	if (!buf)
-	{
-		printf("Error: Directory could not be determined!\n");
-		return (1);
-	}
-	printf("%s\n", buf);
+		return (errormsg(SHNAME, "pwd", PWDNDT, NULL), 1);
+	ft_putstr_fd(dir, 1);
 	return (0);
 }

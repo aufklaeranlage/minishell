@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:12:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/17 16:30:26 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 11:51:49 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,8 @@ int	exec_wrapper(t_group *grp, t_env *env)
 	if (grp->exec_type == PIPE)
 		ret = exec_pipe(grp, env);
 	else if (grp->data_type == STD_CMD)
-	{		
+	{
 		pid = fork();
-		
 		if (!pid)
 			exec_cmd(grp, env);
 		waitpid(pid, &ret, 0);

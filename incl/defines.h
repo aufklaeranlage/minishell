@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:35:23 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/17 12:21:30 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/23 11:59:28 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@
 # define PIPELINE        102		// Currently unused
 
 # define SHNAME "minichill"
+
+# define PWDNDT "Error: Directory could not be determined!"
 
 # ifndef RL_PROMPT
 #  define RL_PROMPT "minichill $>"

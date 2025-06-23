@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/12 11:07:11 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/23 11:57:47 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	exp_print(t_env *env);
 int	ft_export(t_tokens *tok, t_env *env)
 {
 	size_t	i;
-	
+
 	if (!tok || !env)
 		return (1);
 	if (tok->size == 1)
