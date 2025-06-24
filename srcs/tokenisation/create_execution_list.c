@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 00:23:24 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:22:46 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	process_tokens(t_tokens **out, t_wrap *list, char **env)
 	(*out)->content = malloc(sizeof(char *) * (list->size + 1));
 	if (!(*out)->type || !(*out)->content)
 	{
-		del_tokens(*out);
+		token_free(*out);
 		*out = NULL;
 		return (1);
 	}
@@ -143,15 +143,12 @@ int	create_execution_list(t_group *group, char *str, char **env)
 		return (1);
 	tokens = NULL;
 	if (wrap_operations(&tokens, str, env) || parser_input_validation(tokens))
-	{
-		del_tokens(tokens);
-		return (1);
-	}
+		return (token_free(tokens), 1);
 	parsed_group = create_groups(tokens, NULL, 0, 0);
 	return_cmd_type(parsed_group);
-	del_tokens(tokens);
+	token_free(tokens);
 	if (!parsed_group)
-		return (del_tokens(tokens), 1);
+		return ( 1);
 	group->data_type = parsed_group->data_type;
 	group->exec_type = parsed_group->exec_type;
 	group->red = parsed_group->red;

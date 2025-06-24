@@ -1,10 +1,10 @@
 SET NEED TO BE FIXED:
 	1. Fix sig_handler in sig.c action to do as original 
 		bash of Ctrl+C && Ctrl+D - DONE but bad thrue updating in main
-		
+
 	2. Free on empty prompt in main.c after previous execution
 	3. CHECK what about incorrect comand, 
 		in valgrind --leak-check=full we have eround 56 errors
 	4. LOOK AGAIN in handle_quotes --> is all data free-ed properly
-	5. ASSIGNMENT AFTER GROUP-sig
+	5. ASSIGNMENT AFTER GROUP-sig - DONE
 	6. 
