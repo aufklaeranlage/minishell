@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 21:51:40 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 00:35:27 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 16:59:46 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@ void	disable_ctrlc_echo(void)
 
 void	handle_signal(int sign)
 {
-	g_signal = 128 + sign;
-	write(1, "\n", 1);
+	g_signal = sign + 128;
 	if (sign == SIGINT)
 	{
 		write(1, "\n", 1);
-		if (isatty(STDIN_FILENO))
+		if ((isatty(STDIN_FILENO) && rl_readline_state & RL_STATE_READCMD))
 		{
 			rl_replace_line("", 0);
 			rl_on_new_line();
@@ -39,8 +38,10 @@ void	handle_signal(int sign)
 	}
 	else if (sign == SIGQUIT)
 	{
-		if (isatty(STDIN_FILENO))
+		if ((isatty(STDIN_FILENO) && rl_readline_state & RL_STATE_READCMD))
 			rl_redisplay();
+		else
+			write(1, "Quit (core dumped)\n", 19);
 	}
 }
 
@@ -50,67 +51,19 @@ void	handle_signal(int sign)
  */
 void	handle_exec_signal(int sign)
 {
+	g_signal = 128 + sign;
 	if (sign == SIGINT)
-	{
-		g_signal = 128 + sign;
 		write(1, "\n", 1);
-	}
 	else if (sign == SIGQUIT)
-	{
-		g_signal = 128 + sign;
 		write(1, "Quit (core dumped)\n", 19);
-	}
 }
-//
-// /**
-//  * @brief Run before execution 
-//  * and right after comand was completed.
-//  */
-// void	setup_shell_signals(void)
-// {
-// 	signal(SIGINT, handle_signal);
-// 	signal(SIGQUIT, handle_signal);
-// 	signal(SIGTSTP, SIG_IGN);
-// 	signal(SIGTERM, SIG_IGN);
-// }
-//
-// /**
-//  * @brief Run right after fork in child process
-//  */
-// void	setup_child_signals(void)
-// {
-// 	signal(SIGINT, SIG_DFL);
-// 	signal(SIGQUIT, SIG_DFL);
-// }
-//
-// /**
-//  * @brief Run before execution of command
-//  */
-// void setup_exec_signals(void)
-// {
-// 	signal(SIGINT, handle_exec_signal);
-// 	signal(SIGQUIT, handle_exec_signal);
-// }
 
-void	setup_signals(int type)
+void	setup_signals(void)
 {
-	if (type == 1)
-	{
-		signal(SIGINT, handle_exec_signal);
-		signal(SIGQUIT, handle_exec_signal);
-	}
-	if (type == 2)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-	}
-	if (type == 3)
-	{
-		signal(SIGINT, handle_signal);
-		signal(SIGQUIT, handle_signal);
-		signal(SIGTSTP, SIG_IGN);
-		signal(SIGTERM, SIG_IGN);
-	}
+	signal(SIGINT, handle_signal);
+	signal(SIGQUIT, handle_signal);
+	signal(SIGTSTP, SIG_IGN);
+	signal(SIGTERM, SIG_IGN);
 }
 
 /**
@@ -120,5 +73,5 @@ void	signal_handler_init(void)
 {
 	g_signal = 0;
 	disable_ctrlc_echo();
-	setup_signals(3);
+	setup_signals();
 }

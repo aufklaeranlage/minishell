@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 09:18:55 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:08:59 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
 # define ENVSET 0x0
 # define ENVEXP 0x1
 
-typedef struct	s_env
+typedef struct s_env
 {
 	t_wrap	*wrap;
 	char	**arr;
 }	t_env;
 
-typedef struct	s_envnode
+typedef struct s_envnode
 {
 	char	*var;
 	char	*val;

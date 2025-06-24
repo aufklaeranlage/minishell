@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   home.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 09:58:16 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 14:34:07 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:01:09 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*tilde_replace(char *str, t_env *env);
 int	tilde_exp(char **str, t_env *env)
 {
 	char	*ret;
-	
+
 	if (!*str || (*str)[0] != '~')
 		return (0);
 	ret = tilde_replace((*str), env);

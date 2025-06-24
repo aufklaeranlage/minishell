@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 11:08:13 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:03:21 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	cd_home(t_env *env)
 		return (errormsg(SHNAME, "cd", "HOME not set", NULL), 1);
 	dir = ft_strdup(dir);
 	if (chdir(dir) == -1)
-		return (errormsg(SHNAME, "cd", dir , strerror(errno)), free(dir), 1);
+		return (errormsg(SHNAME, "cd", dir, strerror(errno)), free(dir), 1);
 	if (cd_updateenv(env))
 		return (free(dir),
 			errormsg(SHNAME, "cd", "couldn't update environment", NULL), 1);

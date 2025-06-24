@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/17 10:43:14 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:04:06 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*path_to_str(char *str, char **env)
 	free(env_name);
 	if (env_value)
 	{
-		env_value = ft_strdup(ft_strchr(env_value, '=') + 1);	
+		env_value = ft_strdup(ft_strchr(env_value, '=') + 1);
 		return (env_value);
 	}
 	return (ft_strdup(""));
@@ -97,7 +97,8 @@ char	*expand_path(char *str, char **env)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] == '?' && (!str[i + 2] || str[i + 2] == ' '))
+		if (str[i] == '$' && str[i + 1] == '?' \
+			&& (!str[i + 2] || str[i + 2] == ' '))
 			result = append_exit_status(result, &i);
 		else if (str[i] == '$' && ft_isalnum(str[i + 1]))
 			result = append_env_var(str, result, &i, env);

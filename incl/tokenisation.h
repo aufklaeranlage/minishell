@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 16:15:38 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:05:28 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int			parser_input_validation(t_tokens *tokens);
 int			create_execution_list(t_group *group, char *str, char **env);
 
 // ERROR VISUALISATION DELETE AT PRODUCTION
-void	print_tokens(t_tokens *tokens);
-void	grouped_tokens_display(t_group *group);
+void		print_tokens(t_tokens *tokens);
+void		grouped_tokens_display(t_group *group);
 
 #endif

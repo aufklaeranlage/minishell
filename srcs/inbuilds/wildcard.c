@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 00:32:50 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:02:46 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	is_wildcard(char *str)
 {
-	size_t i = 0;
+	size_t	i;
+
+	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '*')
@@ -38,18 +40,16 @@ int	is_wildcard(char *str)
  *      return (zsh: no matches found: ger*ta)
  * Also need to check this things every time after execve()
  */
-char *expand_wildcard(char *str, t_env *env)
-{
-	char *before;
+// char	*expand_wildcard(char *str, t_env *env)
+// {
+// 	char *before;
 
-	if (!is_wildcard(str))
-		return str;
-	before = ft_substr(str, 0, ft_strchr(str, '*') - str);
-	if (!before)
-		return (NULL);
-	//if (before[0] == '/')
-	char *argv_list[] = {"/bin/ls", str, NULL};
-	execve("/bin/ls", argv_list, env->arr);
-	
-	return (0);
-}
+// 	if (!is_wildcard(str))
+// 		return (str);
+// 	before = ft_substr(str, 0, ft_strchr(str, '*') - str);
+// 	if (!before)
+// 		return (NULL);
+// 	char *argv_list[] = {"/bin/ls", str, NULL};
+// 	execve("/bin/ls", argv_list, env->arr);
+// 	return (0);
+// }
