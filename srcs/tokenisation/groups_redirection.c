@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:44:00 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:31:04 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_tokens	*create_redir_tokens(int count)
 	red->type = malloc(sizeof(int) * count);
 	red->content = malloc(sizeof(char *) * (count + 1));
 	if (!red->type || !red->content)
-		return (del_tokens(red));
+		return (token_free(red), NULL);
 	red->content[count] = NULL;
 	return (red);
 }
@@ -82,7 +82,7 @@ void	redirection(t_group *group, t_tokens *list, size_t i)
 	red = create_redir_tokens(count);
 	if (!red || copy_redirections(red, list, i) < 0)
 	{
-		del_tokens(red);
+		token_free(red);
 		group->red = NULL;
 		return ;
 	}

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:44:00 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:31:34 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_tokens	*alloc_empty_token(void)
 	cmd->type = malloc(sizeof(int));
 	cmd->content = malloc(sizeof(char *));
 	if (!cmd->type || !cmd->content)
-		return (del_tokens(cmd));
+		return (token_free(cmd), NULL);
 	cmd->content[0] = NULL;
 	return (cmd);
 }
@@ -40,7 +40,7 @@ static void	fill_cmd_subtoken(t_tokens	*cmd, t_tokens *list, \
 		cmd->content[i] = ft_strdup(list->content[start + i]);
 		if (!cmd->content[i])
 		{
-			del_tokens(cmd);
+			token_free(cmd);
 			return ;
 		}
 		i++;
@@ -63,7 +63,7 @@ t_tokens	*subtoken(t_tokens *list, size_t start, size_t end)
 	cmd->type = malloc(sizeof(int) * count);
 	cmd->content = malloc(sizeof(char *) * (count + 1));
 	if (!cmd->type || !cmd->content)
-		return (del_tokens(cmd));
+		return (token_free(cmd), NULL);
 	fill_cmd_subtoken(cmd, list, start, end);
 	return (cmd);
 }

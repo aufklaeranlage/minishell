@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:35:23 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 10:40:11 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 17:24:53 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,30 @@
 # ifndef RL_PROMPT
 #  define RL_PROMPT "minichill"
 # endif
+
+# include <stdlib.h>
+
+typedef struct s_group	t_group;
+
+typedef struct s_tokens	t_tokens;
+
+typedef struct s_shell	t_shell;
+typedef struct s_tokens
+{
+	size_t	size;
+	int		*type;
+	char	**content;
+}	t_tokens;
+
+typedef struct s_group
+{
+	int			data_type;
+	int			exec_type;
+	t_tokens	*red;
+	void		*data;
+	t_group		*next;
+	t_group		*parrent;
+	t_shell		*shell;
+}	t_group;
 
 #endif

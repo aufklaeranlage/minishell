@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:26:54 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_group	*handle_bracket_group(t_tokens *list, size_t i, size_t *j_out)
 		j++;
 	}
 	if (depth != 0)
-		free(group);
+		group_free(group);
 	*j_out = j;
 	return (group);
 }

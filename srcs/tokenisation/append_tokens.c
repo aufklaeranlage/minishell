@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:44:00 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:25:54 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@ void	append_tokens(t_tokens **t1, t_tokens *t2)
 	out->type = malloc(sizeof(int) * out->size);
 	if (!out->content || !out->type)
 	{
-		del_tokens(out);
+		token_free(out);
 		return ;
 	}
 	join_tokens(out, (*t1), t2);
-	del_tokens(*t1);
-	del_tokens(t2);
+	token_free(*t1);
+	token_free(t2);
 	*t1 = out;
 }

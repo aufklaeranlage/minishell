@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:30:24 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ int	copy_valid_tokens(t_tokens *filtered, t_tokens *sub, t_group *group)
 
 void	cleanup_filtered_tokens(t_tokens *fltrd, t_tokens *sub, t_group *group)
 {
-	del_tokens(fltrd);
-	del_tokens(sub);
-	del_tokens(group->red);
-	free(group);
+	token_free(fltrd);
+	token_free(sub);
+	token_free(group->red);
+	group_free(group);
 }
 
 void	setup_next_group(t_group *group, t_tokens *list, size_t j, t_group *pnt)
@@ -81,17 +81,12 @@ t_tokens	*proc_cmd_tokens(t_group *group, t_tokens *list, size_t i, size_t j)
 
 	sub = get_command_tokens(list, i, j);
 	if (!sub)
-	{
-		del_tokens(group->red);
-		free(group);
-		return (NULL);
-	}
+		return (token_free(group->red), group_free(group), NULL);
 	valid_count = count_valid_tokens(sub);
 	filtered = filter_tokens(valid_count, group, sub);
 	if (!filtered)
 		return (NULL);
 	if (!copy_valid_tokens(filtered, sub, group))
 		return (NULL);
-	del_tokens(sub);
-	return (filtered);
+	return (token_free(sub), filtered);
 }

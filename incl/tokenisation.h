@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 17:05:28 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:33:59 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,41 +17,17 @@
 
 # include "defines.h"
 # include "libft.h"
-// # include "shell.h"
+# include "exec.h"
 
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/wait.h>
 # include <fcntl.h>
 
-typedef struct s_group	t_group;
-
-typedef struct s_tokens	t_tokens;
-
-typedef struct s_shell	t_shell;
-typedef struct s_tokens
-{
-	size_t	size;
-	int		*type;
-	char	**content;
-}	t_tokens;
-
-typedef struct s_group
-{
-	int			data_type;
-	int			exec_type;
-	t_tokens	*red;
-	void		*data;
-	t_group		*next;
-	t_group		*parrent;
-	t_shell		*shell;
-}	t_group;
-
 // Utils
 void		append_tokens(t_tokens **t1, t_tokens *t2);
 size_t		delimiter(int *d_type, t_tokens *list, size_t i);
 int			set_type(char *tmp, char **env);
-void		*del_tokens(t_tokens *out);
 int			is_falg(char *str);
 int			cmd_specifier(char *str);
 char		*minishell_getexec(char *execname, char **env);

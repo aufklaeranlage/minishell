@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:29:16 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,25 +80,16 @@ t_tokens	*filter_tokens(size_t valid_count, t_group *group, t_tokens *sub)
 
 	filtered = malloc(sizeof(t_tokens));
 	if (!filtered)
-	{
-		del_tokens(sub);
-		del_tokens(group->red);
-		free(group);
-		return (NULL);
-	}
+		return (token_free(sub), token_free(group->red), \
+			group_free(group), NULL);
 	if (valid_count <= 0)
 		valid_count = 1;
 	filtered->size = 0;
 	filtered->type = malloc(sizeof(int) * valid_count);
 	filtered->content = malloc(sizeof(char *) * (valid_count + 1));
 	if (!filtered->type || !filtered->content)
-	{
-		del_tokens(filtered);
-		del_tokens(sub);
-		del_tokens(group->red);
-		free(group);
-		return (NULL);
-	}
+		return (token_free(filtered), token_free(sub), \
+			token_free(group->red), group_free(group), NULL);
 	filtered->content[0] = NULL;
 	return (filtered);
 }

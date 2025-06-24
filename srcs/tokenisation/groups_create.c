@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:57:33 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 17:27:16 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ static t_group	*handle_bracket_case(t_tokens *list, t_group *parrent, \
 	if (!group)
 		return (NULL);
 	if (!process_bracket_content(group, list, i, j))
-	{
-		free(group);
-		return (NULL);
-	}
+		return (group_free(group), NULL);
 	group->parrent = parrent;
 	return (group);
 }
