@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:50:24 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 16:03:18 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,23 @@ static int	prcr_c2(t_tokens *tokens, size_t i, int cmd_start)
 			return (1);
 		}
 	}
+	
 	return (0);
 }
+
+static int	prcr_c3(t_tokens *tokens, size_t i)
+{
+	while (i < tokens->size && tokens->type[i] != C_BR)
+		i++;
+	if (i + 1 < tokens->size && !(tokens->type[i + 1] >= SMCLN && tokens->type[i + 1] <= OR))
+	{
+		printf("zsh: parse error near '%s'\n", tokens->content[i + 1]);
+		return (1);
+	}
+	return (0);
+}
+
+
 
 static int	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
 {
@@ -98,7 +113,7 @@ int	parser_input_validation(t_tokens *tokens)
 	{
 		if (prcr_process(tokens, &i, &cmd_start))
 			return (1);
-		if (prcr_c1(tokens, i) || prcr_c2(tokens, i, cmd_start))
+		if (prcr_c1(tokens, i) || prcr_c2(tokens, i, cmd_start) || prcr_c3(tokens, i))
 			return (1);
 		i++;
 	}
