@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 15:00:37 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 10:30:51 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,16 @@ int	ft_cd(t_tokens *tok, t_env *env)
 	}
 	else
 		dir = tok->content[1];
+	dir = ft_strdup(dir);
+	if (tilde_exp(&dir, env))
+		return (free(dir), 1);
 	if (chdir(dir) == -1)
-		return (errormsg(SHNAME, "cd", tok->content[1], strerror(errno)), 1);
+		return (free(dir),
+			errormsg(SHNAME, "cd", tok->content[1], strerror(errno)), 1);
 	if (cd_updateenv(env))
-		return (errormsg(SHNAME, "cd", "couldn't update environment", NULL), 1);
-	return (0);
+		return (free(dir),
+			errormsg(SHNAME, "cd", "couldn't update environment", NULL), 1);
+	return (free(dir), 0);
 }
 
 //	Updates the environment: sets the value of PWD to OLDPWD and stores the

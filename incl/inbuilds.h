@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 17:21:45 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 10:46:18 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,13 @@ char	*expand_wildcard(char *str, t_env *env);
 //	UTILS
 
 char	*getcurdir(void);
+
+//	HOME
+
+int		tilde_exp(char **str, t_env *env);
+
+int		tilde_ret(char **str, t_env *env);
+
+char	*construct_prompt(t_env *env);
 
 #endif

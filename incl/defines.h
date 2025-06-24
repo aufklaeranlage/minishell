@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:35:23 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 11:59:28 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 10:40:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@
 # define PWDNDT "Error: Directory could not be determined!"
 
 # ifndef RL_PROMPT
-#  define RL_PROMPT "minichill $>"
+#  define RL_PROMPT "minichill"
 # endif
 
 #endif
