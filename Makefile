@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/06/24 11:11:13 by abronner         ###   ########.fr        #
+#    Updated: 2025/06/24 17:38:08 by akuzmin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ SRCS		:=	main.c \
 				groups_subtoken.c tokens_utils.c create_handle_errors.c \
 				groups_handle_cmd.c handle_quatation.c groups_bracket_proc.c \
 				groups_handle_cmd_utils2.c lexer.c groups_create.c \
-				groups_handle_cmd_utils.c tokens_convert_sub.c del_tokens.c
+				groups_handle_cmd_utils.c tokens_convert_sub.c
 				
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))
