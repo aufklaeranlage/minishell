@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:25:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 09:43:41 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:45:54 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	exec_shell(t_group *grp, t_env *env)
 	t_group	*cur;
 
 	exec_reddir(grp->red);
-	grp->red = NULL;
 	cur = grp;
 	ret = 0;
 	if (cur->exec_type == PIPE)
