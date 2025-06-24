@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 17:52:25 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 10:54:37 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	inbuilds(t_group *grp, t_env *env)
 	if (tok->type[0] == INCMD_ECHO)
 		return (ft_echo(tok, env, fd));
 	else if (tok->type[0] == INCMD_PWD)
-		return (ft_pwd());
+		return (ft_pwd(fd));
 	else if (tok->type[0] == INCMD_CD)
 		return (ft_cd(tok, env));
 	else if (tok->type[0] == INCMD_ENV)

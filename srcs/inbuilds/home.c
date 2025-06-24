@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 09:58:16 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 10:47:43 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:02:14 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,9 @@ int	tilde_ret(char **str, t_env *env)
 	len = ft_strlen(tilde);
 	if (ft_strncmp(tilde, *str, len))
 		return (0);
-	if ((*str)[len--] != '/')
+	if ((*str)[len] != '/' && (*str)[len] != '\0')
 		return (0);
+	--len;
 	(*str)[len] = '~';
 	ret = ft_strdup((*str) + len);
 	if (!ret)
@@ -92,6 +93,7 @@ char	*construct_prompt(t_env *env)
 	dir = getcurdir();
 	if (!dir || !env)
 		return (free(dir), NULL);
+	tilde_ret(&dir, env);
 	sizes[0] = ft_strlen(RL_PROMPT);
 	sizes[1] = ft_strlen(dir);
 	ret = malloc(sizes[0] + sizes[1] + 4);
