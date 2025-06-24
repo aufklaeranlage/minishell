@@ -6,13 +6,15 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 10:30:51 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 11:08:13 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
 #include "env.h"
 #include "errors.h"
+
+static int	cd_home(t_env *env);
 
 static int	cd_updateenv(t_env *env);
 
@@ -28,8 +30,10 @@ int	ft_cd(t_tokens *tok, t_env *env)
 {
 	char	*dir;
 
-	if (tok->size != 2)
+	if (tok->size > 2)
 		return (errormsg(SHNAME, "cd", "only takes 1 argument", NULL), 1);
+	if (tok->size == 1)
+		return (cd_home(env));
 	if (tok->content[1][0] == '-')
 	{
 		if (tok->content[1][1] != '\0')
@@ -45,6 +49,22 @@ int	ft_cd(t_tokens *tok, t_env *env)
 	if (chdir(dir) == -1)
 		return (free(dir),
 			errormsg(SHNAME, "cd", tok->content[1], strerror(errno)), 1);
+	if (cd_updateenv(env))
+		return (free(dir),
+			errormsg(SHNAME, "cd", "couldn't update environment", NULL), 1);
+	return (free(dir), 0);
+}
+
+static int	cd_home(t_env *env)
+{
+	char	*dir;
+
+	dir = env_getval("HOME", env);
+	if (!dir)
+		return (errormsg(SHNAME, "cd", "HOME not set", NULL), 1);
+	dir = ft_strdup(dir);
+	if (chdir(dir) == -1)
+		return (errormsg(SHNAME, "cd", dir , strerror(errno)), free(dir), 1);
 	if (cd_updateenv(env))
 		return (free(dir),
 			errormsg(SHNAME, "cd", "couldn't update environment", NULL), 1);
