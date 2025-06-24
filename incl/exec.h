@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 15:45:55 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 09:44:26 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,7 @@ int		childreturn(int wstatus);
 void	exec_cleanup(t_shell *shell);
 
 void	group_free(t_group *grp);
+
+void	token_free(t_tokens *tok);
 
 #endif

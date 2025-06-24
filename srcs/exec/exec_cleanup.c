@@ -6,13 +6,11 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:31:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 15:08:40 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 09:44:16 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-
-static void	token_free(t_tokens *tok);
 
 void	exec_cleanup(t_shell *shell)
 {
@@ -42,7 +40,7 @@ void	group_free(t_group *grp)
 	}
 }
 
-static void	token_free(t_tokens *tok)
+void	token_free(t_tokens *tok)
 {
 	if (!tok)
 		return ;
