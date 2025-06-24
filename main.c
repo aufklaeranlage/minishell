@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 11:11:22 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:45:27 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ int main(int ac, char **av, char **env)
         {
 			shellassign(shell->cmd, shell);
             g_signal = exec_first(shell->cmd, shell->env);
-            if (g_signal > 0 && g_signal != 127)
-                g_signal += 128;
+            // if (g_signal > 0 && g_signal != 127)
+            //     g_signal += 128;
         }
         group_free(shell->cmd);
         free(buf);

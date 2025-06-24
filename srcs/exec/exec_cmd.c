@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 09:43:06 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:50:15 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,14 @@ int	exec_cmd(t_group *grp, t_env *env)
 	char	*bin;
 
 	if (exec_reddir(grp->red))
-		return (exec_cleanup(grp->shell), 1);
-	grp->red = NULL;
+		return (1);
 	exec_assign((t_tokens *)grp->data, env);
 	argv = ((t_tokens *)grp->data)->content;
 	bin = cmd_getbin(argv[0], env);
 	if (!bin)
 		return (errormsg(SHNAME, argv[0], "command not found", NULL), 127);
-	if (execve(bin, argv, env->arr) == -1)
-		exec_cleanup(grp->shell);
-	return (errormsg(SHNAME, argv[0], "execve failed", NULL), 127);
+	execve(bin, argv, env->arr);
+	return (errormsg(SHNAME, argv[0], strerror(errno), NULL), 126);
 }
 
 //	cmd_getbin() gets the proper pinary

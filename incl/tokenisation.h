@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/17 12:13:17 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 16:15:38 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,6 @@ typedef struct s_group
 	t_group		*parrent;
 	t_shell		*shell;
 }	t_group;
-
-
-t_group		*create_group_of_type(int type, t_group *parent);
-void		free_group_recursive(t_group *group);
 
 // Utils
 void		append_tokens(t_tokens **t1, t_tokens *t2);

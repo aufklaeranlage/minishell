@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:31:15 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 09:41:55 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:46:00 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	exec_reddir(t_tokens *tok)
 		++i;
 	}
 	red_dup(fd);
-	token_free(tok);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 16:03:18 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 16:16:58 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,8 @@ int	parser_input_validation(t_tokens *tokens)
 	{
 		if (prcr_process(tokens, &i, &cmd_start))
 			return (1);
-		if (prcr_c1(tokens, i) || prcr_c2(tokens, i, cmd_start) || prcr_c3(tokens, i))
+		if (prcr_c1(tokens, i) || prcr_c2(tokens, i, cmd_start) \
+			|| prcr_c3(tokens, i))
 			return (1);
 		i++;
 	}

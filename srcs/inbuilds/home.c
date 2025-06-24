@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 09:58:16 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 11:02:14 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 14:34:07 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static char	*tilde_replace(char *str, t_env *env)
 		tilde = env_getval("HOME", env);
 		--pos;
 	}
+	if (str[pos + 1] != '/' && str[pos + 1] != '\0')
+		return (NULL);
 	if (!tilde)
 		return (errormsg(SHNAME, "tilde", "HOME not set", NULL), NULL);
 	ret = ft_strjoin(tilde, str + pos);
@@ -86,20 +88,24 @@ int	tilde_ret(char **str, t_env *env)
 char	*construct_prompt(t_env *env)
 {
 	char	*dir;
+	char	*usr;
 	char	*ret;
 	size_t	sizes[2];
 	size_t	pos;
 
 	dir = getcurdir();
+	usr = env_getval("USER", env);
+	if (!usr)
+		usr = RL_PROMPT;
 	if (!dir || !env)
 		return (free(dir), NULL);
 	tilde_ret(&dir, env);
-	sizes[0] = ft_strlen(RL_PROMPT);
+	sizes[0] = ft_strlen(usr);
 	sizes[1] = ft_strlen(dir);
 	ret = malloc(sizes[0] + sizes[1] + 4);
 	if (!ret)
 		return (free(dir), NULL);
-	pos = ft_strlcpy(ret, RL_PROMPT, sizes[0] + 1);
+	pos = ft_strlcpy(ret, usr, sizes[0] + 1);
 	ret[pos++] = ':';
 	pos += ft_strlcpy(ret + pos, dir, sizes[1] + 1);
 	ft_strlcpy(ret + pos, "$ ", 3);
