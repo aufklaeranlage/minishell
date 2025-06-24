@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/06/24 00:22:47 by akuzmin          ###   ########.fr        #
+#    Updated: 2025/06/24 11:11:13 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,15 +27,15 @@ INC_DIR		:=	incl/
 SRCS		:=	main.c \
                 print_group_data.c \
                 sig.c \
-				env_arr.c env_init.c env_insert.c envnode_init.c env_remove.c \
-				env_utils.c \
+				env_arr.c env_init.c env_insert.c env_insert_sep.c \
+				envnode_init.c env_remove.c env_utils.c \
 				errormsg.c \
 				exec_cleanup.c exec_inbuilt.c exec_reddir.c exec_shell.c \
 				exec_cmd.c exec_pipe.c exec_reddir_heredoc.c \
 				exec_utils.c pipe.c \
 				expander.c expand_value.c \
 				ft_cd.c ft_env.c ft_export.c ft_unset.c inbuild_utils.c \
-				ft_echo.c  ft_exit.c \
+				ft_echo.c  ft_exit.c  home.c\
 				ft_pwd.c inbuilds.c wildcard.c \
 				readline_append.c readline_heredoc.c \
 				append_tokens.c groups_create_utils.c groups_redirection.c \

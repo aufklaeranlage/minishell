@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:23:46 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 11:12:59 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 08:43:43 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_shell
 {
 	t_env	*env;		// ENVIRONMENT
 	t_group	*cmd;
+	char	*home;
 	//	READLINE??
 }	t_shell;
 

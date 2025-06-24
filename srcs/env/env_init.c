@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:16:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/17 13:08:59 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 09:33:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 static t_env	*env_init_alloc(void);
 
 static int		env_init_add(t_env *ret, const char **env);
+
+static void		env_inc_shlvl(t_env *ret);
 
 t_env	*env_init(const char **envsplit)
 {
@@ -30,6 +32,7 @@ t_env	*env_init(const char **envsplit)
 		return (NULL);
 	if (env_arr_init(ret))
 		return (env_free(ret), NULL);
+	env_inc_shlvl(ret);
 	init_pwd(ret);
 	return (ret);
 }
@@ -71,6 +74,21 @@ static int	env_init_add(t_env *ret, const char **env)
 		++i;
 	}
 	return (0);
+}
+
+static void	env_inc_shlvl(t_env *ret)
+{
+	long	lvl;
+	char	*shlvl;
+
+	shlvl = env_getval("SHLVL", ret);
+	if (!shlvl)
+		lvl = 0;
+	else
+		lvl = ft_strtol(shlvl, 10) + 1;
+	shlvl = ft_ltostr(lvl, 10);
+	env_ins_sep("SHLVL", shlvl, ENVEXP, ret);
+	free(shlvl);
 }
 
 void	env_free(t_env *env)

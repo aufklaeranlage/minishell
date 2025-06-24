@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 08:59:34 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 09:18:55 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void		env_free(t_env *env);
 
 t_envnode	*envnode_init(const char *varstr, int state);
 
+t_envnode	*envnode_init_sep(const char *var, const char *val, int state);
+
 void		envnode_free(t_envnode *envnode);
 
 void		envnode_free_wrapper(void *envnode);
@@ -63,6 +65,8 @@ int			env_arr_rmv(const char *varstr, t_env *env);
 //	ENV INSERT
 
 int			env_ins(const char *varstr, int exp, t_env *env);
+
+int			env_ins_sep(const char *var, const char *val, int exp, t_env *env);
 
 //	ENV REMOVE
 

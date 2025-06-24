@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 00:04:30 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/24 11:11:22 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	shellassign(t_group *grp, t_shell *shell);
 
 int main(int ac, char **av, char **env)
 {
+	char		*prompt;
     char        *buf;
     t_shell     *shell;
     (void)ac;
@@ -31,7 +32,9 @@ int main(int ac, char **av, char **env)
     signal_handler_init();
     while (1)
     {
-        buf = readline(RL_PROMPT);
+		prompt = construct_prompt(shell->env);
+        buf = readline(prompt);
+		free(prompt);
         if (!buf)
             break;
         shell->cmd = ft_calloc(1, sizeof(t_group));

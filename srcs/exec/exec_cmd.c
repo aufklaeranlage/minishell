@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 16:01:22 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/24 09:43:06 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	exec_cmd(t_group *grp, t_env *env)
 
 	if (exec_reddir(grp->red))
 		return (exec_cleanup(grp->shell), 1);
+	grp->red = NULL;
 	exec_assign((t_tokens *)grp->data, env);
 	argv = ((t_tokens *)grp->data)->content;
 	bin = cmd_getbin(argv[0], env);
