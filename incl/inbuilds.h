@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 15:58:33 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:14:08 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		ft_exit(t_group *grp);
 
 int		ft_cd(t_tokens *tokens, t_env *env);
 
-int		init_pwd(t_env *env);
+void	init_pwd(t_env *env);
 
 // Bonus
 int		is_wildcard(char *str);

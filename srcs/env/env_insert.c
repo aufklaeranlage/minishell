@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:54:38 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:34:48 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 12:25:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 static int	env_insert_node(const char *varstr, int exp, t_env *env);
 
 static int	env_rep(const char *varstr, int exp, t_env *env);
+
+int	env_ins_soft(const char *varstr, int exp, t_env *env)
+{
+	if (!env_contains(varstr, env))
+		return (1);
+	return (env_ins(varstr, exp, env));
+}
 
 int	env_ins(const char *varstr, int exp, t_env *env)
 {

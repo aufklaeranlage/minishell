@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 17:08:59 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 12:24:57 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,12 @@ int			env_arr_rmv(const char *varstr, t_env *env);
 
 int			env_ins(const char *varstr, int exp, t_env *env);
 
+int			env_ins_soft(const char *varstr, int exp, t_env *env);
+
 int			env_ins_sep(const char *var, const char *val, int exp, t_env *env);
+
+int			env_ins_sep_soft(const char *var, const char *val, int exp,
+							t_env *env);
 
 //	ENV REMOVE
 

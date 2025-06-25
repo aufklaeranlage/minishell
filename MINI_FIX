@@ -7,7 +7,12 @@ SET NEED TO BE FIXED:
 		in valgrind --leak-check=full we have eround 56 errors
 	4. LOOK AGAIN in handle_quotes --> is all data free-ed properly
 	5. ASSIGNMENT AFTER GROUP-sig - DONE
-	6. 
+	6. unset USER <CR> unset PATH <CR> unset PWD <CR> causes segfault in
+	   getexec().
+	7. cd needs access to a PWD and OLDPWD even if it isn't exported. It will
+	   get set with each cd thoug. So the whole expander needs to use t_env
+	   instead of the t_env strign array. I can go over all of the files and
+	   do the handling for this.
 
 OPTIMIZATION:
 	specifier_one() and convert_specifier_one() can take some optimization.
