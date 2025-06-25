@@ -46,10 +46,14 @@ OPTIMIZATION:
 
 TESTING:
 
-	syntax tree
+	tokenization:
+		syntax tree
 
 	execution:
-		expansion
+		expansion			//	update_values()
+			variable replacement
+			wildcard unfolding (assignment doesn't get unfolded)
+			splitting of strings
 		redirections
 		tmp assignment
 		execution

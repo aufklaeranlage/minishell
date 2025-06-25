@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:43:55 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/17 12:15:52 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 17:22:44 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@
 # define VAR_DEL " <>|&$=+-\'\"\n"
 
 char	*expander(char *str, t_env *env, size_t offset);
-char	*expand_path(char *str, char **env);
+char	*expand_path(char *str, t_env *env);
 
 #endif

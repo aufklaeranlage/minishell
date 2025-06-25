@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 11:24:48 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:04:49 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
  * @param env Environment variables used for variable expansion.
  * @return 0 on success, 1 on failure.
  */
-static int	process_tokens(t_tokens **out, t_wrap *list, char **env)
+static int	process_tokens(t_tokens **out, t_wrap *list)
 {
 	*out = malloc(sizeof(t_tokens));
 	if (!*out)
@@ -41,7 +41,7 @@ static int	process_tokens(t_tokens **out, t_wrap *list, char **env)
 		return (1);
 	}
 	(*out)->content[list->size] = NULL;
-	if (lst_to_tokens(*out, list, env))
+	if (lst_to_tokens(*out, list))
 		return (1);
 	return (0);
 }
@@ -86,7 +86,7 @@ int	check_brackets_balance(t_wrap *list)
  * @param env Environment variables for expansion.
  * @return 0 on success, 1 on failure.
  */
-static int	wrap_operations(t_tokens **out, char *str, char **env)
+static int	wrap_operations(t_tokens **out, char *str)
 {
 	t_wrap		*list;
 
@@ -96,8 +96,8 @@ static int	wrap_operations(t_tokens **out, char *str, char **env)
 	if (check_brackets_balance(list))
 		return (printf("minichill : unclosed brackets.\n"), \
 		ft_wrapclear(list, free), 1);
-	update_values(list, env);
-	if (process_tokens(out, list, env))
+	// update_values(list, env);
+	if (process_tokens(out, list))
 		return (ft_wrapclear(list, free), 1);
 	ft_wrapclear(list, free);
 	return (0);
@@ -135,7 +135,7 @@ void	return_cmd_type(t_group *parsed_group)
 	}
 }
 
-int	create_execution_list(t_group *group, char *str, char **env)
+int	create_execution_list(t_group *group, char *str)
 {
 	t_tokens	*tokens;
 	t_group		*parsed_group;
@@ -143,7 +143,7 @@ int	create_execution_list(t_group *group, char *str, char **env)
 	if (!group)
 		return (1);
 	tokens = NULL;
-	if (wrap_operations(&tokens, str, env) || parser_input_validation(tokens))
+	if (wrap_operations(&tokens, str) || parser_input_validation(tokens))
 		return (token_free(tokens), 1);
 	parsed_group = create_groups(tokens, NULL, 0, 0);
 	return_cmd_type(parsed_group);

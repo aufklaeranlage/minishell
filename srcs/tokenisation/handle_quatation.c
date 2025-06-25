@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 15:51:19 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:46:59 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,17 @@ char	*strjoin_and_free(char *s1, char *s2)
 {
 	char	*res;
 
-	res = ft_strjoin(s1, s2);
+	if (!s1)
+		res = ft_strdup(s2);
+	else if (!s2)
+		res = ft_strdup(s1);
+	else
+		res = ft_strjoin(s1, s2);
 	free(s1);
 	return (res);
 }
 
-static char	*handle_quoted_segment(char **out, char *p, char **env)
+static char	*handle_quoted_segment(char **out, char *p, t_env *env)
 {
 	char	*tmp;
 	char	*exp;
@@ -55,7 +60,7 @@ static char	*handle_quoted_segment(char **out, char *p, char **env)
 	return (ft_strchr(p, quote) + 1);
 }
 
-static char	*handle_unquoted_segment(char **out, char *p, char **env)
+static char	*handle_unquoted_segment(char **out, char *p, t_env *env)
 {
 	char	*tmp;
 	char	*exp;
@@ -74,6 +79,59 @@ static char	*handle_unquoted_segment(char **out, char *p, char **env)
 	return (q);
 }
 
+static int	ft_splitappend(char ***dst, char *src)
+{
+	size_t	dcount;
+	char	**app;
+	size_t	scount;
+	char	**ret;
+
+	if (!dst)
+		return (1);
+	app = ft_split(src, ' ');
+	dcount = ft_splitcount((const char **)*dst);
+	scount = ft_splitcount((const char **)app);
+	if (!dcount && !scount)
+		return (0);
+	ret = malloc((dcount + scount + 1) * sizeof(*ret));
+	if (!ret)
+		return (1);
+	ret[dcount + scount] = NULL;
+	while (scount--)
+		ret[dcount + scount] = app[scount];
+	while (dcount--)
+		ret[dcount] = (*dst)[dcount];
+	free(*dst);
+	free(app);
+	*dst = ret;
+	return (1);
+}
+
+static int	replace_tokens(t_tokens *tok, char **split)
+{
+	size_t	size;
+	int		*types;
+	size_t	i;
+
+	size = ft_splitcount((const char **)split);
+	types = malloc(size * sizeof(*types));
+	if (!types)
+		return (1);
+	i = 0;
+	while (i < size)
+	{
+		types[i] = set_type(split[i]);
+		++i;
+	}
+	ft_freesplit(tok->content);
+	tok->content = split;
+	free(tok->type);
+	tok->type = types;
+	tok->size = size;
+	return (0);
+}
+
+
 /**
  * @brief Removes quotes and expands environment variables from a given string.
  * Handles both single ('') and double ("") quotes. 
@@ -84,28 +142,36 @@ static char	*handle_unquoted_segment(char **out, char *p, char **env)
  * @param env Environment variables for expansion.
  * @return Newly allocated string with quotes removed and variables expanded.
  */
-char	*handle_quotes(char *str, char **env)
+int	handle_quotes(t_tokens *tok, t_env *env)
 {
-	char	*out;
-	char	*p;
+	char	**newsplits;
+	char	*expand;
+	char	*str;
+	size_t	i;
 
-	if (!str)
-		return (NULL);
-	out = ft_calloc(1, 1);
-	if (!out)
-		return (NULL);
-	p = str;
-	while (*p)
+	i = 0;
+	newsplits = ft_calloc(1, sizeof(*newsplits));
+	while (i < tok->size)
 	{
-		if (*p == '\'' || *p == '"')
-			p = handle_quoted_segment(&out, p, env);
-		else
-			p = handle_unquoted_segment(&out, p, env);
+		str = tok->content[i];
+		expand = ft_strdup("");
+		while (*str)
+		{
+			if (*str == '\'' || *str == '"')
+				str = handle_quoted_segment(&expand, str, env);
+			else
+				str = handle_unquoted_segment(&expand, str, env);
+		}
 		if (is_wildcard(str))
-			out = expand_wildcard(out);
+			expand = expand_wildcard(expand);
+		if (!ft_splitappend(&newsplits, expand))
+			return (free(expand), 1);
+		free(expand);
+		++i;
 	}
-	free(str);
-	return (out);
+	if (replace_tokens(tok, newsplits))
+		return (ft_freesplit(newsplits), 1);
+	return (0);
 }
 
 /**
@@ -116,20 +182,20 @@ char	*handle_quotes(char *str, char **env)
  * @param env Environment variables for expansion.
  * @return 0 on success, 1 if input is NULL.
  */
-int	update_values(t_wrap *list, char **env)
-{
-	t_list	*lst;
-	size_t	i;
-
-	if (!list || !list->head)
-		return (1);
-	lst = list->head;
-	i = 0;
-	while (i < list->size)
-	{
-		lst->content = (void *)handle_quotes(lst->content, env);
-		lst = lst->next;
-		i++;
-	}
-	return (0);
-}
+// int	update_values(t_wrap *list, char **env)
+// {
+// 	t_list	*lst;
+// 	size_t	i;
+//
+// 	if (!list || !list->head)
+// 		return (1);
+// 	lst = list->head;
+// 	i = 0;
+// 	while (i < list->size)
+// 	{
+// 		handle_quotes((t_tokens *)lst, env);
+// 		lst = lst->next;
+// 		i++;
+// 	}
+// 	return (0);
+// }

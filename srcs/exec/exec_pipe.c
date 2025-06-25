@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:52:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 16:17:21 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 17:05:20 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ static void	exec_pipe_child(t_group *grp, size_t id, t_env *env)
 	ret = 0;
 	if (grp->data_type >= INCMD_ECHO && grp->data_type <= INCMD_UNSET)
 		ret = exec_inbuilt(grp, env);
-	else if (grp->data_type == STD_CMD)
-		ret = exec_cmd(grp, env);
 	else if (grp->data_type == SHELL)
 		ret = exec_shell(grp, env);
+	else
+		ret = exec_cmd(grp, env);
 	exec_cleanup(grp->shell);
 	exit(ret);
 }

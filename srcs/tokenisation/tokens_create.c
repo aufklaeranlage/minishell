@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 11:40:35 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:57:08 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	process_regular(t_tokens *out, size_t i, char *tmp)
 	return (0);
 }
 
-static int	process_token(t_tokens *out, size_t i, t_list **curr, char **env)
+static int	process_token(t_tokens *out, size_t i, t_list **curr)
 {
 	char	*tmp;
 	int		result;
@@ -55,7 +55,7 @@ static int	process_token(t_tokens *out, size_t i, t_list **curr, char **env)
 	tmp = ft_strdup((char *)(*curr)->content);
 	if (!tmp)
 		return (1);
-	out->type[i] = set_type(tmp, env);
+	out->type[i] = set_type(tmp);
 	result = 0;
 	if (tmp[0] == '.' && tmp[1] == '/' \
 		&& access(tmp, F_OK | X_OK) == 0)
@@ -71,7 +71,7 @@ static int	process_token(t_tokens *out, size_t i, t_list **curr, char **env)
 	return (result);
 }
 
-int	lst_to_tokens(t_tokens *out, t_wrap *list, char **env)
+int	lst_to_tokens(t_tokens *out, t_wrap *list)
 {
 	size_t	i;
 	t_list	*curr;
@@ -84,7 +84,7 @@ int	lst_to_tokens(t_tokens *out, t_wrap *list, char **env)
 		redir_flag = 0;
 		if (curr && curr->content)
 		{
-			if (process_token(out, i, &curr, env))
+			if (process_token(out, i, &curr))
 				return (1);
 			if (out->type[i] >= RED_IN && out->type[i] <= ADD_OUT)
 				redir_flag = 1;

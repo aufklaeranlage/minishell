@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:35:23 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 17:24:53 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 18:16:31 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define INCMD_EXPORT    9
 # define INCMD_ENV       10
 # define INCMD_UNSET     11
+# define INCMD_ASSIGN
 # define STD_CMD		 12			// all comands from PC-s $PATH
 # define FLAG            13  		// -l --long and etc.
 # define RED_IN          14  		// <

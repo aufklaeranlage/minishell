@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@students.42berlin.de>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 10:43:34 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 11:22:46 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 18:24:36 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,19 @@ char	*ft_strdup(const char *s)
 char	*ft_strjoin(const char *s1, const char *s2)
 {
 	char	*out;
-	size_t	len;
+	size_t	len1;
+	size_t	len2;
 
-	len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	out = malloc(len-- * sizeof(char));
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	out = malloc((len1 + len2 + 1) * sizeof(char));
 	if (!out)
 		return (NULL);
-	out[len] = '\0';
-	len = 0;
-	while (*s1)
-	{
-		out[len] = *s1;
-		++s1;
-		++len;
-	}
-	while (*s2)
-	{
-		out[len] = *s2;
-		++s2;
-		++len;
-	}
+	out[len1 + len2] = '\0';
+	while (len2--)
+		out[len1 + len2] = s2[len2];
+	while (len1--)
+		out[len1] = s1[len1];
 	return (out);
 }
 

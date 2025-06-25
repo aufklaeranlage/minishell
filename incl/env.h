@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/25 15:17:34 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 17:21:59 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_env
 {
 	t_wrap	*wrap;
 	char	**arr;
+	int		status;
 }	t_env;
 
 typedef struct s_envnode

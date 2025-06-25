@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 17:14:34 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 18:05:34 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	do_dirt(t_shell *shell)
 			break ;
 		shell->cmd = ft_calloc(1, sizeof(t_group));
 		add_history(buf);
-		if (create_execution_list(shell->cmd, buf, shell->env->arr) == 0)
+		if (create_execution_list(shell->cmd, buf) == 0)
 		{
 			shellassign(shell->cmd, shell);
 			g_signal = exec_first(shell->cmd, shell->env);
