@@ -6,50 +6,143 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 17:02:46 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 02:39:03 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
+#include <dirent.h>
+#include <stdlib.h>
+#include <string.h>
+#include "libft.h" // твоя библиотека
+
+static char	*matches_to_string(t_wrap *matches);
 
 int	is_wildcard(char *str)
 {
 	size_t	i;
+	char	quote;
 
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '*')
-			return (WILDCARD);
-		i++;
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i++];
+			while (str[i] && str[i] != quote)
+				i++;
+			if (str[i])
+				i++;
+		}
+		else if (str[i] == '*')
+			return (1);
+		else
+			i++;
 	}
 	return (0);
 }
 
-/**
- * 1. Copy first part before wildcart
- *      if it wat '/' execve("/bin/ls", "/")
- *      else execve("/bin/ls", "/")
- * 2. then copy rest before "*" sign
- *      if (match in set from 1) new_set.append;
- *      else --> skip
- * 3. then check is it mutch with part after "*" sign
- *      if (yes) --> seve in final output
- *      else --> go next
- * 4. if final output is empty
- *      return (zsh: no matches found: ger*ta)
- * Also need to check this things every time after execve()
- */
-// char	*expand_wildcard(char *str, t_env *env)
-// {
-// 	char *before;
+int	match_tokens(char *content, char **tokens)
+{
+	size_t	pos;
+	size_t	i;
+	char	*found;
 
-// 	if (!is_wildcard(str))
-// 		return (str);
-// 	before = ft_substr(str, 0, ft_strchr(str, '*') - str);
-// 	if (!before)
-// 		return (NULL);
-// 	char *argv_list[] = {"/bin/ls", str, NULL};
-// 	execve("/bin/ls", argv_list, env->arr);
-// 	return (0);
-// }
+	if (!content || !tokens || !*tokens)
+		return (0);
+
+	pos = 0;
+	i = 0;
+
+	// первый токен — если непустой, он должен быть в начале
+	if (tokens[0][0] != '\0')
+	{
+		if (ft_strncmp(content, tokens[0], ft_strlen(tokens[0])) != 0)
+			return (0);
+		pos = ft_strlen(tokens[0]);
+		i = 1;
+	}
+
+	while (tokens[i])
+	{
+		found = ft_strnstr(content + pos, tokens[i], ft_strlen(content + pos));
+		if (!found)
+			return (0);
+		pos = found - content + ft_strlen(tokens[i]);
+		i++;
+	}
+	
+	// последний токен — если непустой, должен быть в конце
+	if (i > 1 && tokens[i - 1][0] != '\0')
+	{
+		size_t len = ft_strlen(tokens[i - 1]);
+		size_t content_len = ft_strlen(content);
+		if (content_len < len || ft_strncmp(content + content_len - len, tokens[i - 1], len) != 0)
+			return (0);
+	}
+	return (1);
+}
+
+char *expand_wildcard(char *str)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	t_wrap			*matches;
+	char			*result;
+	char			**tokens;
+
+	if (!str || !is_wildcard(str))
+		return (ft_strdup(str));
+
+	tokens = ft_split(str, '*');
+	if (!tokens)
+		return (NULL);
+
+	matches = ft_calloc(1, sizeof(t_wrap));
+	if (!matches)
+		return (ft_freesplit(tokens), NULL);
+
+	dir = opendir(".");
+	if (!dir)
+	{
+		ft_freesplit(tokens);
+		// free(matches);
+		return (ft_strdup(str));
+	}
+	while ((entry = readdir(dir)) != NULL)
+	{
+		if (entry->d_name[0] == '.' && str[0] != '.')
+			continue ;
+		if (match_tokens(entry->d_name, tokens))
+			ft_wrapadd_back(matches, ft_lstnew(ft_strdup(entry->d_name)));
+	}
+	closedir(dir);
+	ft_freesplit(tokens);
+	result = matches_to_string(matches);
+	ft_wrapclear(matches, free);
+	// free(matches);
+	if (!result || result[0] == '\0')
+		return (NULL);
+	return (result);
+}
+
+static char	*matches_to_string(t_wrap *matches)
+{
+	t_list	*current;
+	char	*result;
+
+	if (!matches || !matches->head)
+		return (NULL);
+	current = matches->head;
+	result = ft_strdup((char *)current->content);
+	if (!result)
+		return (NULL);
+	current = current->next;
+	while (current)
+	{
+		result = strjoin_and_free(result, " ");
+		result = strjoin_and_free(result, (char *)current->content);
+		current = current->next;
+	}
+	return (result);
+}
