@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 19:03:16 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 19:18:03 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int	handle_quotes(t_tokens *tok, t_env *env)
 			else
 				str = handle_unquoted_segment(&expand, str, env);
 		}
-		if (is_wildcard(str))
+		if (is_wildcard(tok->content[i]))
 			expand = expand_wildcard(expand);
 		if (!ft_splitappend(&newsplits, expand))
 			return (free(expand), 1);
