@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:30:40 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 13:10:20 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 11:09:55 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ static char	*heredoc_rec(const char *del, size_t dellen, size_t offset)
 	buf = readline(HD_PROMPT);
 	if (!buf)
 		return (errormsg(SHNAME, "warning", HDEOF, NULL)
-			, heredoc_retinit(offset));
+			, heredoc_retinit(offset + 1));
 	buflen = ft_strlen(buf);
 	if ((!ft_strncmp(buf, del, buflen) && buflen > 0))
 	{
-		ret = heredoc_retinit(offset);
+		ret = heredoc_retinit(offset + 1);
 		return (free(buf), ret);
 	}
 	else
@@ -59,8 +59,7 @@ static char	*heredoc_rec(const char *del, size_t dellen, size_t offset)
 	if (!ret)
 		return (free(buf), NULL);
 	ft_strncpy(ret + offset, buf, buflen);
-	if (offset)
-		ret[offset - 1] = '\n';
+	ret[offset + buflen] = '\n';
 	free(buf);
 	return (ret);
 }

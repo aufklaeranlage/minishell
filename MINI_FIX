@@ -8,3 +8,48 @@ SET NEED TO BE FIXED:
 	4. LOOK AGAIN in handle_quotes --> is all data free-ed properly
 	5. ASSIGNMENT AFTER GROUP-sig - DONE
 	6. 
+
+OPTIMIZATION:
+	specifier_one() and convert_specifier_one() can take some optimization.
+	4 calls to same function with lines to spare can be replaced with a single
+	call an reference to saved value
+
+	node creation like this lst_new(ft_substr(foo, bar, baz)) can cause memory
+	loss if node allocation fails, since the created content won't be freed and
+	we don't retain a poitner to it. (is happening in the same file)
+
+	update_values() uses size and of list when it can just check for the
+	existence of a lst->next pointer. Recommend renaming the 't_wrap *list' to
+	't_wrap *wrap' to make it more consitstent and less confiusing what we are
+	dealign with, since it contains a proper list we want to reference as a
+	list. Laso possible ot use 'lstwrp', 'listwrap', 'wraplist' or anything like
+	that but current naming can be misleading.
+
+	process_tokens(): "create_execution_list.c:38pp" freeing condition check.
+
+	checking for exec existence in parsing might cause some issues:
+		SZENARIO: "nonexisting_cmd || existing_cmd" throws error during parsing
+		and leads to 'existing_cmd' not being executed even if it should.
+		->	It doesn't but migth be unecessary work.
+
+	same goes with file checking. Not really necessary in parsing:
+		Should be handled (and is handled) by execution.
+	
+	STD_CMD might not be needed as type. we can just execute the first
+	non-assignment as a cmd and in execution decide wether it is a STD_CMD
+	or a INBUILT.
+
+TESTING:
+
+FINISHED:
+
+	Replaced simple strdup in case of a HERE_DOC with rl_heredoc.
+
+	error on unfinished redirection "tokens_create.c:17"
+		invalid free for HERE_DOC
+		rest only get's mistakenly detected in execution. Should be detected as
+		a parsing error!
+			-> Changed code in create_execution_list.c tokens_create.c so
+			lst_to tokens now returns an int. It can give feedback if smth
+			failed down the line and the whole thign will be cleared after
+			failed process_token() call.

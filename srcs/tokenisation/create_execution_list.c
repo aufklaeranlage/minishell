@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 17:22:46 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 11:24:48 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int	process_tokens(t_tokens **out, t_wrap *list, char **env)
 		return (1);
 	}
 	(*out)->content[list->size] = NULL;
-	lst_to_tokens(*out, list, env);
+	if (lst_to_tokens(*out, list, env))
+		return (1);
 	return (0);
 }
 

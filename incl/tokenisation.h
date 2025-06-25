@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 17:33:59 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 11:24:13 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char		*convert_subfunction(char *str, t_wrap *list);
 t_tokens	*subtoken(t_tokens *list, size_t start, size_t end);
 size_t		delimiter(int *d_type, t_tokens	*list, size_t i);
 void		redirection(t_group *group, t_tokens	*list, size_t i);
-void		lst_to_tokens(t_tokens *out, t_wrap *list, char **env);
+int			lst_to_tokens(t_tokens *out, t_wrap *list, char **env);
 
 // GROUPS HANDLE CMD
 t_group		*handle_command_group(t_tokens *list, t_group *parrent, \

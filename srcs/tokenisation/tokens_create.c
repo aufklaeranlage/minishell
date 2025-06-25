@@ -6,24 +6,26 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:34:40 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 11:40:35 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenisation.h"
 
+#include "readline.h"
+
 static int	process_redirect(t_tokens *out, size_t i, t_list **curr, char *tmp)
 {
 	if (!(*curr)->next)
 	{
-		free(tmp);
-		out->content[i] = ft_strdup("");
-		if (!out->content[i])
-			return (1);
-		return (0);
+		out->content[i] = NULL;
+		return (errormsg(SHNAME, NULL, "syntax error near unexpected token 'newline'", NULL), 1);
 	}
 	*curr = (*curr)->next;
-	out->content[i] = ft_strdup((char *)(*curr)->content);
+	if (out->type[i] == HERE_DOC)
+		out->content[i] = rl_heredoc((char *)(*curr)->content);
+	else
+		out->content[i] = ft_strdup((char *)(*curr)->content);
 	if (!out->content[i])
 	{
 		free(tmp);
@@ -69,7 +71,7 @@ static int	process_token(t_tokens *out, size_t i, t_list **curr, char **env)
 	return (result);
 }
 
-void	lst_to_tokens(t_tokens *out, t_wrap *list, char **env)
+int	lst_to_tokens(t_tokens *out, t_wrap *list, char **env)
 {
 	size_t	i;
 	t_list	*curr;
@@ -83,7 +85,7 @@ void	lst_to_tokens(t_tokens *out, t_wrap *list, char **env)
 		if (curr && curr->content)
 		{
 			if (process_token(out, i, &curr, env))
-				return ;
+				return (1);
 			if (out->type[i] >= RED_IN && out->type[i] <= ADD_OUT)
 				redir_flag = 1;
 		}
@@ -93,4 +95,5 @@ void	lst_to_tokens(t_tokens *out, t_wrap *list, char **env)
 	}
 	out->size = i;
 	out->content[i] = NULL;
+	return (0);
 }
