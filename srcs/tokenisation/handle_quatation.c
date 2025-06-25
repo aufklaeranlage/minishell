@@ -6,33 +6,12 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 18:46:59 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:03:16 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenisation.h"
 #include "expander.h"
-
-/**
- * @brief Joins two strings and frees the first one.
- *
- * @param s1 First string, will be freed.
- * @param s2 Second string.
- * @return Newly allocated string containing the result of s1 + s2.
- */
-char	*strjoin_and_free(char *s1, char *s2)
-{
-	char	*res;
-
-	if (!s1)
-		res = ft_strdup(s2);
-	else if (!s2)
-		res = ft_strdup(s1);
-	else
-		res = ft_strjoin(s1, s2);
-	free(s1);
-	return (res);
-}
 
 static char	*handle_quoted_segment(char **out, char *p, t_env *env)
 {
@@ -130,7 +109,6 @@ static int	replace_tokens(t_tokens *tok, char **split)
 	tok->size = size;
 	return (0);
 }
-
 
 /**
  * @brief Removes quotes and expands environment variables from a given string.

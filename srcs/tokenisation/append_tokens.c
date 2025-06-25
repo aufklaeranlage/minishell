@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:44:00 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 17:20:50 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:05:49 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	join_tokens(t_tokens *out, t_tokens *t1, t_tokens *t2)
 	i = 0;
 	while (i < t1->size)
 	{
-		// out->content[i] = ft_strdup(t1->content[i]);
 		out->content[i] = t1->content[i];
 		out->type[i] = t1->type[i];
 		i++;
@@ -28,7 +27,6 @@ static void	join_tokens(t_tokens *out, t_tokens *t1, t_tokens *t2)
 	j = 0;
 	while (j < t2->size)
 	{
-		// out->content[i + j] = ft_strdup(t2->content[j]);
 		out->content[i + j] = t2->content[j];
 		out->type[i + j] = t2->type[j];
 		j++;
@@ -57,8 +55,6 @@ void	append_tokens(t_tokens **t1, t_tokens *t2)
 		return ;
 	}
 	join_tokens(out, (*t1), t2);
-	// token_free(*t1);
-	// token_free(t2);
 	free(*t1);
 	free(t2);
 	*t1 = out;

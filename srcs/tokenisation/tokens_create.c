@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 17:57:08 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:01:13 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static int	process_redirect(t_tokens *out, size_t i, t_list **curr, char *tmp)
 	if (!(*curr)->next)
 	{
 		out->content[i] = NULL;
-		return (errormsg(SHNAME, NULL, "syntax error near unexpected token 'newline'", NULL), 1);
+		return (errormsg(SHNAME, NULL, \
+			"syntax error near unexpected token 'newline'", NULL), 1);
 	}
 	*curr = (*curr)->next;
 	if (out->type[i] == HERE_DOC)

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 18:04:49 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 19:07:28 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,9 @@
 /**
  * @brief Allocates memory for the t_tokens structure and fills it with data.
  *
- * On allocation failure, frees any allocated memory using @ref del_tokens.
- * After successful allocation, it fills the structure using @ref lst_to_tokens.
+ * On allocation failure, frees any allocated memory using del_tokens.
+ * After successful allocation, it fills the structure using lst_to_tokens.
  *
- * @see del_tokens()
- * @see lst_to_tokens()
  * @param out Pointer to the t_tokens pointer to be allocated and filled.
  * @param list Parsed data stored in t_wrap list format.
  * @param env Environment variables used for variable expansion.
@@ -96,7 +94,6 @@ static int	wrap_operations(t_tokens **out, char *str)
 	if (check_brackets_balance(list))
 		return (printf("minichill : unclosed brackets.\n"), \
 		ft_wrapclear(list, free), 1);
-	// update_values(list, env);
 	if (process_tokens(out, list))
 		return (ft_wrapclear(list, free), 1);
 	ft_wrapclear(list, free);
@@ -149,7 +146,7 @@ int	create_execution_list(t_group *group, char *str)
 	return_cmd_type(parsed_group);
 	token_free(tokens);
 	if (!parsed_group)
-		return ( 1);
+		return (1);
 	group->data_type = parsed_group->data_type;
 	group->exec_type = parsed_group->exec_type;
 	group->red = parsed_group->red;
