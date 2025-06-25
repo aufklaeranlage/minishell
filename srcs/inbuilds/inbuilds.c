@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 16:05:32 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:52:43 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,8 @@ int	inbuilds(t_group *grp, t_env *env)
 	int			fd[2];
 	int			ret;
 
-	fd[0] = 0;
-	fd[1] = 0;
-	dup2(STDIN, fd[0]);
-	dup2(STDOUT, fd[1]);
+	fd[0] = dup(STDIN);
+	fd[1] = dup(STDOUT);
 	if (exec_reddir(grp->red))
 		return (-1);
 	ret = ret_inbuilts(grp, env);
