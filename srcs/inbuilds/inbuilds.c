@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 13:52:43 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:30:46 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	ret_inbuilts(t_group *grp, t_env *env)
 	if (tok->type[0] == INCMD_ECHO)
 		return (ft_echo(tok, env));
 	else if (tok->type[0] == INCMD_PWD)
-		return (ft_pwd());
+		return (ft_pwd(tok));
 	else if (tok->type[0] == INCMD_CD)
 		return (ft_cd(tok, env));
 	else if (tok->type[0] == INCMD_ENV)

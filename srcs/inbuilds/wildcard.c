@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 02:39:03 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 16:43:45 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,26 @@ int	is_wildcard(char *str)
 	return (0);
 }
 
-int	match_tokens(char *content, char **tokens)
+int	match_tokens(char *content, char **tokens, int check_first)
 {
 	size_t	pos;
 	size_t	i;
 	char	*found;
 
-	if (!content || !tokens || !*tokens)
+	if (!content || !tokens)
 		return (0);
+	if (!*tokens)
+		return (1);
 
 	pos = 0;
 	i = 0;
 
-	// первый токен — если непустой, он должен быть в начале
-	if (tokens[0][0] != '\0')
+	if (check_first)
 	{
 		if (ft_strncmp(content, tokens[0], ft_strlen(tokens[0])) != 0)
 			return (0);
 		pos = ft_strlen(tokens[0]);
-		i = 1;
+		++i;
 	}
 
 	while (tokens[i])
@@ -77,7 +78,7 @@ int	match_tokens(char *content, char **tokens)
 	{
 		size_t len = ft_strlen(tokens[i - 1]);
 		size_t content_len = ft_strlen(content);
-		if (content_len < len || ft_strncmp(content + content_len - len, tokens[i - 1], len) != 0)
+		if (content_len < len || ft_strncmp(content + content_len - len, tokens[i - 1], len))
 			return (0);
 	}
 	return (1);
@@ -113,7 +114,7 @@ char *expand_wildcard(char *str)
 	{
 		if (entry->d_name[0] == '.' && str[0] != '.')
 			continue ;
-		if (match_tokens(entry->d_name, tokens))
+		if (match_tokens(entry->d_name, tokens, str[0] != '*'))
 			ft_wrapadd_back(matches, ft_lstnew(ft_strdup(entry->d_name)));
 	}
 	closedir(dir);

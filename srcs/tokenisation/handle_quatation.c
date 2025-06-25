@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/23 23:39:34 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/25 15:51:19 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ char	*handle_quotes(char *str, char **env)
 			p = handle_quoted_segment(&out, p, env);
 		else
 			p = handle_unquoted_segment(&out, p, env);
+		if (is_wildcard(str))
+			out = expand_wildcard(out);
 	}
 	free(str);
 	return (out);

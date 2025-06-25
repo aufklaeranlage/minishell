@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 15:59:13 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:32:18 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,14 @@ int	ft_export(t_tokens *tok, t_env *env)
 		return (exp_print(env), 0);
 	i = 1;
 	while (i < tok->size)
-		env_ins(tok->content[i++], ENVEXP, env);
+	{
+		env_ins(tok->content[i], ENVEXP, env);
+		++i;
+	}
 	return (0);
 }
+
+
 
 static void	exp_print(t_env *env)
 {

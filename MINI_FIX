@@ -46,6 +46,14 @@ OPTIMIZATION:
 
 TESTING:
 
+	syntax tree
+
+	execution:
+		expansion
+		redirections
+		tmp assignment
+		execution
+
 FINISHED:
 
 	Replaced simple strdup in case of a HERE_DOC with rl_heredoc.

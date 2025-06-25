@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/25 12:24:57 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:17:34 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 
 # define ENVSET 0x0
 # define ENVEXP 0x1
+
+//	wrap: all available variables in var / val pairs including only local
+//		variables accessible through env_getval(varname / varstr)
 
 typedef struct s_env
 {

@@ -6,16 +6,18 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 15:59:33 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/25 15:30:08 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
 
-int	ft_pwd(void)
+int	ft_pwd(t_tokens *tok)
 {
 	char	*dir;
 
+	if (tok->size > 1)
+		return (errormsg(SHNAME, "pwd", "too many arguments", NULL), 1);
 	dir = getcurdir();
 	if (!dir)
 		return (errormsg(SHNAME, "pwd", PWDNDT, NULL), 1);
