@@ -1,4 +1,6 @@
 SET NEED TO BE FIXED:
+	1.1 Get 1 extra empty line when using Wildcard and it 
+		did not find matching pattern
 	1. Fix sig_handler in sig.c action to do as original 
 		bash of Ctrl+C && Ctrl+D - DONE but bad thrue updating in main
 

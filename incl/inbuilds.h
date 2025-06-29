@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 15:48:09 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:12:06 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	init_pwd(t_env *env);
 
 // Bonus
 int		is_wildcard(char *str);
-char	*expand_wildcard(char *str);
+char	*expand_wildcard(char *str, t_env *env);
 
 //	UTILS
 

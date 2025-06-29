@@ -6,57 +6,12 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 19:18:03 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/30 00:06:37 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenisation.h"
 #include "expander.h"
-
-static char	*handle_quoted_segment(char **out, char *p, t_env *env)
-{
-	char	*tmp;
-	char	*exp;
-	char	quote;
-
-	quote = *p++;
-	if (ft_strchr(p, quote))
-		tmp = ft_substr(p, 0, (size_t)(ft_strchr(p, quote) - p));
-	else
-		tmp = ft_substr(p, 0, ft_strlen(p));
-	if (!tmp)
-		return (NULL);
-	if (quote == '\'')
-		exp = tmp;
-	else
-	{
-		exp = expand_path(tmp, env);
-		free(tmp);
-	}
-	*out = strjoin_and_free(*out, exp);
-	if (!ft_strchr(p, quote))
-		return (p + ft_strlen(p));
-	return (ft_strchr(p, quote) + 1);
-}
-
-static char	*handle_unquoted_segment(char **out, char *p, t_env *env)
-{
-	char	*tmp;
-	char	*exp;
-	char	*q;
-
-	q = p;
-	while (*q && *q != '\'' && *q != '"')
-		q++;
-	tmp = ft_substr(p, 0, q - p);
-	if (!tmp)
-		return (NULL);
-	exp = expand_path(tmp, env);
-	free(tmp);
-	*out = strjoin_and_free(*out, exp);
-	free(exp);
-	return (q);
-}
 
 static int	ft_splitappend(char ***dst, char *src)
 {
@@ -65,7 +20,7 @@ static int	ft_splitappend(char ***dst, char *src)
 	size_t	scount;
 	char	**ret;
 
-	if (!dst)
+	if (!dst || !src)
 		return (1);
 	app = ft_split(src, ' ');
 	dcount = ft_splitcount((const char **)*dst);
@@ -132,48 +87,17 @@ int	handle_quotes(t_tokens *tok, t_env *env)
 	while (i < tok->size)
 	{
 		str = tok->content[i];
-		expand = ft_strdup("");
-		while (*str)
-		{
-			if (*str == '\'' || *str == '"')
-				str = handle_quoted_segment(&expand, str, env);
-			else
-				str = handle_unquoted_segment(&expand, str, env);
-		}
-		if (is_wildcard(tok->content[i]))
-			expand = expand_wildcard(expand);
+		if (is_wildcard(str))
+			expand = expand_wildcard(str, env);
+		else
+			expand = get_expandet(str, env);
 		if (!ft_splitappend(&newsplits, expand))
-			return (free(expand), 1);
-		free(expand);
-		++i;
+			return (1);
+		if (expand)
+			free(expand);
+		i++;
 	}
 	if (replace_tokens(tok, newsplits))
 		return (ft_freesplit(newsplits), 1);
 	return (0);
 }
-
-/**
- * @brief Updates the content of a token list by handling quotes and expansions.
- * Applies @ref handle_quotes to each element in the t_wrap list.
- * @see handle_quotes()
- * @param list Linked list of tokens to process.
- * @param env Environment variables for expansion.
- * @return 0 on success, 1 if input is NULL.
- */
-// int	update_values(t_wrap *list, char **env)
-// {
-// 	t_list	*lst;
-// 	size_t	i;
-//
-// 	if (!list || !list->head)
-// 		return (1);
-// 	lst = list->head;
-// 	i = 0;
-// 	while (i < list->size)
-// 	{
-// 		handle_quotes((t_tokens *)lst, env);
-// 		lst = lst->next;
-// 		i++;
-// 	}
-// 	return (0);
-// }

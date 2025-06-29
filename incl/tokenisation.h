@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 18:05:11 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:11:16 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char		*strjoin_and_free(char *s1, char *s2);
 
 // HANDLE QUATATION
 
-// int			update_values(t_wrap *list, char **env);
+char		*get_expandet(char *str, t_env *env);
 int			handle_quotes(t_tokens *tok, t_env *env);
 
 // Modules

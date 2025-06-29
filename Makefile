@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/06/25 19:09:40 by akuzmin          ###   ########.fr        #
+#    Updated: 2025/06/30 00:05:59 by akuzmin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ INC_DIR		:=	incl/
 
 SRCS		:=	main.c \
                 print_group_data.c \
-                sig.c \
+                sig.c get_expandet.c \
 				env_arr.c env_init.c env_insert.c env_insert_sep.c \
 				envnode_init.c env_remove.c env_utils.c \
 				errormsg.c \

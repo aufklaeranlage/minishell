@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 18:09:32 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/30 00:01:49 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static char	*expand_wildcard_util(char *str, DIR *dir, t_wrap *mt, char **t)
 	char			*result;
 	struct dirent	*entry;
 
-	dir = opendir(".");
 	while (1)
 	{
 		entry = readdir(dir);
@@ -40,26 +39,62 @@ static char	*expand_wildcard_util(char *str, DIR *dir, t_wrap *mt, char **t)
 	result = matches_to_string(mt);
 	ft_wrapclear(mt, free);
 	if (!result || result[0] == '\0')
-		return (NULL);
+		return (free(result), ft_strdup(str));
 	return (result);
 }
 
-char	*expand_wildcard(char *str)
+static char	*wildcard_return(char *str, char *out, t_env *env)
+{
+	char *exp;
+	
+	if (ft_strncmp(str, out, ft_strlen(out)) == 0)
+	{
+		exp = get_expandet(out, env);
+		if (out)
+			free(out);
+		printf("minichill: no matches found: %s\n", exp);
+		free(exp);
+		return (NULL);
+	}
+	return (out);
+}
+
+static char **get_split(char *str, t_env *env)
+{
+	char	**tokens;
+	char	*tmp;
+	size_t	i;
+	
+	tokens = ft_split(str, '*');
+	if (!tokens)
+		return (NULL);
+	i = 0;
+	while (tokens[i])
+	{
+		tmp = get_expandet(tokens[i], env);
+		free(tokens[i]);
+		tokens[i] = tmp;
+		i++;
+	}
+	return (tokens);
+}
+
+char	*expand_wildcard(char *str, t_env *env)
 {
 	DIR				*dir;
 	t_wrap			*matches;
 	char			**tokens;
+	char			*out;
 
 	if (!str || !is_wildcard(str))
 		return (ft_strdup(str));
-	tokens = ft_split(str, '*');
-	if (!tokens)
-		return (NULL);
+	tokens = get_split(str, env);
 	matches = ft_calloc(1, sizeof(t_wrap));
 	if (!matches)
 		return (ft_freesplit(tokens), NULL);
 	dir = opendir(".");
 	if (!dir)
 		return (ft_freesplit(tokens), ft_strdup(str));
-	return (expand_wildcard_util(str, dir, matches, tokens));
+	out = expand_wildcard_util(str, dir, matches, tokens);
+	return (wildcard_return(str, out, env));
 }
