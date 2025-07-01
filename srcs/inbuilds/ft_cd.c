@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 12:52:49 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/01 08:52:59 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "env.h"
 #include "errors.h"
 
-static int	cd_minus(char *str,t_env *env);
+static int	cd_minus(char *str, t_env *env);
 
 static int	cd_home(t_env *env);
 
@@ -62,12 +62,12 @@ static int	cd_home(t_env *env)
 	return (0);
 }
 
-static int	cd_minus(char *str,t_env *env)
+static int	cd_minus(char *str, t_env *env)
 {
 	char	*dir;
 
 	if (str[1] != '\0')
-		return (errormsg(SHNAME, "cd", str, "invalid option")
+		return (errormsg(SHNAME, "cd", str, "invalid option") \
 		, 2);
 	dir = env_getval("OLDPWD", env);
 	if (!dir)
@@ -106,17 +106,4 @@ static int	cd_updateenv(char *oldpwd, t_env *env)
 		&& env_ins_sep("OLDPWD", oldpwd, ENVSET, env))
 		return (free(pwd), 1);
 	return (0);
-}
-
-//	Initializes PWD and OLDPWD in the environment. It calls getcurdir to get the
-//	current directory.
-
-void	init_pwd(t_env *env)
-{
-	char	*dir;
-
-	dir = getcurdir();
-	if (dir)
-		env_ins_sep("PWD", dir, ENVEXP, env);
-	free(dir);
 }

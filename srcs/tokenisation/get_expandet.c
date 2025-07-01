@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/30 00:04:48 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/01 08:11:29 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ static char	*handle_unquoted_segment(char **out, char *p, t_env *env)
 	return (q);
 }
 
+/**
+ * @brief Get the expandet string (str)
+ * 
+ * @param str input string with quots, ist can be mexied or not
+ * @param env enviroment
+ * @return char* (string) after 'opening' quots.
+ */
 char	*get_expandet(char *str, t_env *env)
 {
 	char	*expand;

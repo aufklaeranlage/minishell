@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/06/30 00:05:59 by akuzmin          ###   ########.fr        #
+#    Updated: 2025/07/01 08:52:04 by akuzmin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ SRCS		:=	main.c \
 				exec_utils.c pipe.c \
 				expander.c expand_value.c \
 				ft_cd.c ft_env.c ft_export.c ft_unset.c inbuild_utils.c \
-				ft_echo.c  ft_exit.c  home.c\
+				ft_echo.c  ft_exit.c init_pwd.c home.c\
 				ft_pwd.c inbuilds.c wildcard.c wildcard_utils.c \
 				readline_append.c readline_heredoc.c \
 				append_tokens.c groups_create_utils.c groups_redirection.c \

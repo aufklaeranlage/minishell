@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/30 00:01:49 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/01 08:47:56 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,27 @@ static char	*expand_wildcard_util(char *str, DIR *dir, t_wrap *mt, char **t)
 
 static char	*wildcard_return(char *str, char *out, t_env *env)
 {
-	char *exp;
-	
+	char	*exp;
+
 	if (ft_strncmp(str, out, ft_strlen(out)) == 0)
 	{
 		exp = get_expandet(out, env);
 		if (out)
 			free(out);
-		printf("minichill: no matches found: %s\n", exp);
+		ft_putstr_fd("minichill: no matches found: ", 2);
+		ft_putstr_fd(exp, 2);
 		free(exp);
 		return (NULL);
 	}
 	return (out);
 }
 
-static char **get_split(char *str, t_env *env)
+static char	**get_split(char *str, t_env *env)
 {
 	char	**tokens;
 	char	*tmp;
 	size_t	i;
-	
+
 	tokens = ft_split(str, '*');
 	if (!tokens)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 15:32:18 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/01 08:48:24 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ int	ft_export(t_tokens *tok, t_env *env)
 	}
 	return (0);
 }
-
-
 
 static void	exp_print(t_env *env)
 {
