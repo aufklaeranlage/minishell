@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/07/04 16:21:37 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:38:48 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	redirection_quotes(char **str, t_env *env)
 	while (newsplits[i])
 		++i;
 	if (i > 1)
-		return (errormsg(SHNAME, *str, "ambiguous redirect", NULL),
+		return (errormsg(SHNAME, *str, "ambiguous redirect", NULL), \
 		ft_freesplit(newsplits), 1);
 	free(*str);
 	*str = newsplits[0];

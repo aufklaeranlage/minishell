@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_assignment.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 11:34:34 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/04 17:38:34 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:43:42 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	assign(char *str, int state, t_env *env)
 
 //	Assigns all the valid strings starting at 0 as ENVTMP to the environment.
 //	then cuts out the assigned strings from tok->content
-
 //	TODO: OPTIMIZE BY USING DIFFERNT CUTSPLIT THAT REPLACES AND DOESNT USE STRDUP
 
 int tmp_assign(t_tokens *tok, t_env *env)

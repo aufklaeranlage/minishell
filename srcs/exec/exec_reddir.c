@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:31:15 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/04 16:24:25 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:44:51 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	red_in(t_tokens *tok, int fd[2], size_t i)
 	if (fd[0] != -1)
 		close(fd[0]);
 	if (tok->type[i] == RED_IN)
-	   fd[0] = open(tok->content[i], O_RDONLY, NULL);
+		fd[0] = open(tok->content[i], O_RDONLY, NULL);
 	else if (tok->type[i] == HERE_DOC)
 		fd[0] = open_heredoc(tok->content[i]);
 	if (fd[0] != -1)

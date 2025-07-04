@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   env_insert_sep.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:54:38 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/26 11:51:16 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:42:31 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 
-static int	env_ins_sep_node(const char *var, const char *val, int state,
-				t_env *env);
+static int	env_ins_sep_node(const char *var, const char *val, int state, \
+			t_env *env);
 
-static int	env_rep_sep(const char *var, const char *val, int state,
-					   t_env *env);
+static int	env_rep_sep(const char *var, const char *val, int state, \
+			t_env *env);
 
 int	env_ins_sep_soft(const char *var, const char *val, int state, t_env *env)
 {
@@ -36,7 +36,7 @@ int	env_ins_sep(const char *var, const char *val, int state, t_env *env)
 	return (0);
 }
 
-static int	env_ins_sep_node(const char *var, const char *val, int state,
+static int	env_ins_sep_node(const char *var, const char *val, int state, \
 			t_env *env)
 {
 	t_list		*node;
