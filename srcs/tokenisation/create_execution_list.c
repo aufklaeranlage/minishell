@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 19:07:28 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/04 18:05:20 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,27 +132,29 @@ void	return_cmd_type(t_group *parsed_group)
 	}
 }
 
-int	create_execution_list(t_group *group, char *str)
+int	create_execution_list(t_shell *shell, char *str)
 {
 	t_tokens	*tokens;
 	t_group		*parsed_group;
 
-	if (!group)
+	if (!shell->cmd)
 		return (1);
 	tokens = NULL;
-	if (wrap_operations(&tokens, str) || parser_input_validation(tokens))
+	if (wrap_operations(&tokens, str))
 		return (token_free(tokens), 1);
+	if (parser_input_validation(tokens, shell))
+		return (token_free(tokens), 2);
 	parsed_group = create_groups(tokens, NULL, 0, 0);
 	return_cmd_type(parsed_group);
 	token_free(tokens);
 	if (!parsed_group)
 		return (1);
-	group->data_type = parsed_group->data_type;
-	group->exec_type = parsed_group->exec_type;
-	group->red = parsed_group->red;
-	group->data = parsed_group->data;
-	group->next = parsed_group->next;
-	group->parrent = parsed_group->parrent;
+	shell->cmd->data_type = parsed_group->data_type;
+	shell->cmd->exec_type = parsed_group->exec_type;
+	shell->cmd->red = parsed_group->red;
+	shell->cmd->data = parsed_group->data;
+	shell->cmd->next = parsed_group->next;
+	shell->cmd->parrent = parsed_group->parrent;
 	free(parsed_group);
 	return (0);
 }
