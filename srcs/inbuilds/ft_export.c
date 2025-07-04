@@ -6,12 +6,14 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/07/01 08:48:24 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/04 13:36:19 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inbuilds.h"
 #include "env.h"
+
+static int	check_valid(char *str);
 
 static void	exp_print(t_env *env);
 
@@ -22,6 +24,7 @@ static void	exp_print(t_env *env);
 
 int	ft_export(t_tokens *tok, t_env *env)
 {
+	int		ret;
 	size_t	i;
 
 	if (!tok || !env)
@@ -31,9 +34,32 @@ int	ft_export(t_tokens *tok, t_env *env)
 	i = 1;
 	while (i < tok->size)
 	{
-		env_ins(tok->content[i], ENVEXP, env);
+		ret = check_valid(tok->content[i]);
+		if (!ret)
+			env_ins(tok->content[i], ENVEXP, env);
 		++i;
 	}
+	return (ret);
+}
+
+static int	check_valid(char *str)
+{
+	size_t	i;
+
+	if (!str)
+		return (0);
+	if (!(ft_isalpha(str[0]) || str[0] == '_'))
+		return (errormsg(SHNAME, "export", str, "not a valid identifier"), 1);
+	i = 1;
+	while (str[i] && str[i] != '=')
+	{
+		if (!(ft_isalnum(str[i]) || str[i] == '_'))
+			return (errormsg(SHNAME, "export", str, "not a valid identifier"),
+		   1);
+		++i;
+	}
+	if (str[i] == '=' && i == 1)
+		return (errormsg(SHNAME, "export", str, "not a valid identifier"), 1);
 	return (0);
 }
 

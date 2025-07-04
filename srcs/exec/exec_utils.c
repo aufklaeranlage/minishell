@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:29:52 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:51:51 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 12:12:09 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	exec_assign(t_tokens *tok, t_env *env)
 		env_ins(tok->content[i], ENVSET, env);
 		++i;
 	}
+	while (i < tok->size && tok->content[i][0] == '\0')
+		++i;
 	if (i == 0)
 		return (0);
 	tmp = exec_cutassign(tok->content, tok->size, i);

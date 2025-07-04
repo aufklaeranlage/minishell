@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/25 18:13:18 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:21:18 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ int	exec_cmd(t_group *grp, t_env *env)
 	if (handle_quotes((t_tokens *)grp->data, env))
 		return (1);
 	argv = ((t_tokens *)grp->data)->content;
-	if (exec_reddir(grp->red))
+	if (exec_reddir(grp->red, env))
 		return (1);
 	exec_assign((t_tokens *)grp->data, env);
 	// argv = ((t_tokens *)grp->data)->content;
+	if (!((t_tokens *)grp->data)->size)
+		return (0);
 	bin = cmd_getbin(argv[0], env);
 	if (!bin)
-		return (errormsg(SHNAME, argv[0], "command not found", NULL), 127);
+		return (errormsg(SHNAME, argv[0], strerror(errno), NULL), 127);
 	execve(bin, argv, env->arr);
 	return (errormsg(SHNAME, argv[0], strerror(errno), NULL), 126);
 }

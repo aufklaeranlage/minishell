@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/12 11:06:13 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:37:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	ft_unset(t_tokens *tok, t_env *env)
 	i = 1;
 	while (i < tok->size)
 	{
-		if (env_rmv(tok->content[i], env))
-			return (1);
+		env_rmv(tok->content[i], env);
 		++i;
 	}
 	return (0);

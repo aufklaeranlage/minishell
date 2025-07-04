@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:16:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 09:33:11 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:08:08 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_env	*env_init(const char **envsplit)
 		return (env_free(ret), NULL);
 	env_inc_shlvl(ret);
 	init_pwd(ret);
+	ret->status = 0;
 	return (ret);
 }
 

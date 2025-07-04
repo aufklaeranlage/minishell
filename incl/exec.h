@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/05 10:30:49 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 09:44:26 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 13:20:55 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,9 @@ int		exec_pipe(t_group *grp, t_env *env);
 
 int		exec_cmd(t_group *grp, t_env *env);
 
-//	INBUILT CMD
-
-int		exec_inbuilt(t_group *grp, t_env *env);
-
 //	RED DIR
 
-int		exec_reddir(t_tokens *tok);
+int		exec_reddir(t_tokens *tok, t_env *env);
 
 //	RED DIR HEREDOC
 

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 18:52:10 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 14:12:29 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ static char	*append_env_var(char *str, char *result, size_t *i, t_env *env)
 {
 	char	*tmp;
 
-	tmp = env_getval(str + 1, env);
+	tmp = env_getval(str + *i + 1, env);
 	tmp = ft_strdup(tmp);
 	if (!tmp)
 		return (NULL);
 	result = strjoin_and_free(result, tmp);
 	free(tmp);
 	(*i)++;
-	while (str[*i] && ft_isalnum(str[*i]))
+	while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
 		(*i)++;
 	return (result);
 }
@@ -98,8 +98,7 @@ char	*expand_path(char *str, t_env *env)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] == '?' \
-			&& (!str[i + 2] || str[i + 2] == ' '))
+		if (str[i] == '$' && str[i + 1] == '?')
 			result = append_exit_status(result, &i, env);
 		else if (str[i] == '$' && ft_isalnum(str[i + 1]))
 			result = append_env_var(str, result, &i, env);

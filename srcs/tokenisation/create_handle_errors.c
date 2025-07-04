@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 16:59:09 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/04 15:32:01 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,24 @@ static int	prcr_c1(t_tokens *tokens, size_t i)
 	if (i + 1 < tokens->size \
 		&& tokens->content[i][0] == '$' && tokens->type[i + 1] == O_BR)
 	{
-		printf("zsh: parse error near '%s'. Handle it later!\n", \
-			tokens->content[i]);
+		errormsg(SHNAME, "syntax error near", tokens->content[i], NULL);
+		// printf("zsh: parse error near '%s'. Handle it later!\n", \
+		// 	tokens->content[i]);
 		return (1);
 	}
 	if (i + 1 < tokens->size \
 		&& (tokens->type[i] >= BIN_AND && tokens->type[i] <= OR) \
 		&& (tokens->type[i + 1] >= BIN_AND && tokens->type[i + 1] <= OR))
 	{
-		printf("zsh: parse error near '%s'\n", tokens->content[i + 1]);
+		errormsg(SHNAME, "syntax error near", tokens->content[i + 1], NULL);
+		// printf("zsh: parse error near '%s'\n", tokens->content[i + 1]);
 		return (1);
 	}
 	if (i + 1 == tokens->size \
 		&& (tokens->type[i] >= BIN_AND && tokens->type[i] <= OR))
 	{
-		printf("zsh: parse error near '%s'\n", tokens->content[i]);
+		errormsg(SHNAME, "syntax error near", tokens->content[i], NULL);
+		// printf("zsh: parse error near '%s'\n", tokens->content[i]);
 		return (1);
 	}
 	return (0);
@@ -52,7 +55,8 @@ static int	prcr_c2(t_tokens *tokens, size_t i, int cmd_start)
 		&& (tokens->type[i] == ASSIGNMENT) \
 		&& (tokens->type[i + gap] >= O_BR && tokens->type[i + gap] <= C_BR))
 		{
-			printf("zsh: parse error near '%s'\n", tokens->content[i + gap]);
+			errormsg(SHNAME, "syntax error near", tokens->content[i + gap], NULL);
+			// printf("zsh: parse error near '%s'\n", tokens->content[i + gap]);
 			return (1);
 		}
 	}
@@ -66,7 +70,8 @@ static int	prcr_c3(t_tokens *tokens, size_t i)
 	if (i + 1 < tokens->size && !(tokens->type[i + 1] >= SMCLN \
 		&& tokens->type[i + 1] <= OR))
 	{
-		printf("zsh: parse error near '%s'\n", tokens->content[i + 1]);
+		errormsg(SHNAME, "syntax error near", tokens->content[i + 1], NULL);
+		// printf("zsh: parse error near '%s'\n", tokens->content[i + 1]);
 		return (1);
 	}
 	return (0);
@@ -74,8 +79,8 @@ static int	prcr_c3(t_tokens *tokens, size_t i)
 
 static int	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
 {
-	while (tokens->type[*i] >= RED_IN && tokens->type[*i] <= ADD_OUT \
-		&& *i < tokens->size)
+	while ( *i < tokens->size && tokens->type[*i] >= RED_IN
+		&& tokens->type[*i] <= ADD_OUT)
 		(*i)++;
 	if ((*cmd_start) == 0 && tokens->type[*i] >= INCMD_ECHO \
 		&& tokens->type[*i] <= STD_CMD)

@@ -6,11 +6,13 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/07/01 08:52:04 by akuzmin          ###   ########.fr        #
+#    Updated: 2025/07/04 15:22:05 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:=	minishell
+
+B_NAME		:=	minishell_bonus
 
 # **************************************************************************** #
 
@@ -30,7 +32,7 @@ SRCS		:=	main.c \
 				env_arr.c env_init.c env_insert.c env_insert_sep.c \
 				envnode_init.c env_remove.c env_utils.c \
 				errormsg.c \
-				exec_cleanup.c exec_inbuilt.c exec_reddir.c exec_shell.c \
+				exec_cleanup.c exec_reddir.c exec_shell.c \
 				exec_cmd.c exec_pipe.c exec_reddir_heredoc.c \
 				exec_utils.c pipe.c \
 				expander.c expand_value.c \
@@ -89,6 +91,10 @@ g: fclean $(NAME)
 $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJS)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) $(LIBFLAGS) -o $(NAME)
 	@echo "Creating program $(NAME)."
+
+bonus: $(LIBFT) $(OBJ_DIR) $(OBJS)
+	@$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) $(LIBFLAGS) -o $(B_NAME)
+	@echo "Creating program $(B_NAME)."
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) CFLAGS="$(CFLAGS)"

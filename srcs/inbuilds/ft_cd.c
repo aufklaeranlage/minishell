@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/07/01 08:52:59 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/04 13:41:45 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,23 @@ static int	cd_updateenv(char *oldpwd, t_env *env);
 
 int	ft_cd(t_tokens *tok, t_env *env)
 {
+	int		ret;
 	char	*oldpwd;
 
 	if (tok->size > 2)
-		return (errormsg(SHNAME, "cd", "only takes 1 argument", NULL), 1);
+		return (errormsg(SHNAME, "cd", "too many arguments", NULL), 1);
 	oldpwd = getcurdir();
 	if (!oldpwd)
 		return (errormsg(SHNAME, "cd", strerror(errno), NULL), 1);
 	if (tok->size == 1)
-		cd_home(env);
+		ret = cd_home(env);
 	else if (tok->content[1][0] == '-')
-		cd_minus(tok->content[1], env);
+		ret = cd_minus(tok->content[1], env);
 	else
-		cd_absolut(tok->content[1], env);
+		ret = cd_absolut(tok->content[1], env);
 	cd_updateenv(oldpwd, env);
 	free(oldpwd);
-	return (0);
+	return (ret);
 }
 
 static int	cd_home(t_env *env)
@@ -71,10 +72,10 @@ static int	cd_minus(char *str, t_env *env)
 		, 2);
 	dir = env_getval("OLDPWD", env);
 	if (!dir)
-		return (errormsg(SHNAME, "cd", "OLDPWD not set", NULL), 2);
+		return (errormsg(SHNAME, "cd", "OLDPWD not set", NULL), 1);
 	if (chdir(dir) == -1)
-		return (errormsg(SHNAME, "cd", dir, strerror(errno)), 2);
-	return (1);
+		return (errormsg(SHNAME, "cd", dir, strerror(errno)), 1);
+	return (0);
 }
 
 static int	cd_absolut(char *str, t_env *env)

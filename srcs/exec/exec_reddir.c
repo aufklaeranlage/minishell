@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 11:31:15 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 13:46:00 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:24:25 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	red_in(t_tokens *tok, int fd[2], size_t i);
 
 static void	red_dup(int fd[2]);
 
-int	exec_reddir(t_tokens *tok)
+int	exec_reddir(t_tokens *tok, t_env *env)
 {
 	size_t	i;
 	int		fd[2];
@@ -30,6 +30,8 @@ int	exec_reddir(t_tokens *tok)
 	i = 0;
 	while (i < tok->size)
 	{
+		if (redirection_quotes(tok->content + i, env))
+			return (1);
 		if ((tok->type[i] == RED_IN || tok->type[i] == HERE_DOC)
 			&& red_in(tok, fd, i))
 			return (1);
@@ -50,13 +52,13 @@ static int	red_in(t_tokens *tok, int fd[2], size_t i)
 	if (fd[0] != -1)
 		close(fd[0]);
 	if (tok->type[i] == RED_IN)
-		fd[0] = open((char *)tok->content[i], O_RDONLY, NULL);
+	   fd[0] = open(tok->content[i], O_RDONLY, NULL);
 	else if (tok->type[i] == HERE_DOC)
-		fd[0] = open_heredoc((char *)tok->content[i]);
-	if (fd[0] == -1)
-		return (errormsg(SHNAME, (char *)tok->content[i], strerror(errno),
-				NULL), 1);
-	return (0);
+		fd[0] = open_heredoc(tok->content[i]);
+	if (fd[0] != -1)
+		return (0);
+	access(tok->content[i], R_OK);
+	return (errormsg(SHNAME, tok->content[i], strerror(errno), NULL), 1);
 }
 
 //	red_out() opens a filedescriptor with the appropriate flags based on the
@@ -74,10 +76,10 @@ static int	red_out(t_tokens *tok, int fd[2], size_t i)
 	else if (tok->type[i] == ADD_OUT)
 		flags = O_WRONLY | O_CREAT | O_APPEND;
 	fd[1] = open((char *)tok->content[i], flags, 0644);
-	if (fd[1] == -1)
-		return (errormsg(SHNAME, (char *)tok->content[i], strerror(errno),
-				NULL), 1);
-	return (0);
+	if (fd[1] != -1)
+		return (0);
+	access(tok->content[i], R_OK);
+	return (errormsg(SHNAME, tok->content[i], strerror(errno), NULL), 1);
 }
 
 //	red_dup() checks if redirections got set and if they did, dups STDIN and

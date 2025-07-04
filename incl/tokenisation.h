@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/29 22:11:16 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/04 16:20:52 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ char		*strjoin_and_free(char *s1, char *s2);
 
 char		*get_expandet(char *str, t_env *env);
 int			handle_quotes(t_tokens *tok, t_env *env);
+int			redirection_quotes(char **str, t_env *env);
 
 // Modules
 t_wrap		*convert_str(char *str);

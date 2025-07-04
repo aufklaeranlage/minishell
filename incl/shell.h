@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:23:46 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 17:06:54 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/04 11:32:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_shell
 	t_env	*env;
 	t_group	*cmd;
 	char	*home;
+	int		status;
 }	t_shell;
 
 #endif

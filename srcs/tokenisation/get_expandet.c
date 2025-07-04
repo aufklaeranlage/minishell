@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/07/01 08:11:29 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/04 15:20:14 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static char	*handle_quoted_segment(char **out, char *p, t_env *env)
 		free(tmp);
 	}
 	*out = strjoin_and_free(*out, exp);
+	free(exp);
 	if (!ft_strchr(p, quote))
 		return (p + ft_strlen(p));
 	return (ft_strchr(p, quote) + 1);

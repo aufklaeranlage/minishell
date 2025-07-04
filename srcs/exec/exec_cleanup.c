@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:31:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 17:05:01 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/04 16:30:36 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	exec_cleanup(t_shell *shell)
 	shell->env = NULL;
 	group_free(shell->cmd);
 	shell->cmd = NULL;
-	free(shell);
+	// free(shell);
 }
 
 void	group_free(t_group *grp)

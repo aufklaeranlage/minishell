@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/30 00:06:37 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/04 16:21:37 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,14 @@ static int	ft_splitappend(char ***dst, char *src)
 	size_t	scount;
 	char	**ret;
 
-	if (!dst || !src)
-		return (1);
+	dcount = 0;
+	if (dst)
+		dcount = ft_splitcount((const char **)*dst);
 	app = ft_split(src, ' ');
-	dcount = ft_splitcount((const char **)*dst);
 	scount = ft_splitcount((const char **)app);
-	if (!dcount && !scount)
-		return (0);
 	ret = malloc((dcount + scount + 1) * sizeof(*ret));
 	if (!ret)
-		return (1);
+		return (free(src), 1);
 	ret[dcount + scount] = NULL;
 	while (scount--)
 		ret[dcount + scount] = app[scount];
@@ -37,6 +35,27 @@ static int	ft_splitappend(char ***dst, char *src)
 		ret[dcount] = (*dst)[dcount];
 	free(*dst);
 	free(app);
+	free(src);
+	*dst = ret;
+	return (1);
+}
+
+static int	ft_strappend(char ***dst, char *src)
+{
+	size_t	dcount;
+	char	**ret;
+
+	dcount = 0;
+	if (dst)
+		dcount = ft_splitcount((const char **)*dst);
+	ret = malloc((dcount + 2) * sizeof(*ret));
+	if (!ret)
+		return (free(src), 1);
+	ret[dcount + 1] = NULL;
+	ret[dcount] = src;
+	while (dcount--)
+		ret[dcount] = (*dst)[dcount];
+	free(*dst);
 	*dst = ret;
 	return (1);
 }
@@ -78,26 +97,45 @@ static int	replace_tokens(t_tokens *tok, char **split)
 int	handle_quotes(t_tokens *tok, t_env *env)
 {
 	char	**newsplits;
-	char	*expand;
 	char	*str;
 	size_t	i;
 
 	i = 0;
-	newsplits = ft_calloc(1, sizeof(*newsplits));
+	newsplits = NULL;
 	while (i < tok->size)
 	{
 		str = tok->content[i];
 		if (is_wildcard(str))
-			expand = expand_wildcard(str, env);
+			ft_splitappend(&newsplits, expand_wildcard(str, env));
 		else
-			expand = get_expandet(str, env);
-		if (!ft_splitappend(&newsplits, expand))
-			return (1);
-		if (expand)
-			free(expand);
+			ft_strappend(&newsplits, get_expandet(str, env));
 		i++;
 	}
 	if (replace_tokens(tok, newsplits))
 		return (ft_freesplit(newsplits), 1);
+	return (0);
+}
+
+int	redirection_quotes(char **str, t_env *env)
+{
+	char	**newsplits;
+	size_t	i;
+
+	newsplits = NULL;
+	if (is_wildcard(*str))
+		ft_splitappend(&newsplits, expand_wildcard(*str, env));
+	else
+		ft_strappend(&newsplits, get_expandet(*str, env));
+	if (!newsplits)
+		return (0);
+	i = 0;
+	while (newsplits[i])
+		++i;
+	if (i > 1)
+		return (errormsg(SHNAME, *str, "ambiguous redirect", NULL),
+		ft_freesplit(newsplits), 1);
+	free(*str);
+	*str = newsplits[0];
+	free(newsplits);
 	return (0);
 }

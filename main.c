@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/25 18:05:34 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 16:30:49 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@ static void	do_dirt(t_shell *shell);
 
 int	main(int ac, char **av, char **env)
 {
-	t_shell		*shell;
+	t_shell		shell;
 
 	(void)ac;
 	(void)av;
-	shell = malloc(sizeof(t_shell));
-	shell->env = env_init((const char **)env);
+	shell.env = env_init((const char **)env);
 	signal_handler_init();
-	do_dirt(shell);
-	env_free(shell->env);
+	do_dirt(&shell);
+	env_free(shell.env);
 	return (0);
 }
 
@@ -62,7 +61,7 @@ static void	do_dirt(t_shell *shell)
 		if (create_execution_list(shell->cmd, buf) == 0)
 		{
 			shellassign(shell->cmd, shell);
-			g_signal = exec_first(shell->cmd, shell->env);
+			g_signal = exec_shell(shell->cmd, shell->env);
 			if (g_signal > 0 && g_signal <= 6)
 				g_signal += 128;
 		}
