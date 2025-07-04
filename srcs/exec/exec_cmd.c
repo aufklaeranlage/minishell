@@ -6,13 +6,13 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/04 18:20:25 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:22:16 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static int	exec_error(char *name, char *bin);
+static char	*cmd_getbin(char *name, t_env *env);
 
 //	exec_cmd:
 //		Executes a single command (array of string) stored in a token.
@@ -39,7 +39,7 @@ int	exec_cmd(t_group *grp, t_env *env)
 	if (!bin)
 		return (errormsg(SHNAME, argv[0], "command not found", NULL), 127);
 	execve(bin, argv, env->arr);
-	return (exec_error(argv[0], bin));
+	return (127);
 }
 
 //	cmd_getbin() gets the proper pinary
