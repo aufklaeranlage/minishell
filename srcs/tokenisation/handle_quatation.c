@@ -6,18 +6,21 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 19:18:03 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/06/26 16:36:57 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenisation.h"
 #include "expander.h"
 
+static char	*handle_unquoted_segment(char **out, char *p, t_env *env);
+
 static char	*handle_quoted_segment(char **out, char *p, t_env *env)
 {
 	char	*tmp;
 	char	*exp;
 	char	quote;
+	char	*q;
 
 	quote = *p++;
 	if (ft_strchr(p, quote))
@@ -34,9 +37,14 @@ static char	*handle_quoted_segment(char **out, char *p, t_env *env)
 		free(tmp);
 	}
 	*out = strjoin_and_free(*out, exp);
-	if (!ft_strchr(p, quote))
+	q = ft_strchr(p, quote);
+	if (!q)
 		return (p + ft_strlen(p));
-	return (ft_strchr(p, quote) + 1);
+	if (q[1] && (q[1] == '\'' || q[1] == '"'))
+	 	return (handle_quoted_segment(out, q + 1, env));
+	if (q[1] && !ft_isspace(q[1]))
+	 	return (handle_unquoted_segment(out, q + 1, env));
+	return (q + 1);
 }
 
 static char	*handle_unquoted_segment(char **out, char *p, t_env *env)
@@ -52,36 +60,34 @@ static char	*handle_unquoted_segment(char **out, char *p, t_env *env)
 	if (!tmp)
 		return (NULL);
 	exp = expand_path(tmp, env);
+	if (is_wildcard(exp))
+		exp = expand_wildcard(exp);
 	free(tmp);
 	*out = strjoin_and_free(*out, exp);
 	free(exp);
+	if (q[0] && (q[0] == '\'' || q[0] == '"'))
+	 	return (handle_quoted_segment(out, q, env));
 	return (q);
 }
 
-static int	ft_splitappend(char ***dst, char *src)
+static int	ft_strappend(char ***dst, char *src)
 {
 	size_t	dcount;
-	char	**app;
-	size_t	scount;
+	char	*str;
 	char	**ret;
 
 	if (!dst)
 		return (1);
-	app = ft_split(src, ' ');
 	dcount = ft_splitcount((const char **)*dst);
-	scount = ft_splitcount((const char **)app);
-	if (!dcount && !scount)
-		return (0);
-	ret = malloc((dcount + scount + 1) * sizeof(*ret));
-	if (!ret)
-		return (1);
-	ret[dcount + scount] = NULL;
-	while (scount--)
-		ret[dcount + scount] = app[scount];
+	ret = malloc((dcount + 2) * sizeof(*ret));
+	str = ft_strdup(src);
+	if (!ret || !str)
+		return (free(str), free(ret), 1);
+	ret[dcount + 1] = NULL;
+	ret[dcount] = str;
 	while (dcount--)
 		ret[dcount] = (*dst)[dcount];
 	free(*dst);
-	free(app);
 	*dst = ret;
 	return (1);
 }
@@ -110,6 +116,33 @@ static int	replace_tokens(t_tokens *tok, char **split)
 	return (0);
 }
 
+static int handle_quotes_loop(t_tokens *tok, char ***newsplit, t_env *env)
+{
+	char	*expand;
+	char	*str;
+	size_t	i;
+
+	i = 0;
+	while (i < tok->size)
+	{
+		str = tok->content[i];
+		expand = ft_strdup("");
+		while (*str)
+		{
+			if (*str == '\'' || *str == '"')
+				str = handle_quoted_segment(&expand, str, env);
+			else
+				str = handle_unquoted_segment(&expand, str, env);
+			if (!ft_strappend(newsplit, expand))
+				return (free(expand), 1);
+		}
+		free(expand);
+		++i;
+	}
+	return (0);
+}
+
+
 /**
  * @brief Removes quotes and expands environment variables from a given string.
  * Handles both single ('') and double ("") quotes. 
@@ -122,33 +155,15 @@ static int	replace_tokens(t_tokens *tok, char **split)
  */
 int	handle_quotes(t_tokens *tok, t_env *env)
 {
-	char	**newsplits;
-	char	*expand;
-	char	*str;
-	size_t	i;
+	char	**newsplit;
 
-	i = 0;
-	newsplits = ft_calloc(1, sizeof(*newsplits));
-	while (i < tok->size)
-	{
-		str = tok->content[i];
-		expand = ft_strdup("");
-		while (*str)
-		{
-			if (*str == '\'' || *str == '"')
-				str = handle_quoted_segment(&expand, str, env);
-			else
-				str = handle_unquoted_segment(&expand, str, env);
-		}
-		if (is_wildcard(tok->content[i]))
-			expand = expand_wildcard(expand);
-		if (!ft_splitappend(&newsplits, expand))
-			return (free(expand), 1);
-		free(expand);
-		++i;
-	}
-	if (replace_tokens(tok, newsplits))
-		return (ft_freesplit(newsplits), 1);
+	if (!tok || !tok->size)
+		return (0);
+	newsplit = ft_calloc(1, sizeof(*newsplit));
+	if (handle_quotes_loop(tok, &newsplit, env))
+		return (ft_freesplit(newsplit), 1);
+	if (replace_tokens(tok, newsplit))
+		return (ft_freesplit(newsplit), 1);
 	return (0);
 }
 

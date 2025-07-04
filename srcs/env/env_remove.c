@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 11:49:00 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:38:33 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:57:54 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,26 @@ int	env_rmv(const char *varstr, t_env *env)
 	env_rmv_node(env, envnode);
 	env_arr_rmv(varstr, env);
 	return (0);
+}
+
+//	removes all veriables with the state ENVTMP from the environment
+
+void	env_rmv_tmp(t_env *env)
+{
+	t_list		*node;
+	t_envnode	*envnode;
+
+	node = env->wrap->head;
+	while (node)
+	{
+		envnode = (t_envnode *)node->content;
+		node = node->next;
+		if (envnode->state == ENVTMP)
+		{
+			env_arr_rmv(envnode->var, env);
+			env_rmv_node(env, envnode);
+		}
+	}
 }
 
 static void	env_rmv_node(t_env *env, t_envnode *envnode)

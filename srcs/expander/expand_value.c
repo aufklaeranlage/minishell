@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 18:52:10 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:16:11 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	*append_exit_status(char *result, size_t *i, t_env *env)
 {
 	char	*code;
 
-	code = ft_itoa(env->status);
+	code = ft_itoa(env->retval);
 	if (!code)
 		return (NULL);
 	result = strjoin_and_free(result, code);
@@ -56,7 +56,7 @@ static char	*append_env_var(char *str, char *result, size_t *i, t_env *env)
 {
 	char	*tmp;
 
-	tmp = env_getval(str + 1, env);
+	tmp = env_getval(str + *i + 1, env);
 	tmp = ft_strdup(tmp);
 	if (!tmp)
 		return (NULL);

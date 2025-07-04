@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/25 18:05:34 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/26 13:10:42 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 // static char **ft_splitcpy(char **src);
 
-static void	shellassign(t_group *grp, t_shell *shell);
+static void	set_grp_shell(t_group *grp, t_shell *shell);
 
 static void	do_dirt(t_shell *shell);
 
@@ -34,13 +34,13 @@ int	main(int ac, char **av, char **env)
 	return (0);
 }
 
-static void	shellassign(t_group *grp, t_shell *shell)
+static void	set_grp_shell(t_group *grp, t_shell *shell)
 {
 	while (grp)
 	{
 		grp->shell = shell;
 		if (grp->data_type == SHELL)
-			shellassign((t_group *)grp->data, shell);
+			set_grp_shell((t_group *)grp->data, shell);
 		grp = grp->next;
 	}
 }
@@ -61,7 +61,7 @@ static void	do_dirt(t_shell *shell)
 		add_history(buf);
 		if (create_execution_list(shell->cmd, buf) == 0)
 		{
-			shellassign(shell->cmd, shell);
+			set_grp_shell(shell->cmd, shell);
 			g_signal = exec_first(shell->cmd, shell->env);
 			if (g_signal > 0 && g_signal <= 6)
 				g_signal += 128;

@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/06/25 19:09:40 by akuzmin          ###   ########.fr        #
+#    Updated: 2025/06/26 16:13:33 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,23 +27,23 @@ INC_DIR		:=	incl/
 SRCS		:=	main.c \
                 print_group_data.c \
                 sig.c \
-				env_arr.c env_init.c env_insert.c env_insert_sep.c \
-				envnode_init.c env_remove.c env_utils.c \
+				env_assignment.c env_arr.c env_init.c env_insert.c \
+				env_insert_sep.c envnode_init.c env_remove.c env_utils.c \
 				errormsg.c \
-				exec_cleanup.c exec_inbuilt.c exec_reddir.c exec_shell.c \
-				exec_cmd.c exec_pipe.c exec_reddir_heredoc.c \
-				exec_utils.c pipe.c \
-				expander.c expand_value.c \
 				ft_cd.c ft_env.c ft_export.c ft_unset.c inbuild_utils.c \
 				ft_echo.c  ft_exit.c  home.c\
-				ft_pwd.c inbuilds.c wildcard.c wildcard_utils.c \
+				ft_pwd.c wildcard.c wildcard_utils.c \
 				readline_append.c readline_heredoc.c \
 				append_tokens.c groups_create_utils.c groups_redirection.c \
 				tokens_create.c create_execution_list.c groups_delimiter.c \
 				groups_subtoken.c tokens_utils.c create_handle_errors.c \
 				groups_handle_cmd.c handle_quatation.c groups_bracket_proc.c \
-				groups_handle_cmd_utils2.c lexer.c groups_create.c \
-				groups_handle_cmd_utils.c tokens_convert_sub.c strjoin_and_free.c
+				groups_handle_cmd_utils2.c lexer.c groups_create.c token_cut.c\
+				groups_handle_cmd_utils.c tokens_convert_sub.c strjoin_and_free.c \
+				expander.c expand_value.c \
+				exec_cleanup.c exec_inbuilt.c exec_reddir.c exec_shell.c \
+				exec_cmd.c exec_pipe.c exec_reddir_heredoc.c \
+				exec_utils.c pipe.c
 				
 
 OBJS		:=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRCS))

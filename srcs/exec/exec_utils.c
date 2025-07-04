@@ -6,53 +6,11 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:29:52 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 10:51:51 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/26 11:35:38 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
-
-static char	**exec_cutassign(char **src, size_t size, size_t offset);
-
-int	exec_assign(t_tokens *tok, t_env *env)
-{
-	char	**tmp;
-	size_t	i;
-
-	i = 0;
-	while (i < tok->size && ft_strchr(tok->content[i], '=' ))
-	{
-		env_ins(tok->content[i], ENVSET, env);
-		++i;
-	}
-	if (i == 0)
-		return (0);
-	tmp = exec_cutassign(tok->content, tok->size, i);
-	if (!tmp)
-		return (1);
-	free(tok->content);
-	tok->content = tmp;
-	tok->size -= i;
-	return (0);
-}
-
-static char	**exec_cutassign(char **src, size_t size, size_t offset)
-{
-	char	**ret;
-	size_t	i;
-
-	ret = malloc((size - offset + 1) * sizeof(*ret));
-	if (!ret)
-		return (NULL);
-	i = 0;
-	while (i < size - offset)
-	{
-		ret[i] = src[offset + i];
-		++i;
-	}
-	ret[i] = NULL;
-	return (ret);
-}
 
 int	childreturn(int wstatus)
 {

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/25 12:52:49 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:44:14 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,17 +106,4 @@ static int	cd_updateenv(char *oldpwd, t_env *env)
 		&& env_ins_sep("OLDPWD", oldpwd, ENVSET, env))
 		return (free(pwd), 1);
 	return (0);
-}
-
-//	Initializes PWD and OLDPWD in the environment. It calls getcurdir to get the
-//	current directory.
-
-void	init_pwd(t_env *env)
-{
-	char	*dir;
-
-	dir = getcurdir();
-	if (dir)
-		env_ins_sep("PWD", dir, ENVEXP, env);
-	free(dir);
 }

@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:05:41 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/12 09:32:06 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/26 17:32:23 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static char	*expander_getvar(char *var, t_env *env);
 
 static char	*expander_initret(char *str, size_t offset, size_t len);
 
-char	*expander(char *str, t_env *env, size_t offset)
+char	*expander(const char *str, t_env *env, size_t offset)
 {
 	char	*ret;
 	char	*rep;

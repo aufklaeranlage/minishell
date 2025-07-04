@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 11:52:03 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/23 08:59:01 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/30 13:48:24 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_envnode	*env_contains(const char *var, t_env *env)
 	if (!var || !env)
 		return (NULL);
 	varlen = 0;
-	while (var[varlen] && var[varlen] != '=' && !ft_isspace(var[varlen]))
+	while (var[varlen] && !ft_strchr("=\'\"", var[varlen]) && !ft_isspace(var[varlen]))
 		++varlen;
 	node = env->wrap->head;
 	while (node)
@@ -99,7 +99,7 @@ size_t	env_expsize(t_env *env)
 	while (node)
 	{
 		envnode = (t_envnode *)node->content;
-		if (envnode->state == ENVEXP && envnode->val)
+		if (envnode->state && envnode->val)
 			++ret;
 		node = node->next;
 	}

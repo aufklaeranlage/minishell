@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/25 17:21:59 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:02:22 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 # define ENVSET 0x0
 # define ENVEXP 0x1
+# define ENVTMP 0x2
 
 //	wrap: all available variables in var / val pairs including only local
 //		variables accessible through env_getval(varname / varstr)
@@ -30,7 +31,7 @@ typedef struct s_env
 {
 	t_wrap	*wrap;
 	char	**arr;
-	int		status;
+	int		retval;
 }	t_env;
 
 typedef struct s_envnode
@@ -68,18 +69,28 @@ int			env_arr_rmv(const char *varstr, t_env *env);
 
 //	ENV INSERT
 
-int			env_ins(const char *varstr, int exp, t_env *env);
+int			env_ins(const char *varstr, int state, t_env *env);
 
-int			env_ins_soft(const char *varstr, int exp, t_env *env);
+int			env_ins_soft(const char *varstr, int state, t_env *env);
 
-int			env_ins_sep(const char *var, const char *val, int exp, t_env *env);
+int			env_ins_sep(const char *var, const char *val, int state, t_env *env);
 
-int			env_ins_sep_soft(const char *var, const char *val, int exp,
+int			env_ins_sep_soft(const char *var, const char *val, int state,
 							t_env *env);
 
 //	ENV REMOVE
 
 int			env_rmv(const char *varstr, t_env *env);
+
+void		env_rmv_tmp(t_env *env);
+
+//	ENV ASSIGN
+
+int			assign(char *str, int state, t_env *env);
+
+int			skip_assign(t_tokens *tok);
+
+int			tmp_assign(t_tokens *tok, t_env *env);
 
 //	ENV UTILS
 

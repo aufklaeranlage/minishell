@@ -49,8 +49,18 @@ TESTING:
 	tokenization:
 		syntax tree
 
+	
+
 	execution:
 		expansion			//	update_values()
+			(from the manual):
+				1:	brace
+				2:	tilde
+				3:	parameter
+				4:	command substituion
+				5:	arithmetic expansion
+				6:	word splitting
+				7:	filename expansion
 			variable replacement
 			wildcard unfolding (assignment doesn't get unfolded)
 			splitting of strings
@@ -70,3 +80,9 @@ FINISHED:
 			lst_to tokens now returns an int. It can give feedback if smth
 			failed down the line and the whole thign will be cleared after
 			failed process_token() call.
+
+EXAMPLES:
+	
+	tilde param		:	don't create new splits
+	split			:	creates new splits
+	filename		:	creates new splits
