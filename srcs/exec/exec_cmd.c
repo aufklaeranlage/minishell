@@ -6,13 +6,13 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/04 13:21:18 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:20:25 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 
-static char	*cmd_getbin(char *name, t_env *env);
+static int	exec_error(char *name, char *bin);
 
 //	exec_cmd:
 //		Executes a single command (array of string) stored in a token.
@@ -26,21 +26,33 @@ int	exec_cmd(t_group *grp, t_env *env)
 
 	if (handle_quotes((t_tokens *)grp->data, env))
 		return (1);
-	argv = ((t_tokens *)grp->data)->content;
+	// argv = ((t_tokens *)grp->data)->content;
 	if (exec_reddir(grp->red, env))
 		return (1);
-	exec_assign((t_tokens *)grp->data, env);
-	// argv = ((t_tokens *)grp->data)->content;
+	if (tmp_assign((t_tokens *)grp->data, env))
+		return (1);
+	// exec_assign((t_tokens *)grp->data, env);
+	argv = ((t_tokens *)grp->data)->content;
 	if (!((t_tokens *)grp->data)->size)
 		return (0);
 	bin = cmd_getbin(argv[0], env);
 	if (!bin)
-		return (errormsg(SHNAME, argv[0], strerror(errno), NULL), 127);
+		return (errormsg(SHNAME, argv[0], "command not found", NULL), 127);
 	execve(bin, argv, env->arr);
-	return (errormsg(SHNAME, argv[0], strerror(errno), NULL), 126);
+	return (exec_error(argv[0], bin));
 }
 
 //	cmd_getbin() gets the proper pinary
+//
+//	Bash checks:
+//		File exists				(access F_OK)
+//		File is not a directory	(opendir)
+//		File is executable		(access X_OK)
+//
+//	Check PATH first. If nothing in path matches we take the original name
+//	'name' given to the function as 'bin'.
+//	'bin' gets checked for 1. existence, 2. not being a directory, and
+//	3. being executable. 
 
 static char	*cmd_getbin(char *name, t_env *env)
 {
@@ -50,7 +62,7 @@ static char	*cmd_getbin(char *name, t_env *env)
 	size_t	i;
 
 	i = 0;
-	if (ft_strrchr(name, '/') && access(name, F_OK | X_OK) == 0)
+	if (ft_strrchr(name, '/') && access(name, F_OK) == 0)
 		return (name);
 	paths = ft_split(ft_getenv("PATH", env->arr), ':' );
 	if (!paths)

@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 18:58:58 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/07/04 13:44:35 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:34:27 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	inbuilds(t_group *grp, t_env *env)
 
 	if (handle_quotes((t_tokens *)grp->data, env))
 		return (1);
+	if (tmp_assign((t_tokens *)grp->data, env))
+		return (1);
 	fd[0] = dup(STDIN);
 	fd[1] = dup(STDOUT);
 	if (exec_reddir(grp->red, env))
@@ -29,6 +31,7 @@ int	inbuilds(t_group *grp, t_env *env)
 	ret = ret_inbuilts(grp, env);
 	dup2(fd[0], STDIN);
 	dup2(fd[1], STDOUT);
+	env_rmv_tmp(env);
 	return (ret);
 }
 

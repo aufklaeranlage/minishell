@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/04 17:18:35 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:29:26 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,16 @@ int			env_ins_sep_soft(const char *var, const char *val, int exp,
 
 int			env_rmv(const char *varstr, t_env *env);
 
+void		env_rmv_tmp(t_env *env);
+
+//	ENV ASSIGN
+
+int			assign(char *str, int state, t_env *env);
+
+int			skip_assign(t_tokens *tok);
+
+int			tmp_assign(t_tokens *tok, t_env *env);
+
 //	ENV UTILS
 
 t_envnode	*env_contains(const char *var, t_env *env);
@@ -93,5 +103,9 @@ char		*env_constructvarstr(const char *var, const char *val);
 int			env_splitvarstr(const char *varstr, char **var, char **val);
 
 size_t		env_expsize(t_env *env);
+
+//	TOKEN_CUT
+
+int			token_cut(t_tokens *tok, size_t start, size_t end);
 
 #endif

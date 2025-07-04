@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 11:34:34 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/26 15:56:13 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:38:34 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,12 @@ int tmp_assign(t_tokens *tok, t_env *env)
 	i = 0;
 	while (i < (int)tok->size)
 	{
-		check = assign(tok->content[i], ENVTMP, env);
-		if (check)
-			break ;
+		if (tok->content[i][0] != '\0')
+		{
+			check = assign(tok->content[i], ENVTMP, env);
+			if (check)
+				break ;
+		}
 		++i;
 	}
 	if (!i)

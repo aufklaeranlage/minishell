@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/07/04 14:12:29 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:49:51 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ static char	*append_env_var(char *str, char *result, size_t *i, t_env *env)
 
 	tmp = env_getval(str + *i + 1, env);
 	tmp = ft_strdup(tmp);
-	if (!tmp)
-		return (NULL);
 	result = strjoin_and_free(result, tmp);
 	free(tmp);
 	(*i)++;
