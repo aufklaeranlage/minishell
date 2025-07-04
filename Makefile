@@ -6,7 +6,7 @@
 #    By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/10 10:46:56 by abronner          #+#    #+#              #
-#    Updated: 2025/07/04 15:22:05 by abronner         ###   ########.fr        #
+#    Updated: 2025/07/04 17:19:34 by abronner         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ SRCS		:=	main.c \
                 print_group_data.c \
                 sig.c get_expandet.c \
 				env_arr.c env_init.c env_insert.c env_insert_sep.c \
-				envnode_init.c env_remove.c env_utils.c \
+				envnode_init.c env_remove.c env_utils.c env_assignment.c \
 				errormsg.c \
 				exec_cleanup.c exec_reddir.c exec_shell.c \
 				exec_cmd.c exec_pipe.c exec_reddir_heredoc.c \

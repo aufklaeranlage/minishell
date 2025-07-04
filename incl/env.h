@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 12:30:43 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/25 17:21:59 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 17:18:35 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 # define ENVSET 0x0
 # define ENVEXP 0x1
+# define ENVTMP 0x2
 
 //	wrap: all available variables in var / val pairs including only local
 //		variables accessible through env_getval(varname / varstr)

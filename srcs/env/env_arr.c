@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 14:33:27 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 12:02:30 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/26 16:25:59 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	env_arr_ins(const char *var, const char *val, t_env *env)
 	size_t	i;
 
 	cpy = env_constructvarstr(var, val);
-	size = env_expsize(env);
-	tmp = malloc((size + 1) * sizeof(*tmp));
+	size = ft_splitcount((const char **)env->arr) + 2;
+	tmp = malloc((size--) * sizeof(*tmp));
 	if (!tmp || !cpy)
 		return (free(tmp), free(cpy), 1);
 	i = 0;

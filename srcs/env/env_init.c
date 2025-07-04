@@ -6,7 +6,7 @@
 /*   By: abronner <abronner@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:16:05 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/04 14:08:08 by abronner         ###   ########.fr       */
+/*   Updated: 2025/06/26 12:45:57 by abronner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void		env_inc_shlvl(t_env *ret);
 t_env	*env_init(const char **envsplit)
 {
 	t_env	*ret;
+	char	*dir;
 
 	if (!envsplit)
 		return (NULL);
@@ -33,8 +34,10 @@ t_env	*env_init(const char **envsplit)
 	if (env_arr_init(ret))
 		return (env_free(ret), NULL);
 	env_inc_shlvl(ret);
-	init_pwd(ret);
-	ret->status = 0;
+	dir = getcurdir();
+	if (dir)
+		env_ins_sep("PWD", dir, ENVSET, ret);
+	free(dir);
 	return (ret);
 }
 
