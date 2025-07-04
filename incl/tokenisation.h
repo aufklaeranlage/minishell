@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 14:24:16 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/07/04 16:20:52 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/04 18:06:23 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "libft.h"
 # include "exec.h"
 # include "env.h"
+# include "shell.h"
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -89,7 +90,7 @@ t_group		*create_groups(t_tokens *list, t_group *parrent, size_t i, \
 	size_t j);
 
 // CHECK ERRORS BEFORE CREATING EXECUTION_LIST
-int			parser_input_validation(t_tokens *tokens);
+int			parser_input_validation(t_tokens *tokens, t_shell *shell);
 
 /**
  * @brief Parses and transforms a raw command string 
@@ -113,7 +114,7 @@ int			parser_input_validation(t_tokens *tokens);
  * @see create_groups()
  * @see return_cmd_type()
  */
-int			create_execution_list(t_group *group, char *str);
+int			create_execution_list(t_shell *shell, char *str);
 
 // ERROR VISUALISATION DELETE AT PRODUCTION
 void		print_tokens(t_tokens *tokens);
