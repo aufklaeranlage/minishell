@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/05 15:17:20 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/05 16:32:32 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ static void	do_dirt(t_shell *shell)
 		if (create_execution_list(shell, buf) == 0)
 		{
 			shellassign(shell->cmd, shell);
-			g_signal = exec_shell(shell->cmd, shell->env);
-			if (shell->env->status > 0 && shell->env->status <= 4)
-				shell->env->status += 128;
+			shell->env->status = exec_shell(shell->cmd, shell->env);
+			if (g_signal >= 130 && g_signal <= 131 )
+				shell->env->status = g_signal;
 		}
 		group_free(shell->cmd);
 		free(buf);

@@ -6,13 +6,49 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 11:44:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/05 14:55:34 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/05 18:06:04 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
+#include <dirent.h>
+#include <stdlib.h>
+#include <string.h>
 
 static char	*cmd_getbin(char *name, t_env *env);
+
+static int	permission_check(char *name, char *bin)
+{
+	DIR		*dir;
+
+	dir = opendir(name);
+	if (dir && bin)
+		return (closedir(dir), 126);
+	closedir(dir);
+	if (!bin)
+	{
+		if (ft_strrchr(name, '/'))
+			return (127);
+		else
+			return (127);
+	}
+	return (0);
+}
+
+static int	permission_error(char *name, char *bin, int type)
+{
+	if (type == 126)
+		return (errormsg(SHNAME, name, "Is a directory", NULL), 126);
+	if (!bin && type == 127)
+	{
+		if (ft_strrchr(name, '/'))
+			return (errormsg(SHNAME, name, "No such file or directory", NULL), \
+			127);
+		else
+			return (errormsg(SHNAME, name, "command not found", NULL), 127);
+	}
+	return (0);
+}
 
 //	exec_cmd:
 //		Executes a single command (array of string) stored in a token.
@@ -36,10 +72,14 @@ int	exec_cmd(t_group *grp, t_env *env)
 	if (!((t_tokens *)grp->data)->size)
 		return (0);
 	bin = cmd_getbin(argv[0], env);
-	if (!bin)
-		return (errormsg(SHNAME, argv[0], "command not found", NULL), 127);
+	if (permission_check(argv[0], bin))
+		return (permission_error(argv[0], bin, permission_check(argv[0], bin)));
 	execve(bin, argv, env->arr);
-	return (127);
+	if (access(bin, F_OK) != 0)
+		return (errormsg(SHNAME, argv[0], "No such file or directory", NULL), \
+		127);
+	else
+		return (errormsg(SHNAME, argv[0], "Permission denied", NULL), 126);
 }
 
 //	cmd_getbin() gets the proper pinary

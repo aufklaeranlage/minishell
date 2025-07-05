@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:22:19 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/07/04 18:39:04 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/05 16:49:02 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ static int	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
 		&& tokens->type[*i] <= ADD_OUT)
 	{
 		if (specifier_one(tokens->content[*i]))
-			return (errormsg(SHNAME, "syntax error near unexpected token", \
-				tokens->content[*i], NULL), 2);
+			return (errormsg_parser(tokens->content[*i]), 2);
 		(*i)++;
 	}
 	if ((*cmd_start) == 0 && tokens->type[*i] >= INCMD_ECHO \

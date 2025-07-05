@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:31:45 by abronner          #+#    #+#             */
-/*   Updated: 2025/06/24 17:07:43 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/05 16:48:25 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,7 @@
 
 void	errormsg(const char *prog, const char *obj, const char *msg, \
 	const char *opt);
+
+void	errormsg_parser(const char *msg);
 
 #endif
