@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 21:51:40 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/30 00:11:12 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/05 15:19:51 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	g_signal;
 
+// Need to think does its stuf needed or not, 
+// maybe this were done just fore correct work on MacOS
 void	disable_ctrlc_echo(void)
 {
 	struct termios	t_attr;
@@ -38,32 +40,28 @@ void	handle_signal(int sign)
 	}
 	else if (sign == SIGQUIT)
 	{
-		if ((isatty(STDIN_FILENO) && rl_readline_state & RL_STATE_READCMD))
-			rl_redisplay();
-		else
+		if (!((isatty(STDIN_FILENO) && rl_readline_state & RL_STATE_READCMD)))
 			write(1, "Quit (core dumped)\n", 19);
 	}
 }
 
 /**
- * @brief Allow correctly terminate running procces
- * @param sign get signal as input
+ * @brief Set the up signals object
+ * There is 2 types: 
+ * @param launch_type (INPUTING) starts before execution
+ * Ignore Ctrl+\
+ * @param launch_type (EXECUTION) starts before execution
+ * its handle Ctrl+\
  */
-void	handle_exec_signal(int sign)
-{
-	g_signal = 128 + sign;
-	if (sign == SIGINT)
-		write(1, "\n", 1);
-	else if (sign == SIGQUIT)
-		write(1, "Quit (core dumped)\n", 19);
-}
-
-void	setup_signals(void)
+void	setup_signals(int launch_type)
 {
 	signal(SIGINT, handle_signal);
-	signal(SIGQUIT, handle_signal);
 	signal(SIGTSTP, SIG_IGN);
 	signal(SIGTERM, SIG_IGN);
+	if (launch_type == INPUTING)
+		signal(SIGQUIT, SIG_IGN);
+	else if (launch_type == EXECUTION)
+		signal(SIGQUIT, handle_signal);
 }
 
 /**
@@ -73,5 +71,5 @@ void	signal_handler_init(void)
 {
 	g_signal = 0;
 	disable_ctrlc_echo();
-	setup_signals();
+	setup_signals(INPUTING);
 }

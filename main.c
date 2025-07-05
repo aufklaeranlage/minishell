@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 14:28:54 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/04 18:05:33 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/05 15:17:20 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ static void	do_dirt(t_shell *shell)
 	char	*prompt;
 	char	*buf;
 	
-
 	while (1)
 	{
+		setup_signals(INPUTING);
 		prompt = construct_prompt(shell->env);
 		buf = readline(prompt);
 		free(prompt);
@@ -63,8 +63,8 @@ static void	do_dirt(t_shell *shell)
 		{
 			shellassign(shell->cmd, shell);
 			g_signal = exec_shell(shell->cmd, shell->env);
-			if (g_signal > 0 && g_signal <= 6)
-				g_signal += 128;
+			if (shell->env->status > 0 && shell->env->status <= 4)
+				shell->env->status += 128;
 		}
 		group_free(shell->cmd);
 		free(buf);

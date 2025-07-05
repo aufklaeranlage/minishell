@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 14:25:28 by abronner          #+#    #+#             */
-/*   Updated: 2025/07/04 12:17:50 by abronner         ###   ########.fr       */
+/*   Updated: 2025/07/05 15:15:40 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	exec_shell(t_group *grp, t_env *env)
 	int		cond;
 	t_group	*cur;
 
+	setup_signals(EXECUTION);
 	cur = grp;
 	if (cur->exec_type == PIPE)
 		env->status = exec_shell_child(cur, env);
