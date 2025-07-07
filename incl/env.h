@@ -75,8 +75,8 @@ int			env_ins_soft(const char *varstr, int exp, t_env *env);
 
 int			env_ins_sep(const char *var, const char *val, int exp, t_env *env);
 
-int			env_ins_sep_soft(const char *var, const char *val, int exp,
-							t_env *env);
+int			env_ins_sep_soft(const char *var, const char *val, int exp, \
+				t_env *env);
 
 //	ENV REMOVE
 

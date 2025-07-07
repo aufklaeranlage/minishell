@@ -30,7 +30,7 @@ static char	*handle_text_token(char *str, t_wrap *list)
 	char	*start;
 
 	start = str;
-	while (*str && !specifier_one(str) && *str != ' ')
+	while (*str && !specifier_one(str) && !ft_isspace(*str))
 	{
 		if (*str == '"')
 		{
@@ -78,7 +78,7 @@ t_wrap	*convert_str(char *str)
 		return (NULL);
 	while (str && *str)
 	{
-		if (*str == ' ')
+		if (ft_isspace(*str))
 			str++;
 		if (specifier_one(str))
 			str = handle_special_token(str, list);

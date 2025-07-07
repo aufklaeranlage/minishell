@@ -68,9 +68,7 @@ t_group	*create_groups(t_tokens *list, t_group *parent, size_t i, size_t j)
 		return (NULL);
 	origin_i = i;
 	i = skip_special_tokens(list, i);
-	if (i >= list->size)
-		return (NULL);
-	if (list->type[i] == O_BR)
+	if (i < list->size && list->type[i] == O_BR)
 	{
 		group = handle_bracket_case(list, parent, origin_i, &j);
 		if (!group)

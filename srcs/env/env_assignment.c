@@ -32,22 +32,39 @@ int	assign(char *str, int state, t_env *env)
 	return (0);
 }
 
+static int	only_assign(t_tokens *tok)
+{
+	int	i;
+
+	if (tok->size == 0)
+		return (ENVSET);
+	i = 0;
+	while (i < (int)tok->size)
+	{
+		if (check_valid(tok->content[i]))
+			return (ENVTMP);
+		++i;
+	}
+	return (ENVSET);
+}
+
 //	Assigns all the valid strings starting at 0 as ENVTMP to the environment.
 //	then cuts out the assigned strings from tok->content
-//	TODO: OPTIMIZE BY USING DIFFERNT CUTSPLIT THAT REPLACES AND DOESNT USE STRDUP
-
-int tmp_assign(t_tokens *tok, t_env *env)
+//
+int	tmp_assign(t_tokens *tok, t_env *env)
 {
 	int		check;
+	int		state;
 	int		i;
 
 	check = 0;
+	state = only_assign(tok);
 	i = 0;
 	while (i < (int)tok->size)
 	{
 		if (tok->content[i][0] != '\0')
 		{
-			check = assign(tok->content[i], ENVTMP, env);
+			check = assign(tok->content[i], state, env);
 			if (check)
 				break ;
 		}

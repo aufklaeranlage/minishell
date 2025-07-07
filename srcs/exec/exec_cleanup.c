@@ -20,7 +20,6 @@ void	exec_cleanup(t_shell *shell)
 	shell->env = NULL;
 	group_free(shell->cmd);
 	shell->cmd = NULL;
-	// free(shell);
 }
 
 void	group_free(t_group *grp)

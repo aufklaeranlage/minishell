@@ -12,7 +12,7 @@
 
 #include "errors.h"
 
-void	errormsg(const char *prog, const char *obj, const char *msg,
+void	errormsg(const char *prog, const char *obj, const char *msg, \
 const char *opt)
 {
 	ft_putstr_fd(prog, STDERR);

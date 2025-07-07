@@ -61,8 +61,6 @@ t_group	*prepare_group(t_tokens *list, t_group *pnt, size_t i, size_t *j_out)
 	t_group	*group;
 	size_t	j;
 
-	if (!is_valid_cmd_position(list, i))
-		return (NULL);
 	group = init_cmd_group(list, pnt, i);
 	if (!group)
 		return (NULL);

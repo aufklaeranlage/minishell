@@ -68,6 +68,8 @@ static int	prcr_c3(t_tokens *tokens, size_t i)
 
 static int	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
 {
+	if (tokens->type[0] >= BIN_AND && tokens->type[0] <= OR)
+		return (errormsg_parser(tokens->content[0]), 2);
 	while (*i < tokens->size && tokens->type[*i] >= RED_IN
 		&& tokens->type[*i] <= ADD_OUT)
 	{
@@ -75,8 +77,8 @@ static int	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
 			return (errormsg_parser(tokens->content[*i]), 2);
 		(*i)++;
 	}
-	if ((*cmd_start) == 0 && tokens->type[*i] >= INCMD_ECHO \
-		&& tokens->type[*i] <= STD_CMD)
+	if (*i < tokens->size && (*cmd_start) == 0 \
+		&& tokens->type[*i] >= INCMD_ECHO && tokens->type[*i] <= STD_CMD)
 	{
 		(*cmd_start) = 1;
 		(*i)++;
@@ -107,16 +109,13 @@ int	parser_input_validation(t_tokens *tokens, t_shell *shell)
 	i = 0;
 	cmd_start = 0;
 	is_error = 0;
-	while (i < tokens->size)
+	while (i < tokens->size && !is_error)
 	{
-		if (prcr_process(tokens, &i, &cmd_start) == 2)
-			is_error = 2;
-		if (prcr_c1(tokens, i) || prcr_c2(tokens, i, cmd_start) \
-			|| prcr_c3(tokens, i))
-			is_error = 2;
+		is_error = (prcr_process(tokens, &i, &cmd_start) || prcr_c1(tokens, i) \
+			|| prcr_c2(tokens, i, cmd_start) || prcr_c3(tokens, i));
 		i++;
 	}
 	if (is_error)
-		shell->env->status = is_error;
-	return (is_error);
+		shell->env->status = 2;
+	return (is_error * 2);
 }

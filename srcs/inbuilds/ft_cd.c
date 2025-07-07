@@ -106,5 +106,5 @@ static int	cd_updateenv(char *oldpwd, t_env *env)
 	if ((!pwd || env_ins_sep("PWD", pwd, ENVSET, env))
 		&& env_ins_sep("OLDPWD", oldpwd, ENVSET, env))
 		return (free(pwd), 1);
-	return (0);
+	return (free(pwd), 0);
 }

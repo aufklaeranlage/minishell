@@ -64,6 +64,12 @@ static void	exec_pipe_child(t_group *grp, size_t id, t_env *env)
 		--id;
 	}
 	ret = 0;
+	if (handle_quotes((t_tokens *)grp->data, env) \
+		|| tmp_assign((t_tokens *)grp->data, env))
+	{
+		exec_cleanup(grp->shell);
+		exit(1);
+	}
 	if (grp->data_type >= INCMD_ECHO && grp->data_type <= INCMD_UNSET)
 		ret = inbuilds(grp, env);
 	else if (grp->data_type == SHELL)

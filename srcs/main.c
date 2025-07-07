@@ -14,8 +14,6 @@
 
 #include "minichill.h"
 
-// static char **ft_splitcpy(char **src);
-
 static void	shellassign(t_group *grp, t_shell *shell);
 
 static void	do_dirt(t_shell *shell);
@@ -48,10 +46,10 @@ static void	do_dirt(t_shell *shell)
 {
 	char	*prompt;
 	char	*buf;
-	
+
 	while (1)
 	{
-		setup_signals(INPUTING);
+		signal_handler_init();
 		prompt = construct_prompt(shell->env);
 		buf = readline(prompt);
 		free(prompt);
@@ -63,7 +61,7 @@ static void	do_dirt(t_shell *shell)
 		{
 			shellassign(shell->cmd, shell);
 			shell->env->status = exec_shell(shell->cmd, shell->env);
-			if (g_signal >= 130 && g_signal <= 131 )
+			if (g_signal >= 130 && g_signal <= 131)
 				shell->env->status = g_signal;
 		}
 		group_free(shell->cmd);

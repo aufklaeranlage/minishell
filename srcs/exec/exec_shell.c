@@ -43,7 +43,7 @@ int	exec_shell(t_group *grp, t_env *env)
 
 static int	exec_shell_grploop(t_group *grp, int cond, t_env *env)
 {
-	while (grp)
+	while (grp && !g_signal)
 	{
 		if (cond == SMCLN || (cond == AND && !env->status)
 			|| (cond == OR && env->status))
@@ -72,6 +72,10 @@ static int	exec_shell_child(t_group *grp, t_env *env)
 	pid_t	pid;
 
 	ret = 0;
+	if (handle_quotes((t_tokens *)grp->data, env))
+		return (1);
+	if (tmp_assign((t_tokens *)grp->data, env))
+		return (1);
 	pid = fork();
 	if (!pid)
 	{

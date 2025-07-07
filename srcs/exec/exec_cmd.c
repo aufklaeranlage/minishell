@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char	*cmd_getbin(char *name, t_env *env);
+static char	*cmd_getbin(char *name, char *env_path);
 
 static int	permission_check(char *name, char *bin)
 {
@@ -60,18 +60,12 @@ int	exec_cmd(t_group *grp, t_env *env)
 	char	**argv;
 	char	*bin;
 
-	if (handle_quotes((t_tokens *)grp->data, env))
-		return (1);
-	// argv = ((t_tokens *)grp->data)->content;
 	if (exec_reddir(grp->red, env))
 		return (1);
-	if (tmp_assign((t_tokens *)grp->data, env))
-		return (1);
-	// exec_assign((t_tokens *)grp->data, env);
 	argv = ((t_tokens *)grp->data)->content;
 	if (!((t_tokens *)grp->data)->size)
 		return (0);
-	bin = cmd_getbin(argv[0], env);
+	bin = cmd_getbin(argv[0], env_getval("PATH", env));
 	if (permission_check(argv[0], bin))
 		return (permission_error(argv[0], bin, permission_check(argv[0], bin)));
 	execve(bin, argv, env->arr);
@@ -94,7 +88,7 @@ int	exec_cmd(t_group *grp, t_env *env)
 //	'bin' gets checked for 1. existence, 2. not being a directory, and
 //	3. being executable. 
 
-static char	*cmd_getbin(char *name, t_env *env)
+static char	*cmd_getbin(char *name, char *env_path)
 {
 	char	**paths;
 	char	*bin;
@@ -102,9 +96,9 @@ static char	*cmd_getbin(char *name, t_env *env)
 	size_t	i;
 
 	i = 0;
-	if (ft_strrchr(name, '/') && access(name, F_OK) == 0)
+	if (!env_path || (ft_strrchr(name, '/') && access(name, F_OK) == 0))
 		return (name);
-	paths = ft_split(ft_getenv("PATH", env->arr), ':' );
+	paths = ft_split(env_path, ':' );
 	if (!paths)
 		return (NULL);
 	while (paths[i])
