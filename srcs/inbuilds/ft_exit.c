@@ -12,8 +12,17 @@
 
 #include "inbuilds.h"
 #include "exec.h"
+#include <readline/readline.h>
 
 static int	check_valid(char *str);
+
+int	ft_exit_ctrld(t_shell *shell)
+{
+	ft_putstr_fd("exit\n", 1);
+	exec_cleanup(shell);
+	rl_clear_history();
+	exit(0);
+}
 
 int	ft_exit(t_tokens *tok, t_group *grp)
 {
@@ -30,6 +39,7 @@ int	ft_exit(t_tokens *tok, t_group *grp)
 	else
 		ret = ft_atoi(tok->content[1]);
 	exec_cleanup(grp->shell);
+	rl_clear_history();
 	exit(ret);
 }
 

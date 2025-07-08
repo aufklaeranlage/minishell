@@ -12,8 +12,6 @@
 
 NAME		:=	minishell
 
-B_NAME		:=	minishell_bonus
-
 # **************************************************************************** #
 
 SRC_DIR		:=	srcs/
@@ -27,7 +25,6 @@ INC_DIR		:=	incl/
 # **************************************************************************** #
 
 SRCS		:=	main.c \
-                print_group_data.c \
                 sig.c get_expandet.c \
 				env_arr.c env_init.c env_insert.c env_insert_sep.c \
 				envnode_init.c env_remove.c env_utils.c env_assignment.c \
@@ -93,9 +90,7 @@ $(NAME): $(LIBFT) $(OBJ_DIR) $(OBJS)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) $(LIBFLAGS) -o $(NAME)
 	@echo "Creating program $(NAME)."
 
-bonus: $(LIBFT) $(OBJ_DIR) $(OBJS)
-	@$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) $(LIBFLAGS) -o $(B_NAME)
-	@echo "Creating program $(B_NAME)."
+bonus: $(NAME)
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) CFLAGS="$(CFLAGS)"

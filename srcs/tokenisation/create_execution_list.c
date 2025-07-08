@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "errors.h"
 #include "tokenisation.h"
 #include "minichill.h"
 
@@ -92,7 +93,7 @@ static int	wrap_operations(t_tokens **out, char *str)
 	if (!list)
 		return (1);
 	if (check_brackets_balance(list))
-		return (printf("minichill : unclosed brackets.\n"), \
+		return (errormsg(SHNAME, "unclosed brackets", NULL, NULL), \
 		ft_wrapclear(list, free), 1);
 	if (process_tokens(out, list))
 		return (ft_wrapclear(list, free), 1);

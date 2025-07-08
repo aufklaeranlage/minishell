@@ -39,6 +39,7 @@ int		ft_env(t_env *env);
 int		ft_unset(t_tokens *tok, t_env *env);
 int		ft_export(t_tokens *tok, t_env *env);
 int		ft_exit(t_tokens *tok, t_group *grp);
+int		ft_exit_ctrld(t_shell *shell);
 
 //	CD
 

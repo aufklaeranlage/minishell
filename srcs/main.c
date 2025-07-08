@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 
+#include "inbuilds.h"
 #include "minichill.h"
 
 static void	shellassign(t_group *grp, t_shell *shell);
@@ -25,6 +26,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	shell.env = env_init((const char **)env);
+	shell.cmd = NULL;
 	signal_handler_init();
 	do_dirt(&shell);
 	env_free(shell.env);
@@ -54,7 +56,7 @@ static void	do_dirt(t_shell *shell)
 		buf = readline(prompt);
 		free(prompt);
 		if (!buf)
-			break ;
+			ft_exit_ctrld(shell);
 		shell->cmd = ft_calloc(1, sizeof(t_group));
 		add_history(buf);
 		if (create_execution_list(shell, buf) == 0)
@@ -65,6 +67,7 @@ static void	do_dirt(t_shell *shell)
 				shell->env->status = g_signal;
 		}
 		group_free(shell->cmd);
+		shell->cmd = NULL;
 		free(buf);
 	}
 }

@@ -16,9 +16,11 @@ void	exec_cleanup(t_shell *shell)
 {
 	if (!shell)
 		return ;
-	env_free(shell->env);
+	if (shell->env)
+		env_free(shell->env);
 	shell->env = NULL;
-	group_free(shell->cmd);
+	if (shell->cmd)
+		group_free(shell->cmd);
 	shell->cmd = NULL;
 }
 
