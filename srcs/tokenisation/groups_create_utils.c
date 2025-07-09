@@ -12,6 +12,8 @@
 
 #include "../incl/tokenisation.h"
 
+//	TODO; Check for redirections before and after bracket group!
+
 t_group	*handle_bracket_group(t_tokens *list, size_t i, size_t *j_out)
 {
 	t_group		*group;

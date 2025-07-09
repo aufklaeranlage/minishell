@@ -143,8 +143,8 @@ int	create_execution_list(t_shell *shell, char *str)
 	tokens = NULL;
 	if (wrap_operations(&tokens, str))
 		return (token_free(tokens), 1);
-	if (parser_input_validation(tokens, shell))
-		return (token_free(tokens), 2);
+	// if (parser_input_validation(tokens, shell))
+	// 	return (token_free(tokens), 2);
 	parsed_group = create_groups(tokens, NULL, 0, 0);
 	return_cmd_type(parsed_group);
 	token_free(tokens);
