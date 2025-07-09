@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 08:30:12 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 17:26:17 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/09 19:25:00 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	process_bracket_content(t_group *group, t_tokens *list, \
 	group->data_type = SHELL;
 	set_connection_type(group, list, *j);
 	success = create_bracket_content(group, sub);
-	redirection(group, list, i);
 	token_free(sub);
 	return (success);
 }

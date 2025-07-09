@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 20:44:00 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 17:31:04 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/09 19:24:44 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,21 @@
 static int	count_redir_tokens(t_tokens *list, size_t i)
 {
 	size_t	count;
+	int		br;
 
 	count = 0;
+	br = 0;
 	while (i < list->size && list->type[i] != PIPE \
 		&& list->type[i] != AND && list->type[i] != OR \
 		&& list->type[i] != C_BR)
 	{
 		if (list->type[i] >= RED_IN && list->type[i] <= ADD_OUT)
 			count++;
+		if (list->type[i] != O_BR)
+		{
+			while (list->type[i] != C_BR && i < list->size)
+				i++;
+		}
 		i++;
 	}
 	return (count);
@@ -46,14 +53,14 @@ static t_tokens	*create_redir_tokens(int count)
 	return (red);
 }
 
+// Before checks also for C_BR in while loop
 static int	copy_redirections(t_tokens *dest, t_tokens *list, size_t i)
 {
 	size_t	iter;
 
 	iter = 0;
 	while (i < list->size && list->type[i] != PIPE \
-		&& list->type[i] != AND && list->type[i] != OR \
-		&& list->type[i] != C_BR)
+		&& list->type[i] != AND && list->type[i] != OR)
 	{
 		if (list->type[i] >= RED_IN && list->type[i] <= ADD_OUT)
 		{
@@ -62,6 +69,11 @@ static int	copy_redirections(t_tokens *dest, t_tokens *list, size_t i)
 			if (!dest->content[iter])
 				return (-1);
 			iter++;
+		}
+		if (list->type[i] != O_BR)
+		{
+			while (list->type[i] != C_BR && i < list->size)
+				i++;
 		}
 		i++;
 	}

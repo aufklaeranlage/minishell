@@ -6,7 +6,7 @@
 /*   By: akuzmin <akuzmin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:55:34 by akuzmin           #+#    #+#             */
-/*   Updated: 2025/06/24 17:27:16 by akuzmin          ###   ########.fr       */
+/*   Updated: 2025/07/09 19:20:02 by akuzmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_group	*create_groups(t_tokens *list, t_group *parent, size_t i, size_t j)
 	if (i < list->size && list->type[i] == O_BR)
 	{
 		group = handle_bracket_case(list, parent, origin_i, &j);
+		redirection(group, list, origin_i);
 		if (!group)
 			return (NULL);
 		setup_next_bracket_group(group, list, &j, parent);
