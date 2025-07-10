@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../incl/tokenisation.h"
+#include "errors.h"
 
 static t_wrap	*init_token_list(void)
 {
@@ -62,6 +63,30 @@ static char	*handle_special_token(char *str, t_wrap *list)
 	return (str);
 }
 
+static int	check_bracketbalance(char *str)
+{
+	size_t	i;
+	char	q;
+
+	if (!str)
+		return (0);
+	q = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			q = str[i];
+			while (str[++i] != q)
+				if (!str[i])
+					return (errormsg_parser("unclosed quotes"), (int)q);
+		}
+		q = 0;
+		++i;
+	}
+	return ((int)q);
+}
+
 /**
  * @brief Create node_list of elements form string
  * -->	input: echo str1"str2 str3" str4 str5'str6 str7'
@@ -73,6 +98,8 @@ t_wrap	*convert_str(char *str)
 {
 	t_wrap	*list;
 
+	if (check_bracketbalance(str))
+		return (NULL);
 	list = init_token_list();
 	if (!list)
 		return (NULL);

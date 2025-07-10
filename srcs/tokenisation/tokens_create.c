@@ -10,11 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "errors.h"
 #include "tokenisation.h"
 
 #include "readline.h"
 
-static int	process_redirect(t_tokens *out, size_t i, t_list **curr, char *tmp)
+static int	process_redirect(t_tokens *out, size_t i, t_list **curr, t_env *env)
 {
 	if (!(*curr)->next)
 	{
@@ -23,15 +24,19 @@ static int	process_redirect(t_tokens *out, size_t i, t_list **curr, char *tmp)
 			"syntax error near unexpected token 'newline'", NULL), 1);
 	}
 	*curr = (*curr)->next;
+	if (!ft_strncmp((char *)((*curr)->content), "|", 2)
+		|| !ft_strncmp((char *)((*curr)->content), "||", 3)
+		|| !ft_strncmp((char *)((*curr)->content), "&&", 3))
+	{
+		out->content[i] = NULL;
+		return (errormsg_parser((char *)((*curr)->content)), 1);
+	}
 	if (out->type[i] == HERE_DOC)
-		out->content[i] = rl_heredoc((char *)(*curr)->content);
+		out->content[i] = rl_heredoc((char *)(*curr)->content, env);
 	else
 		out->content[i] = ft_strdup((char *)(*curr)->content);
 	if (!out->content[i])
-	{
-		free(tmp);
 		return (1);
-	}
 	return (0);
 }
 
@@ -39,16 +44,14 @@ static int	process_regular(t_tokens *out, size_t i, char *tmp)
 {
 	out->content[i] = ft_strdup(tmp);
 	if (!out->content[i])
-	{
-		free(tmp);
 		return (1);
-	}
 	if (ft_strchr(tmp, '=') != NULL)
 		out->type[i] = ASSIGNMENT;
 	return (0);
 }
 
-static int	process_token(t_tokens *out, size_t i, t_list **curr)
+static int	process_token(t_tokens *out, size_t i, t_list **curr, \
+	t_shell *shell)
 {
 	char	*tmp;
 	int		result;
@@ -63,7 +66,9 @@ static int	process_token(t_tokens *out, size_t i, t_list **curr)
 		out->type[i] = STD_CMD;
 	if (out->type[i] >= RED_IN && out->type[i] <= ADD_OUT)
 	{
-		result = process_redirect(out, i, curr, tmp);
+		result = process_redirect(out, i, curr, shell->env);
+		if (result)
+			shell->env->status = 2;
 		*curr = (*curr)->next;
 	}
 	else
@@ -72,7 +77,7 @@ static int	process_token(t_tokens *out, size_t i, t_list **curr)
 	return (result);
 }
 
-int	lst_to_tokens(t_tokens *out, t_wrap *list)
+int	lst_to_tokens(t_tokens *out, t_wrap *list, t_shell *shell)
 {
 	size_t	i;
 	t_list	*curr;
@@ -85,7 +90,7 @@ int	lst_to_tokens(t_tokens *out, t_wrap *list)
 		redir_flag = 0;
 		if (curr && curr->content)
 		{
-			if (process_token(out, i, &curr))
+			if (process_token(out, i, &curr, shell))
 				return (1);
 			if (out->type[i] >= RED_IN && out->type[i] <= ADD_OUT)
 				redir_flag = 1;

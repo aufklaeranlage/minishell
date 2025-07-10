@@ -25,7 +25,7 @@
  * @param env Environment variables used for variable expansion.
  * @return 0 on success, 1 on failure.
  */
-static int	process_tokens(t_tokens **out, t_wrap *list)
+static int	process_tokens(t_tokens **out, t_wrap *list, t_shell *shell)
 {
 	*out = malloc(sizeof(t_tokens));
 	if (!*out)
@@ -40,7 +40,7 @@ static int	process_tokens(t_tokens **out, t_wrap *list)
 		return (1);
 	}
 	(*out)->content[list->size] = NULL;
-	if (lst_to_tokens(*out, list))
+	if (lst_to_tokens(*out, list, shell))
 		return (1);
 	return (0);
 }
@@ -85,7 +85,7 @@ int	check_brackets_balance(t_wrap *list)
  * @param env Environment variables for expansion.
  * @return 0 on success, 1 on failure.
  */
-static int	wrap_operations(t_tokens **out, char *str)
+static int	wrap_operations(t_tokens **out, char *str, t_shell *shell)
 {
 	t_wrap		*list;
 
@@ -95,7 +95,7 @@ static int	wrap_operations(t_tokens **out, char *str)
 	if (check_brackets_balance(list))
 		return (errormsg(SHNAME, "unclosed brackets", NULL, NULL), \
 		ft_wrapclear(list, free), 1);
-	if (process_tokens(out, list))
+	if (process_tokens(out, list, shell))
 		return (ft_wrapclear(list, free), 1);
 	ft_wrapclear(list, free);
 	return (0);
@@ -141,10 +141,10 @@ int	create_execution_list(t_shell *shell, char *str)
 	if (!shell->cmd)
 		return (1);
 	tokens = NULL;
-	if (wrap_operations(&tokens, str))
+	if (wrap_operations(&tokens, str, shell))
 		return (token_free(tokens), 1);
-	// if (parser_input_validation(tokens, shell))
-	// 	return (token_free(tokens), 2);
+	if (parser_input_validation(tokens, shell))
+		return (token_free(tokens), 2);
 	parsed_group = create_groups(tokens, NULL, 0, 0);
 	return_cmd_type(parsed_group);
 	token_free(tokens);

@@ -24,8 +24,6 @@ int	specifier_one(char *str)
 		return (HERE_DOC);
 	if (*str == '|')
 		return (PIPE);
-	if (*str == '&')
-		return (BIN_AND);
 	if (*str == '>')
 		return (RED_OUT);
 	if (*str == '<')

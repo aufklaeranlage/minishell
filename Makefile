@@ -37,7 +37,7 @@ SRCS		:=	main.c \
 				ft_cd.c ft_env.c ft_export.c ft_unset.c inbuild_utils.c \
 				ft_echo.c  ft_exit.c init_pwd.c home.c\
 				ft_pwd.c inbuilds.c wildcard.c wildcard_utils.c \
-				readline_append.c readline_heredoc.c \
+				readline_heredoc.c \
 				append_tokens.c groups_create_utils.c groups_redirection.c \
 				tokens_create.c create_execution_list.c groups_delimiter.c \
 				groups_subtoken.c tokens_utils.c create_handle_errors.c \

@@ -51,7 +51,7 @@ char		*convert_subfunction(char *str, t_wrap *list);
 t_tokens	*subtoken(t_tokens *list, size_t start, size_t end);
 size_t		delimiter(int *d_type, t_tokens	*list, size_t i);
 void		redirection(t_group *group, t_tokens	*list, size_t i);
-int			lst_to_tokens(t_tokens *out, t_wrap *list);
+int			lst_to_tokens(t_tokens *out, t_wrap *list, t_shell *shell);
 
 // GROUPS HANDLE CMD
 t_group		*handle_command_group(t_tokens *list, t_group *parrent, \

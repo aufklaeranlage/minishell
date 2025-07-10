@@ -23,16 +23,8 @@
 # include "expander.h"
 # include "errors.h"
 
-//	READLINE GENERAL
-
-char	*rl_getline(char *prompt);
-
-//	READLINE APPEND
-
-char	*rl_hdapp(const char *del, char **line);
-
 //	HERE DOC
 
-char	*rl_heredoc(const char *del);
+char	*rl_heredoc(const char *del, t_env *env);
 
 #endif

@@ -10,112 +10,99 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "defines.h"
 #include "tokenisation.h"
 #include "env.h"
 
-// CASE: $() + CASE: "CMD | | | CMD" + "CMD | "
-static int	prcr_c1(t_tokens *tokens, size_t i)
-{
-	if (i + 1 < tokens->size \
-		&& tokens->content[i][0] == '$' && tokens->type[i + 1] == O_BR)
-		return (errormsg(SHNAME, "syntax error near", \
-			tokens->content[i], NULL), 2);
-	if (i + 1 < tokens->size \
-		&& (tokens->type[i] >= BIN_AND && tokens->type[i] <= OR) \
-		&& (tokens->type[i + 1] >= BIN_AND && tokens->type[i + 1] <= OR))
-		return (errormsg(SHNAME, "syntax error near", \
-			tokens->content[i + 1], NULL), 2);
-	if (i + 1 == tokens->size \
-		&& (tokens->type[i] >= BIN_AND && tokens->type[i] <= OR))
-		return (errormsg(SHNAME, "syntax error near", \
-			tokens->content[i], NULL), 2);
-	return (0);
-}
+static int	validation_nobrace(t_tokens *tok, size_t i);
 
-// CASE: ASSIGNE (GROUP)
-static int	prcr_c2(t_tokens *tokens, size_t i, int cmd_start)
-{
-	size_t	gap;
+static int	validation_noassign(t_tokens *tok, size_t i);
 
-	gap = 0;
-	while (i + gap < tokens->size \
-		&& (tokens->type[i + gap] != O_BR && tokens->type[i + gap] != C_BR))
-	{
-		gap++;
-		if (cmd_start == 0 && i + gap < tokens->size \
-		&& (tokens->type[i] == ASSIGNMENT) \
-		&& (tokens->type[i + gap] >= O_BR && tokens->type[i + gap] <= C_BR))
-		{
-			return (errormsg(SHNAME, "syntax error near", \
-				tokens->content[i + gap], NULL), 1);
-		}
-	}
-	return (0);
-}
+static int	validation_noexec(t_tokens *tok, size_t i);
 
-static int	prcr_c3(t_tokens *tokens, size_t i)
-{
-	while (i < tokens->size && tokens->type[i] != C_BR)
-		i++;
-	if (i + 1 < tokens->size && !(tokens->type[i + 1] >= SMCLN \
-		&& tokens->type[i + 1] <= OR))
-	{
-		errormsg(SHNAME, "syntax error near", tokens->content[i + 1], NULL);
-		return (1);
-	}
-	return (0);
-}
+static int	validation_newline(t_tokens *tok, size_t i, int err, \
+	t_shell *shell);
 
-static int	prcr_process(t_tokens *tokens, size_t *i, int *cmd_start)
-{
-	if (tokens->type[0] >= BIN_AND && tokens->type[0] <= OR)
-		return (errormsg_parser(tokens->content[0]), 2);
-	while (*i < tokens->size && tokens->type[*i] >= RED_IN
-		&& tokens->type[*i] <= ADD_OUT)
-	{
-		if (specifier_one(tokens->content[*i]))
-			return (errormsg_parser(tokens->content[*i]), 2);
-		(*i)++;
-	}
-	if (*i < tokens->size && (*cmd_start) == 0 \
-		&& tokens->type[*i] >= INCMD_ECHO && tokens->type[*i] <= STD_CMD)
-	{
-		(*cmd_start) = 1;
-		(*i)++;
-		while ((*cmd_start) == 1 && *i < tokens->size)
-		{
-			if ((tokens->type[*i] >= BIN_AND && tokens->type[*i] <= OR) \
-				|| tokens->type[*i] == O_BR)
-				(*cmd_start) = 0;
-			(*i)++;
-		}
-	}
-	return (0);
-}
+//	LIST OF INVALID INPUTS:
+//		<NONE>	| / || / &&
+//		| / || / && <NL>
+//		<ASSIGNMENT> '('
+//		')' <ASSIGNMENT> [| / || / && / ;]
+//		Unclosed " or '
+//
 
-/**
- * @brief Check is value valid or not
- * @param tokens 
- * @return int 0 - OK, 1 - KO
- */
-int	parser_input_validation(t_tokens *tokens, t_shell *shell)
+int	parser_input_validation(t_tokens *tok, t_shell *shell)
 {
 	size_t	i;
-	int		cmd_start;
-	int		is_error;
+	int		err;
 
-	if (!tokens)
+	if (!tok)
 		return (1);
+	if (tok->size == 0)
+		return (0);
 	i = 0;
-	cmd_start = 0;
-	is_error = 0;
-	while (i < tokens->size && !is_error)
+	err = 0;
+	if (tok->type[0] >= PIPE && tok->type[0] <= OR)
+		err = 1;
+	while (i < tok->size && !err)
 	{
-		is_error = (prcr_process(tokens, &i, &cmd_start) || prcr_c1(tokens, i) \
-			|| prcr_c2(tokens, i, cmd_start) || prcr_c3(tokens, i));
-		i++;
+		if (tok->type[i] == ASSIGNMENT)
+			err = validation_nobrace(tok, ++i);
+		else if (tok->type[i] == C_BR)
+			err = validation_noassign(tok, ++i);
+		else if (tok->type[i] >= PIPE && tok->type[i] <= OR)
+			err = validation_noexec(tok, ++i);
+		else
+			++i;
 	}
-	if (is_error)
+	return (validation_newline(tok, i, err, shell));
+}
+
+//	Takes a token for safety check.
+
+static int	validation_nobrace(t_tokens *tok, size_t i)
+{
+	if (i >= tok->size)
+		return (0);
+	if (tok->type[i] == O_BR)
+		return (1);
+	return (0);
+}
+
+//	Takes a token for safety check.
+
+static int	validation_noassign(t_tokens *tok, size_t i)
+{
+	if (i >= tok->size)
+		return (0);
+	if (tok->type[i] == ASSIGNMENT)
+		return (1);
+	return (0);
+}
+
+//	Takes a token for safety check.
+
+static int	validation_noexec(t_tokens *tok, size_t i)
+{
+	if (i >= tok->size)
+		return (0);
+	if (tok->type[i] >= PIPE && tok->type[i] <= OR)
+		return (1);
+	return (0);
+}
+
+static int	validation_newline(t_tokens *tok, size_t i, int err, t_shell *shell)
+{
+	if (i == tok->size) 
+		if (tok->type[i - 1] >= PIPE && tok->type[i - 1] <= OR)
+			err = 1;
+	if (err)
+	{
 		shell->env->status = 2;
-	return (is_error * 2);
+		if (i == tok->size)
+			errormsg_parser("newline");
+		else
+			errormsg_parser(tok->content[i]);
+	}
+	return (err);
 }

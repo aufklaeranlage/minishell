@@ -10,11 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft_put.h"
 #include "readline.h"
+#include "tokenisation.h"
 
 #ifndef HDEOF
 # define HDEOF "here-document delimited by end-of-file"
 #endif
+
+static char	*red_gettmpfilename(void);
 
 static char	*heredoc_rec(const char *del, size_t dellen, size_t offset);
 
@@ -23,14 +27,62 @@ static char	*heredoc_retinit(size_t size);
 //	Returns the lines read into readline as a string. each line is seperated
 //	by a newline.
 
-char	*rl_heredoc(const char *del)
+char	*rl_heredoc(const char *del, t_env *env)
 {
 	char	*ret;
+	char	*expdel;
+	char	*str;
+	int		fd;
 
 	if (!del)
 		return (NULL);
-	ret = heredoc_rec(del, ft_strlen(del), 0);
+	ret = red_gettmpfilename();
+	fd = open(ret, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+		return (free(ret), NULL);
+	expdel = get_expandet((char *)del, env);
+	str = heredoc_rec(expdel, ft_strlen(expdel), 0);
+	free(expdel);
+	if (str && (ft_strchr(del, '\'') || ft_strchr(del, '"')))
+		ft_putstr_fd(str, fd);
+	else if (str)
+		ft_putstr_fd(get_expandet(str, env), fd);
+	free(str);
 	return (ret);
+}
+
+//	red_gettmpfilename() creates a file in /tmp and returns the name of that
+//	file. The file is supposed to be used as a temporary file (f.e. open with
+//	write and read permissions and close it after writing to it, only to open
+//	it up again (resetting the file position) and unlinking it afterwards).
+//	The files created have a max name length of 10 and each characters can hold
+//	one of 96 different values. That leads to 6.64832636×10¹⁹ different
+//	potential file names.
+
+static char	*red_gettmpfilename(void)
+{
+	char	*ret;
+	size_t	i;
+	size_t	c;
+
+	ret = malloc(16 * sizeof(*ret));
+	if (!ret)
+		return (NULL);
+	ft_strlcpy(ret, "/tmp/", 16);
+	i = 5;
+	while (i < 15)
+	{
+		c = 32;
+		while (c < 128)
+		{
+			ret[i] = c;
+			if (access(ret, F_OK) == -1)
+				return (ret);
+			++c;
+		}
+		++i;
+	}
+	return (free(ret), NULL);
 }
 
 //	The recursive loop that makes up the main functionallity. Runs recursively

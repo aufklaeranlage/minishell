@@ -25,7 +25,7 @@ static size_t	skip_subgroups(t_tokens *list, size_t i)
 			--depth;
 		++i;
 	}
-	return i;
+	return (i);
 }
 
 static int	count_redir_tokens(t_tokens *list, size_t i)
