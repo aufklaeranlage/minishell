@@ -64,7 +64,7 @@ static void	exec_pipe_child(t_group *grp, size_t id, t_env *env)
 		--id;
 	}
 	ret = 0;
-	if (grp->data_type != SHELL &&  (handle_quotes((t_tokens *)grp->data, env) \
+	if (grp->data_type != SHELL && (handle_quotes((t_tokens *)grp->data, env) \
 		|| tmp_assign((t_tokens *)grp->data, env)))
 	{
 		exec_cleanup(grp->shell);
