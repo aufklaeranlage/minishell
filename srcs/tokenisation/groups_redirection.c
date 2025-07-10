@@ -12,6 +12,22 @@
 
 #include "../incl/tokenisation.h"
 
+static size_t	skip_subgroups(t_tokens *list, size_t i)
+{
+	int	depth;
+
+	depth = 1;
+	while (i < list->size && depth)
+	{
+		if (list->type[i] == O_BR)
+			++depth;
+		else if (list->type[i] == C_BR)
+			--depth;
+		++i;
+	}
+	return i;
+}
+
 static int	count_redir_tokens(t_tokens *list, size_t i)
 {
 	size_t	count;
@@ -23,12 +39,10 @@ static int	count_redir_tokens(t_tokens *list, size_t i)
 	{
 		if (list->type[i] >= RED_IN && list->type[i] <= ADD_OUT)
 			count++;
-		if (list->type[i] != O_BR)
-		{
-			while (i < list->size && list->type[i] != C_BR)
-				i++;
-		}
-		i++;
+		if (list->type[i] == O_BR)
+			i = skip_subgroups(list, i + 1);
+		else
+			i++;
 	}
 	return (count);
 }
@@ -68,12 +82,10 @@ static int	copy_redirections(t_tokens *dest, t_tokens *list, size_t i)
 				return (-1);
 			iter++;
 		}
-		if (list->type[i] != O_BR)
-		{
-			while ( i < list->size && list->type[i] != C_BR)
-				i++;
-		}
-		i++;
+		if (list->type[i] == O_BR)
+			i = skip_subgroups(list, i + 1);
+		else
+			i++;
 	}
 	return (0);
 }
