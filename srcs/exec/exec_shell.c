@@ -17,7 +17,7 @@ static int	exec_shell_grploop(t_group *grp, int cond, t_env *env);
 
 static int	exec_shell_child(t_group *grp, t_env *env);
 
-static int	exec_subshellwrapper(t_group *subshell, t_env *env);
+static int	exec_subshellwrapper(t_group *mainshell, t_env *env);
 
 //	Returns value of last executable.
 
@@ -83,7 +83,7 @@ static int	exec_shell_child(t_group *grp, t_env *env)
 		if (grp->exec_type == PIPE)
 			ret = exec_pipe(grp, env);
 		else if (grp->data_type == SHELL)
-			ret = exec_subshellwrapper(grp->data, env);
+			ret = exec_subshellwrapper(grp, env);
 		else
 			ret = exec_cmd(grp, env);
 		exec_cleanup(grp->shell);
@@ -94,16 +94,16 @@ static int	exec_shell_child(t_group *grp, t_env *env)
 	return (childreturn(ret));
 }
 
-static int	exec_subshellwrapper(t_group *subshell, t_env *env)
+static int	exec_subshellwrapper(t_group *mainshell, t_env *env)
 {
 	int	ret;
 	int	fd[2];
 
 	fd[0] = dup(STDIN);
 	fd[1] = dup(STDOUT);
-	if (exec_reddir(subshell->red, env))
+	if (exec_reddir(mainshell->red, env))
 		return (1);
-	ret = exec_shell(subshell, env);
+	ret = exec_shell((t_group *)mainshell->data, env);
 	dup2(fd[0], STDIN);
 	dup2(fd[1], STDOUT);
 	return (ret);
