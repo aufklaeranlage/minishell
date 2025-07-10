@@ -15,10 +15,8 @@
 static int	count_redir_tokens(t_tokens *list, size_t i)
 {
 	size_t	count;
-	int		br;
 
 	count = 0;
-	br = 0;
 	while (i < list->size && list->type[i] != PIPE \
 		&& list->type[i] != AND && list->type[i] != OR \
 		&& list->type[i] != C_BR)
@@ -27,7 +25,7 @@ static int	count_redir_tokens(t_tokens *list, size_t i)
 			count++;
 		if (list->type[i] != O_BR)
 		{
-			while (list->type[i] != C_BR && i < list->size)
+			while (i < list->size && list->type[i] != C_BR)
 				i++;
 		}
 		i++;
@@ -72,7 +70,7 @@ static int	copy_redirections(t_tokens *dest, t_tokens *list, size_t i)
 		}
 		if (list->type[i] != O_BR)
 		{
-			while (list->type[i] != C_BR && i < list->size)
+			while ( i < list->size && list->type[i] != C_BR)
 				i++;
 		}
 		i++;
