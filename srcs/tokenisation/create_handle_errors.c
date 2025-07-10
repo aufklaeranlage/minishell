@@ -46,7 +46,7 @@ int	parser_input_validation(t_tokens *tok, t_shell *shell)
 		err = 1;
 	while (i < tok->size && !err)
 	{
-		if (tok->type[i] == ASSIGNMENT)
+		if (tok->type[i] >= STR && tok->type[i] <= STD_CMD)
 			err = validation_nobrace(tok, ++i);
 		else if (tok->type[i] == C_BR)
 			err = validation_noassign(tok, ++i);
@@ -93,7 +93,7 @@ static int	validation_noexec(t_tokens *tok, size_t i)
 
 static int	validation_newline(t_tokens *tok, size_t i, int err, t_shell *shell)
 {
-	if (i == tok->size) 
+	if (i > 0 && i == tok->size) 
 		if (tok->type[i - 1] >= PIPE && tok->type[i - 1] <= OR)
 			err = 1;
 	if (err)

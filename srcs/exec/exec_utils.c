@@ -66,3 +66,18 @@ int	childreturn(int wstatus)
 		return (WTERMSIG(wstatus));
 	return (-1);
 }
+
+int	exec_subshellwrapper(t_group *mainshell, t_env *env)
+{
+	int	ret;
+	int	fd[2];
+
+	fd[0] = dup(STDIN);
+	fd[1] = dup(STDOUT);
+	if (exec_reddir(mainshell->red, env))
+		return (1);
+	ret = exec_shell((t_group *)mainshell->data, env);
+	dup2(fd[0], STDIN);
+	dup2(fd[1], STDOUT);
+	return (ret);
+}

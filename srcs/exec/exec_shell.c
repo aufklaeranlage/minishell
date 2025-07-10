@@ -17,8 +17,6 @@ static int	exec_shell_grploop(t_group *grp, int cond, t_env *env);
 
 static int	exec_shell_child(t_group *grp, t_env *env);
 
-static int	exec_subshellwrapper(t_group *mainshell, t_env *env);
-
 //	Returns value of last executable.
 
 int	exec_shell(t_group *grp, t_env *env)
@@ -92,19 +90,4 @@ static int	exec_shell_child(t_group *grp, t_env *env)
 	else
 		waitpid(pid, &ret, 0);
 	return (childreturn(ret));
-}
-
-static int	exec_subshellwrapper(t_group *mainshell, t_env *env)
-{
-	int	ret;
-	int	fd[2];
-
-	fd[0] = dup(STDIN);
-	fd[1] = dup(STDOUT);
-	if (exec_reddir(mainshell->red, env))
-		return (1);
-	ret = exec_shell((t_group *)mainshell->data, env);
-	dup2(fd[0], STDIN);
-	dup2(fd[1], STDOUT);
-	return (ret);
 }

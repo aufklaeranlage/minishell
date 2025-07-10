@@ -51,6 +51,8 @@ int		exec_assign(t_tokens *tok, t_env *env);
 
 int		childreturn(int wstatus);
 
+int		exec_subshellwrapper(t_group *mainshell, t_env *env);
+
 //	CLEANUP
 
 void	exec_cleanup(t_shell *shell);
