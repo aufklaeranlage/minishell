@@ -30,7 +30,8 @@ int	exec_reddir(t_tokens *tok, t_env *env)
 	i = 0;
 	while (i < tok->size)
 	{
-		if (tok->type[i] != HERE_DOC && redirection_quotes(tok->content + i, env))
+		if (tok->type[i] != HERE_DOC \
+			&& redirection_quotes(tok->content + i, env))
 			return (1);
 		if ((tok->type[i] == RED_IN || tok->type[i] == HERE_DOC)
 			&& red_in(tok, fd, i))
