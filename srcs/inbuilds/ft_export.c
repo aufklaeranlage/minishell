@@ -50,7 +50,7 @@ static int	check_valid(char *str)
 		return (0);
 	if (!(ft_isalpha(str[0]) || str[0] == '_'))
 		return (errormsg(SHNAME, "export", str, "not a valid identifier"), 1);
-	i = 1;
+	i = 0;
 	while (str[i] && str[i] != '=')
 	{
 		if (!(ft_isalnum(str[i]) || str[i] == '_'))
@@ -58,7 +58,7 @@ static int	check_valid(char *str)
 			1);
 		++i;
 	}
-	if (str[i] == '=' && i == 1)
+	if (str[i] == '=' && !i)
 		return (errormsg(SHNAME, "export", str, "not a valid identifier"), 1);
 	return (0);
 }
