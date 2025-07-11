@@ -46,7 +46,11 @@ char	*rl_heredoc(const char *del, t_env *env)
 	if (str && (ft_strchr(del, '\'') || ft_strchr(del, '"')))
 		ft_putstr_fd(str, fd);
 	else if (str)
-		ft_putstr_fd(get_expandet(str, env), fd);
+	{
+		expdel = get_expandet(str, env);
+		ft_putstr_fd(expdel, fd);
+		free(expdel);
+	}
 	free(str);
 	return (ret);
 }
@@ -101,7 +105,7 @@ static char	*heredoc_rec(const char *del, size_t dellen, size_t offset)
 		return (errormsg(SHNAME, "warning", HDEOF, NULL)
 			, heredoc_retinit(offset + 1));
 	buflen = ft_strlen(buf);
-	if ((!ft_strncmp(buf, del, buflen) && buflen > 0))
+	if ((!ft_strncmp(buf, del, dellen + 1) && buflen > 0))
 	{
 		ret = heredoc_retinit(offset + 1);
 		return (free(buf), ret);
